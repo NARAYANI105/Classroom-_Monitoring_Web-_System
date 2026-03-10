@@ -1,23 +1,15 @@
 function login(){
 
-let role = document.getElementById("role").value;
 let id = document.getElementById("id").value;
 let pass = document.getElementById("password").value;
 
-if(id === "student" && pass === "123"){
-location.href="dashboard.html";
+if(id.endsWith("@ritripm.ac.in") && pass !== "")
+{
+    window.location.href = "dashboard.html";
 }
-
-else if(id === "staff" && pass === "123"){
-location.href="dashboard.html";
-}
-
-else if(id === "admin" && pass === "123"){
-location.href="dashboard.html";
-}
-
-else{
-alert("Invalid Login");
+else
+{
+    alert("Please enter a valid RIT email ID");
 }
 
 }
