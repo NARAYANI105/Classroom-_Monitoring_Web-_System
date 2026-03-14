@@ -1,15 +1,15 @@
 function login(){
 
-let id = document.getElementById("id").value;
-let pass = document.getElementById("password").value;
+let id=document.getElementById("id").value;
+let pass=document.getElementById("password").value;
 
-if(id.endsWith("@ritrjpm.ac.in") && pass === "RIT")
+if(id.endsWith("@ritrjpm.ac.in") && pass==="RIT")
 {
-    window.location.href = "dashboard.html";
+window.location.href="side.html";
 }
 else
 {
-    alert("Invalid Login! Use RIT Email and Password");
+alert("Invalid Login");
 }
 
 }
