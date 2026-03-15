@@ -1,40 +1,104 @@
 body{
-font-family: Arial;
+font-family: Arial, sans-serif;
 background:#eef1f5;
+margin:0;
+padding:0;
 text-align:center;
 }
 
-.form-box{
-width:400px;
-margin:auto;
+/* LOGIN PAGE */
+
+.login-box{
+width:320px;
+margin:120px auto;
 background:white;
-padding:25px;
-border-radius:8px;
-box-shadow:0px 0px 10px gray;
+padding:30px;
+border-radius:10px;
+box-shadow:0 0 10px gray;
 text-align:left;
 }
 
-h2{
-margin-top:20px;
-color:#1a73e8;
+.login-box h2{
+text-align:center;
+margin-bottom:20px;
 }
 
-label{
+.login-box input{
+width:100%;
+padding:8px;
+margin-top:5px;
+margin-bottom:15px;
+}
+
+.login-box button{
+width:100%;
+padding:10px;
+background:#1a73e8;
+color:white;
+border:none;
+border-radius:5px;
+font-size:16px;
+}
+
+/* SIDE SELECTION */
+
+.side-container{
+display:flex;
+justify-content:center;
+gap:40px;
+margin-top:80px;
+}
+
+.side-box{
+display:block;
+width:250px;
+padding:30px;
+background:#1a73e8;
+color:white;
+text-decoration:none;
+font-size:18px;
+border-radius:10px;
+box-shadow:0 4px 10px gray;
+}
+
+.side-box:hover{
+background:#1558b0;
+}
+
+/* CLASSROOM DETAILS FORM */
+
+.form-box{
+width:400px;
+margin:40px auto;
+background:white;
+padding:25px;
+border-radius:10px;
+box-shadow:0 0 10px gray;
+text-align:left;
+}
+
+.form-box h2{
+color:#1a73e8;
+margin-top:20px;
+}
+
+.form-box label{
 display:block;
 margin-top:10px;
 font-weight:bold;
 }
 
-input,select{
+.form-box input,
+.form-box select{
 width:100%;
 padding:8px;
 margin-top:5px;
 }
 
-button{
+.form-box button{
 margin-top:20px;
-padding:10px;
 width:100%;
+padding:10px;
 background:#1a73e8;
 color:white;
 border:none;
