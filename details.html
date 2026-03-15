@@ -1,15 +1,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Classroom Availability Details</title>
+<title>Classroom Details</title>
 <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<h1>Classroom Availability Details</h1>
+<h1>Classroom Details</h1>
 
-<div class="form-container">
+<div class="form-box">
+
+<h2>Equipment Details</h2>
 
 <label>Total Benches</label>
 <input type="number" placeholder="Enter total benches">
@@ -37,6 +39,27 @@
 
 <label>Next Service Date</label>
 <input type="date">
+
+
+<h2>Classroom Availability</h2>
+
+<label>Classroom Status</label>
+<select>
+<option>Free</option>
+<option>Occupied</option>
+</select>
+
+<label>Current Class / Activity</label>
+<input type="text" placeholder="Enter subject or activity">
+
+<label>Faculty Name</label>
+<input type="text" placeholder="Enter faculty name">
+
+<label>Start Time</label>
+<input type="time">
+
+<label>End Time</label>
+<input type="time">
 
 <button>Save</button>
 
