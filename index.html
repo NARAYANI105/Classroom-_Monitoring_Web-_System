@@ -1,27 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>Login</title>
-<link rel="stylesheet" href="style.css">
-</head>
-
-<body>
-
-<div class="login-box">
-
-<h2>Login</h2>
-
-<label>Login ID</label>
-<input type="text" id="loginid" placeholder="Enter ID">
-
-<label>Password</label>
-<input type="password" id="password" placeholder="Enter Password">
-
-<button onclick="checkLogin()">Login</button>
-
-</div>
-
 <script>
+
 function checkLogin(){
 
 let id = document.getElementById("loginid").value.trim();
@@ -31,7 +9,7 @@ let pattern = /^9536[0-9]{8}@ritrjpm\.ac\.in$/;
 
 if(pattern.test(id) && pass === "RIT")
 {
-    window.location.href="side.html";
+    window.location.href = "side.html";
 }
 else
 {
@@ -39,7 +17,5 @@ else
 }
 
 }
-</script>
 
-</body>
-</html>
+</script>
