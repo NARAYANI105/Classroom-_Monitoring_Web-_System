@@ -1,15 +1,22 @@
-function login(){
+<script>
 
-let id=document.getElementById("id").value;
-let pass=document.getElementById("password").value;
+function checkLogin(){
 
-if(id.endsWith("@ritrjpm.ac.in") && pass==="RIT")
+let id = document.getElementById("loginid").value.trim();
+let pass = document.getElementById("password").value.trim();
+
+let pattern = /^9536[0-9]{8}@ritrjpm\.ac\.in$/;
+
+/* If both correct */
+if(pattern.test(id) && pass === "RIT")
 {
-window.location.href="side.html";
+    window.location.href = "side.html";
 }
 else
 {
-alert("Invalid Login");
+    alert("Incorrect ID or Password");
 }
 
 }
+
+</script>
