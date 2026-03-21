@@ -11,17 +11,18 @@
 
 <div class="login-card">
 
-<h2>Classroom Monitoring</h2>
+<h2>Classroom Monitoring System</h2>
 
-<input type="text" id="loginid" placeholder="Login ID">
-<input type="password" id="password" placeholder="Password">
+<input type="text" id="loginid" placeholder="Enter Login ID">
+
+<input type="password" id="password" placeholder="Enter Password">
 
 <p id="error-msg"></p>
 
 <div class="btn-group">
-<button onclick="checkLogin()">Student</button>
-<button onclick="checkLogin()">Staff</button>
-<button onclick="checkLogin()">Admin</button>
+<button onclick="checkLogin('student')">Student</button>
+<button onclick="checkLogin('staff')">Staff</button>
+<button onclick="checkLogin('admin')">Admin</button>
 </div>
 
 </div>
@@ -29,28 +30,66 @@
 </div>
 
 <script>
-function checkLogin(){
+
+function checkLogin(type){
 
 let id = document.getElementById("loginid").value.trim();
 let pass = document.getElementById("password").value.trim();
 let error = document.getElementById("error-msg");
 
-let pattern = /^9536[0-9]{8}@ritrjpm\.ac\.in$/;
-
 error.innerHTML = "";
 
-if(!pattern.test(id)){
-    error.innerHTML = "Invalid Login ID";
-    return;
+/* PATTERNS */
+let studentPattern = /^9536[0-9]{8}@ritrjpm\.ac\.in$/;
+let staffPattern = /^[a-zA-Z0-9]+@ritrjpm\.ac\.in$/;
+
+/* STUDENT */
+if(type === "student"){
+
+    if(!studentPattern.test(id)){
+        error.innerHTML = "Invalid Student ID";
+        return;
+    }
+
+    if(pass !== "RIT"){
+        error.innerHTML = "Incorrect Password";
+        return;
+    }
 }
 
-if(pass !== "RIT"){
-    error.innerHTML = "Incorrect Password";
-    return;
+/* STAFF */
+else if(type === "staff"){
+
+    if(!staffPattern.test(id) || id.startsWith("9536")){
+        error.innerHTML = "Invalid Staff ID";
+        return;
+    }
+
+    if(pass !== "STAFF.RIT"){
+        error.innerHTML = "Incorrect Password";
+        return;
+    }
 }
 
-window.location.href="side.html";
+/* ADMIN */
+else if(type === "admin"){
+
+    if(!staffPattern.test(id) || id.startsWith("9536")){
+        error.innerHTML = "Invalid Admin ID";
+        return;
+    }
+
+    if(pass !== "ADMIN.RIT"){
+        error.innerHTML = "Incorrect Password";
+        return;
+    }
 }
+
+/* SUCCESS */
+window.location.href = "side.html";
+
+}
+
 </script>
 
 </body>
