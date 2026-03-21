@@ -7,22 +7,40 @@
 
 <body>
 
-<h1>Classroom Details</h1>
+<div class="details-box">
 
-<div class="form-box">
+<h2>Classroom Details</h2>
 
-<h2>Equipment Details</h2>
+<label>Classroom Status</label>
+<select>
+<option>Free</option>
+<option>Occupied</option>
+</select>
+
+<label>Current Class</label>
+<input type="text">
+
+<label>Faculty Name</label>
+<input type="text">
+
+<label>Start Time</label>
+<input type="time">
+
+<label>End Time</label>
+<input type="time">
+
+<hr>
 
 <label>Total Benches</label>
-<input type="number" placeholder="Enter total benches">
+<input type="number">
 
-<label>Projector Working</label>
+<label>Projector</label>
 <select>
 <option>Working</option>
 <option>Not Working</option>
 </select>
 
-<label>CPU Working</label>
+<label>CPU</label>
 <select>
 <option>Working</option>
 <option>Not Working</option>
@@ -39,27 +57,6 @@
 
 <label>Next Service Date</label>
 <input type="date">
-
-
-<h2>Classroom Availability</h2>
-
-<label>Classroom Status</label>
-<select>
-<option>Free</option>
-<option>Occupied</option>
-</select>
-
-<label>Current Class / Activity</label>
-<input type="text" placeholder="Enter subject or activity">
-
-<label>Faculty Name</label>
-<input type="text" placeholder="Enter faculty name">
-
-<label>Start Time</label>
-<input type="time">
-
-<label>End Time</label>
-<input type="time">
 
 <button>Save</button>
 
