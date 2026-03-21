@@ -7,16 +7,25 @@
 
 <body>
 
-<div class="login-box">
-<h2>Login</h2>
+<div class="main-container">
 
-<label>Login ID</label>
-<input type="text" id="loginid" placeholder="Enter Login ID">
+<div class="login-card">
 
-<label>Password</label>
-<input type="password" id="password" placeholder="Enter Password">
+<h2>Classroom Monitoring</h2>
 
-<button onclick="checkLogin()">Login</button>
+<input type="text" id="loginid" placeholder="Login ID">
+<input type="password" id="password" placeholder="Password">
+
+<p id="error-msg"></p>
+
+<div class="btn-group">
+<button onclick="checkLogin()">Student</button>
+<button onclick="checkLogin()">Staff</button>
+<button onclick="checkLogin()">Admin</button>
+</div>
+
+</div>
+
 </div>
 
 <script>
@@ -24,15 +33,23 @@ function checkLogin(){
 
 let id = document.getElementById("loginid").value.trim();
 let pass = document.getElementById("password").value.trim();
+let error = document.getElementById("error-msg");
 
 let pattern = /^9536[0-9]{8}@ritrjpm\.ac\.in$/;
 
-if(pattern.test(id) && pass === "RIT"){
-    window.location.href="side.html";
-}else{
-    alert("Incorrect ID or Password");
+error.innerHTML = "";
+
+if(!pattern.test(id)){
+    error.innerHTML = "Invalid Login ID";
+    return;
 }
 
+if(pass !== "RIT"){
+    error.innerHTML = "Incorrect Password";
+    return;
+}
+
+window.location.href="side.html";
 }
 </script>
 
