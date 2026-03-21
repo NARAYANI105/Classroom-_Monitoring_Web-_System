@@ -1,24 +1,63 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Classroom Monitoring System</title>
+<title>Login</title>
 <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<div class="login-box">
+<div class="login-container">
+
+<div class="login-card">
+
 <h2>Login</h2>
 
 <label>Login ID</label>
-<input type="text" placeholder="Enter ID">
+<input type="text" id="loginid" placeholder="Enter Login ID">
 
 <label>Password</label>
-<input type="password" placeholder="Enter Password">
+<input type="password" id="password" placeholder="Enter Password">
 
-<button onclick="location.href='side.html'">Login</button>
+<p id="error-msg"></p>
+
+<button onclick="checkLogin()">Login</button>
 
 </div>
+
+</div>
+
+<script>
+
+function checkLogin(){
+
+let id = document.getElementById("loginid").value.trim();
+let pass = document.getElementById("password").value.trim();
+let error = document.getElementById("error-msg");
+
+let pattern = /^9536[0-9]{8}@ritrjpm\.ac\.in$/;
+
+/* Reset message */
+error.innerHTML = "";
+
+/* Check ID */
+if(!pattern.test(id)){
+    error.innerHTML = "Invalid Login ID";
+    return;
+}
+
+/* Check Password */
+if(pass !== "RIT"){
+    error.innerHTML = "Incorrect Password";
+    return;
+}
+
+/* Success */
+window.location.href = "side.html";
+
+}
+
+</script>
 
 </body>
 </html>
