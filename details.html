@@ -3,8 +3,6 @@
 <head>
 <title>Classroom Details</title>
 
-<link rel="stylesheet" href="style.css">
-
 <style>
 body{
 background:#eef2f7;
@@ -12,7 +10,7 @@ font-family:Arial;
 }
 
 .box{
-width:350px;
+width:380px;
 margin:40px auto;
 background:white;
 padding:20px;
@@ -22,7 +20,7 @@ box-shadow:0 0 10px rgba(0,0,0,0.2);
 
 h2{
 text-align:center;
-margin-bottom:20px;
+margin-bottom:15px;
 }
 
 label{
@@ -47,9 +45,10 @@ background:green;
 color:white;
 border:none;
 border-radius:5px;
+cursor:pointer;
 }
-
 </style>
+
 </head>
 
 <body>
@@ -63,6 +62,24 @@ border-radius:5px;
 
 <label>Total Benches</label>
 <input type="number" id="benches" readonly>
+
+<label>Status</label>
+<select id="status">
+<option>Occupied</option>
+<option>Free</option>
+</select>
+
+<label>Class Name</label>
+<input type="text" id="className">
+
+<label>Staff Name</label>
+<input type="text" id="faculty">
+
+<label>Start Time</label>
+<input type="time" id="start">
+
+<label>End Time</label>
+<input type="time" id="end">
 
 <label>Projector</label>
 <select id="projector">
@@ -94,15 +111,72 @@ border-radius:5px;
 
 <script>
 
-/* CLASS DATA */
+/* ================= FULL CLASS DATA ================= */
+
 const data = {
+
+/* LEFT SIDE */
+
 "A1L03": {students:63, benches:32},
-"A1L04": {students:63, benches:32}
+"A1L04": {students:63, benches:32},
+
+"A2L05": {students:30, benches:15},
+"A2L04": {students:63, benches:32},
+"A2L03": {students:63, benches:30},
+"A2L02": {students:63, benches:32},
+"A2L01": {students:63, benches:32},
+
+"B0L01": {students:63, benches:31},
+"B0L02": {students:63, benches:31},
+"B0L03": {students:63, benches:31},
+
+"B1L05": {students:63, benches:32},
+"B1L04": {students:63, benches:32},
+"B1L02": {students:30, benches:25},
+
+"B3L05": {students:59, benches:30},
+"B3L04": {students:45, benches:25},
+"B3L03": {students:41, benches:25},
+"B3L02": {students:60, benches:30},
+
+"C2L05": {students:42, benches:25},
+"C2L04": {students:63, benches:31},
+"C2L03": {students:50, benches:25},
+"C2L02": {students:62, benches:31},
+"C2L01": {students:64, benches:32},
+
+"C3L01": {students:59, benches:30},
+"C3L02": {students:59, benches:30},
+"C3L03": {students:63, benches:33},
+"C3L04": {students:63, benches:31},
+
+/* RIGHT SIDE */
+
+"B3R02": {students:65, benches:34},
+"B3R03": {students:64, benches:32},
+"B3R04": {students:61, benches:31},
+"B3R05": {students:55, benches:28},
+
+"C3R01": {students:64, benches:32},
+"C3R02": {students:64, benches:32},
+"C3R03": {students:63, benches:32},
+"C3R04": {students:62, benches:31},
+"C3R05": {students:59, benches:30},
+
+"C2R04": {students:63, benches:32},
+"C2R05": {students:63, benches:32},
+"C2R06": {students:64, benches:32},
+
+"A2R02": {students:64, benches:32},
+"A2R02A": {students:63, benches:32}
+
 };
 
-/* GET CLASS */
+/* ================= GET URL ================= */
+
 const params = new URLSearchParams(window.location.search);
 const fullClass = params.get("class");
+const role = params.get("role");
 
 /* SET TITLE */
 document.getElementById("title").innerText = fullClass;
@@ -112,14 +186,19 @@ let code = fullClass.split(" ")[0];
 
 /* AUTO FILL */
 if(data[code]){
-document.getElementById("students").value = data[code].students;
-document.getElementById("benches").value = data[code].benches;
+students.value = data[code].students;
+benches.value = data[code].benches;
 }
 
-/* LOAD SAVED */
+/* LOAD SAVED DATA */
 let saved = JSON.parse(localStorage.getItem(code));
 
 if(saved){
+status.value = saved.status;
+className.value = saved.className;
+faculty.value = saved.faculty;
+start.value = saved.start;
+end.value = saved.end;
 projector.value = saved.projector;
 cpu.value = saved.cpu;
 purchase.value = saved.purchase;
@@ -128,10 +207,24 @@ last.value = saved.last;
 next.value = saved.next;
 }
 
-/* SAVE */
+/* ROLE CONTROL */
+if(role === "student"){
+document.querySelectorAll("input,select,button").forEach(el=>{
+if(el.id !== "students" && el.id !== "benches"){
+el.disabled = true;
+}
+});
+}
+
+/* SAVE FUNCTION */
 function saveData(){
 
 let obj = {
+status: status.value,
+className: className.value,
+faculty: faculty.value,
+start: start.value,
+end: end.value,
 projector: projector.value,
 cpu: cpu.value,
 purchase: purchase.value,
