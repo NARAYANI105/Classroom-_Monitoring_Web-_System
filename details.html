@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Classroom Details</title>
+<title>Details</title>
 <link rel="stylesheet" href="style.css">
 </head>
 
@@ -11,56 +11,92 @@
 
 <h2>Classroom Details</h2>
 
+<label>Student Strength</label>
+<input type="number" id="students" readonly>
+
+<label>Bench Available</label>
+<input type="number" id="benches" readonly>
+
 <label>Classroom Status</label>
-<select>
-<option>Free</option>
+<select id="status">
 <option>Occupied</option>
+<option>Free</option>
 </select>
 
 <label>Current Class</label>
-<input type="text">
+<input type="text" id="className">
 
-<label>Faculty Name</label>
-<input type="text">
+<label>Faculty</label>
+<input type="text" id="faculty">
 
 <label>Start Time</label>
-<input type="time">
+<input type="time" id="start">
 
 <label>End Time</label>
-<input type="time">
-
-<hr>
-
-<label>Total Benches</label>
-<input type="number">
+<input type="time" id="end">
 
 <label>Projector</label>
-<select>
+<select id="projector">
 <option>Working</option>
 <option>Not Working</option>
 </select>
 
 <label>CPU</label>
-<select>
+<select id="cpu">
 <option>Working</option>
 <option>Not Working</option>
 </select>
 
-<label>Battery Purchase Date</label>
-<input type="date">
-
-<label>Battery Replace Date</label>
-<input type="date">
-
-<label>Last Service Date</label>
-<input type="date">
-
-<label>Next Service Date</label>
-<input type="date">
-
-<button>Save</button>
+<button onclick="saveData()">Save</button>
 
 </div>
+
+<script>
+
+/* DATA */
+const data={
+"A1L03":{students:63,benches:32},
+"A1L04":{students:63,benches:32}
+};
+
+/* GET CLASS */
+let params=new URLSearchParams(window.location.search);
+let classFull=params.get("class");
+let role=params.get("role");
+let code=classFull.split(" ")[0];
+
+/* AUTO FILL */
+document.getElementById("students").value=data[code].students;
+document.getElementById("benches").value=data[code].benches;
+
+/* ROLE CONTROL */
+if(role==="student"){
+document.querySelectorAll("input,select,button").forEach(el=>el.disabled=true);
+}
+
+/* LOAD SAVED */
+let saved=JSON.parse(localStorage.getItem(code));
+if(saved){
+document.getElementById("status").value=saved.status;
+document.getElementById("className").value=saved.className;
+document.getElementById("faculty").value=saved.faculty;
+}
+
+/* SAVE */
+function saveData(){
+
+let obj={
+status:status.value,
+className:className.value,
+faculty:faculty.value
+};
+
+localStorage.setItem(code,JSON.stringify(obj));
+alert("Saved");
+
+}
+
+</script>
 
 </body>
 </html>
