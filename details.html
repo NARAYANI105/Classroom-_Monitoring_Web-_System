@@ -1,39 +1,68 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Details</title>
+<title>Classroom Details</title>
+
 <link rel="stylesheet" href="style.css">
+
+<style>
+body{
+background:#eef2f7;
+font-family:Arial;
+}
+
+.box{
+width:350px;
+margin:40px auto;
+background:white;
+padding:20px;
+border-radius:10px;
+box-shadow:0 0 10px rgba(0,0,0,0.2);
+}
+
+h2{
+text-align:center;
+margin-bottom:20px;
+}
+
+label{
+font-weight:bold;
+margin-top:10px;
+display:block;
+}
+
+input,select{
+width:100%;
+padding:8px;
+margin-top:5px;
+border-radius:5px;
+border:1px solid #ccc;
+}
+
+button{
+width:100%;
+padding:10px;
+margin-top:15px;
+background:green;
+color:white;
+border:none;
+border-radius:5px;
+}
+
+</style>
 </head>
 
 <body>
 
-<div class="details-box">
+<div class="box">
 
-<h2>Classroom Details</h2>
+<h2 id="title"></h2>
 
 <label>Student Strength</label>
 <input type="number" id="students" readonly>
 
-<label>Bench Available</label>
+<label>Total Benches</label>
 <input type="number" id="benches" readonly>
-
-<label>Classroom Status</label>
-<select id="status">
-<option>Occupied</option>
-<option>Free</option>
-</select>
-
-<label>Current Class</label>
-<input type="text" id="className">
-
-<label>Faculty</label>
-<input type="text" id="faculty">
-
-<label>Start Time</label>
-<input type="time" id="start">
-
-<label>End Time</label>
-<input type="time" id="end">
 
 <label>Projector</label>
 <select id="projector">
@@ -47,52 +76,73 @@
 <option>Not Working</option>
 </select>
 
+<label>Battery Purchase Date</label>
+<input type="date" id="purchase">
+
+<label>Battery Replace Date</label>
+<input type="date" id="replace">
+
+<label>Last Service Date</label>
+<input type="date" id="last">
+
+<label>Next Service Date</label>
+<input type="date" id="next">
+
 <button onclick="saveData()">Save</button>
 
 </div>
 
 <script>
 
-/* DATA */
-const data={
-"A1L03":{students:63,benches:32},
-"A1L04":{students:63,benches:32}
+/* CLASS DATA */
+const data = {
+"A1L03": {students:63, benches:32},
+"A1L04": {students:63, benches:32}
 };
 
 /* GET CLASS */
-let params=new URLSearchParams(window.location.search);
-let classFull=params.get("class");
-let role=params.get("role");
-let code=classFull.split(" ")[0];
+const params = new URLSearchParams(window.location.search);
+const fullClass = params.get("class");
+
+/* SET TITLE */
+document.getElementById("title").innerText = fullClass;
+
+/* GET CODE */
+let code = fullClass.split(" ")[0];
 
 /* AUTO FILL */
-document.getElementById("students").value=data[code].students;
-document.getElementById("benches").value=data[code].benches;
-
-/* ROLE CONTROL */
-if(role==="student"){
-document.querySelectorAll("input,select,button").forEach(el=>el.disabled=true);
+if(data[code]){
+document.getElementById("students").value = data[code].students;
+document.getElementById("benches").value = data[code].benches;
 }
 
 /* LOAD SAVED */
-let saved=JSON.parse(localStorage.getItem(code));
+let saved = JSON.parse(localStorage.getItem(code));
+
 if(saved){
-document.getElementById("status").value=saved.status;
-document.getElementById("className").value=saved.className;
-document.getElementById("faculty").value=saved.faculty;
+projector.value = saved.projector;
+cpu.value = saved.cpu;
+purchase.value = saved.purchase;
+replace.value = saved.replace;
+last.value = saved.last;
+next.value = saved.next;
 }
 
 /* SAVE */
 function saveData(){
 
-let obj={
-status:status.value,
-className:className.value,
-faculty:faculty.value
+let obj = {
+projector: projector.value,
+cpu: cpu.value,
+purchase: purchase.value,
+replace: replace.value,
+last: last.value,
+next: next.value
 };
 
-localStorage.setItem(code,JSON.stringify(obj));
-alert("Saved");
+localStorage.setItem(code, JSON.stringify(obj));
+
+alert("Saved Successfully!");
 
 }
 
