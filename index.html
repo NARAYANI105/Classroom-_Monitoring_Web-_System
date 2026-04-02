@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -83,10 +84,13 @@ to{text-shadow:0 0 25px #fff,0 0 40px #ffccff;}
 
 </style>
 
+<!-- ✅ FIXED REDIRECT SCRIPT -->
 <script>
-setTimeout(()=>{
-window.location.href="index.html";
-},5000);
+window.onload = function(){
+    setTimeout(function(){
+        window.location.href = "login.html";
+    }, 5000);
+};
 </script>
 
 </head>
