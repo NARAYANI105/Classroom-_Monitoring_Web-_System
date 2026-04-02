@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome</title>
+
+<!-- COMMON STYLE -->
+<link rel="stylesheet" href="style.css">
+
+<style>
+
+body{
+margin:0;
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+background:linear-gradient(135deg,#1d2671,#c33764);
+overflow:hidden;
+font-family:Arial;
+}
+
+/* MAIN BOX */
+.splash-box{
+text-align:center;
+color:white;
+animation:zoomIn 1.5s ease;
+}
+
+/* TITLE */
+.splash-box h1{
+font-size:42px;
+letter-spacing:2px;
+animation:glow 2s infinite alternate;
+}
+
+/* SUB TEXT */
+.splash-box p{
+margin-top:10px;
+font-size:18px;
+opacity:0.9;
+}
+
+/* PROGRESS BAR */
+.loader{
+width:250px;
+height:6px;
+background:rgba(255,255,255,0.3);
+margin:20px auto;
+border-radius:5px;
+overflow:hidden;
+}
+
+.loader span{
+display:block;
+height:100%;
+width:0%;
+background:white;
+animation:load 5s linear forwards;
+}
+
+/* ANIMATIONS */
+
+@keyframes load{
+from{width:0%;}
+to{width:100%;}
+}
+
+@keyframes zoomIn{
+from{
+transform:scale(0.7);
+opacity:0;
+}
+to{
+transform:scale(1);
+opacity:1;
+}
+}
+
+@keyframes glow{
+from{text-shadow:0 0 10px white;}
+to{text-shadow:0 0 25px #fff,0 0 40px #ffccff;}
+}
+
+</style>
+
+<script>
+setTimeout(()=>{
+window.location.href="index.html";
+},5000);
+</script>
+
+</head>
+
+<body>
+
+<div class="splash-box">
+
+<h1>Classroom Monitoring System</h1>
+
+<p>Initializing System...</p>
+
+<div class="loader">
+<span></span>
+</div>
+
+</div>
+
+</body>
+</html>
