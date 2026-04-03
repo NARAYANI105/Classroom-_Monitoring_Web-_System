@@ -20,7 +20,6 @@ box-shadow:0 0 10px rgba(0,0,0,0.2);
 
 h2{
 text-align:center;
-margin-bottom:15px;
 }
 
 label{
@@ -93,29 +92,27 @@ cursor:pointer;
 <option>Not Working</option>
 </select>
 
-<label>Battery Purchase Date</label>
+<label>Battery Purchase</label>
 <input type="date" id="purchase">
 
-<label>Battery Replace Date</label>
+<label>Battery Replace</label>
 <input type="date" id="replace">
 
-<label>Last Service Date</label>
+<label>Last Service</label>
 <input type="date" id="last">
 
-<label>Next Service Date</label>
+<label>Next Service</label>
 <input type="date" id="next">
 
-<button onclick="saveData()">Save</button>
+<button id="saveBtn" onclick="saveData()">Save</button>
 
 </div>
 
 <script>
 
-/* ================= FULL CLASS DATA ================= */
+/* ================= CLASS DATA ================= */
 
 const data = {
-
-/* LEFT SIDE */
 
 "A1L03": {students:63, benches:32},
 "A1L04": {students:63, benches:32},
@@ -150,8 +147,6 @@ const data = {
 "C3L03": {students:63, benches:33},
 "C3L04": {students:63, benches:31},
 
-/* RIGHT SIDE */
-
 "B3R02": {students:65, benches:34},
 "B3R03": {students:64, benches:32},
 "B3R04": {students:61, benches:31},
@@ -172,25 +167,25 @@ const data = {
 
 };
 
-/* ================= GET URL ================= */
+/* ================= GET PARAMS ================= */
 
 const params = new URLSearchParams(window.location.search);
 const fullClass = params.get("class");
 const role = params.get("role");
 
-/* SET TITLE */
 document.getElementById("title").innerText = fullClass;
 
-/* GET CODE */
 let code = fullClass.split(" ")[0];
 
-/* AUTO FILL */
+/* ================= AUTO FILL ================= */
+
 if(data[code]){
 students.value = data[code].students;
 benches.value = data[code].benches;
 }
 
-/* LOAD SAVED DATA */
+/* ================= LOAD SAVED ================= */
+
 let saved = JSON.parse(localStorage.getItem(code));
 
 if(saved){
@@ -207,16 +202,30 @@ last.value = saved.last;
 next.value = saved.next;
 }
 
-/* ROLE CONTROL */
+/* ================= ROLE CONTROL ================= */
+
+const fields = document.querySelectorAll("input, select");
+const saveBtn = document.getElementById("saveBtn");
+
 if(role === "student"){
-document.querySelectorAll("input,select,button").forEach(el=>{
+fields.forEach(el=>{
 if(el.id !== "students" && el.id !== "benches"){
 el.disabled = true;
 }
 });
+saveBtn.style.display = "none";
+}
+else{
+fields.forEach(el=>{
+if(el.id !== "students" && el.id !== "benches"){
+el.disabled = false;
+}
+});
+saveBtn.style.display = "block";
 }
 
-/* SAVE FUNCTION */
+/* ================= SAVE ================= */
+
 function saveData(){
 
 let obj = {
