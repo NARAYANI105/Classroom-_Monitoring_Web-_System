@@ -23,10 +23,7 @@ max-width:900px;
 box-shadow:0 10px 25px rgba(0,0,0,0.3);
 }
 
-h2{
-text-align:center;
-margin-bottom:20px;
-}
+h2{text-align:center;margin-bottom:20px;}
 
 .grid{
 display:grid;
@@ -38,11 +35,7 @@ gap:20px;
 .grid{grid-template-columns:1fr;}
 }
 
-label{
-font-weight:bold;
-margin-top:10px;
-display:block;
-}
+label{font-weight:bold;margin-top:10px;display:block;}
 
 input,select{
 width:100%;
@@ -61,11 +54,11 @@ color:#fff;
 border:none;
 border-radius:10px;
 cursor:pointer;
-font-size:16px;
 }
 
-button:hover{
-background:#2575fc;
+.readonly{
+background:#eee;
+cursor:not-allowed;
 }
 </style>
 </head>
@@ -102,7 +95,7 @@ background:#2575fc;
 </select>
 
 <label>Total Benches</label>
-<input type="number" id="benches">
+<input id="benches" class="readonly" readonly>
 </div>
 
 <!-- RIGHT -->
@@ -120,7 +113,7 @@ background:#2575fc;
 </select>
 
 <label>Student Strength</label>
-<input type="number" id="strength">
+<input id="strength" class="readonly" readonly>
 
 <label>Purchase Date</label>
 <input type="date" id="purchaseDate">
@@ -141,7 +134,7 @@ background:#2575fc;
 
 <script>
 
-// 🔥 YOUR FIREBASE CONFIG (keep yours)
+// 🔥 Firebase
 const firebaseConfig = {
 apiKey: "YOUR_KEY",
 authDomain: "YOUR_DOMAIN",
@@ -153,94 +146,40 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
 
-// 🔐 ROLE CONTROL
-let role = localStorage.getItem("role");
-
-// Default = student (safe)
-if(!role){
-role = "student";
-}
+// 🔐 ROLE
+let role = localStorage.getItem("role") || "student";
 
 window.onload = function(){
-
 if(role === "student"){
 document.querySelectorAll("input, select").forEach(el=>el.disabled=true);
 document.getElementById("saveBtn").style.display="none";
 }
-
 };
 
 
-// 🧠 FULL 40 CLASS MAP
+// 🧠 CLASS MAP
 const classMap = {
-
-// A BLOCK (26)
-"A1L01":"First Year CSE A",
-"A1L02":"First Year CSE B",
 "A1L03":"First Year CSE B",
 "A1L04":"First Year AIML",
-"A1L05":"First Year IT",
-"A1L06":"First Year CIVIL",
-
-"A2L01":"Second Year CSE A",
-"A2L02":"Second Year CSE B",
-"A2L03":"Second Year AIML",
-"A2L04":"First Year CSE A",
 "A2L05":"First Year MECH",
-"A2L06":"Second Year EEE",
-
-"A3L01":"Third Year MECH",
-"A3L02":"Third Year CIVIL",
-"A3L03":"Third Year IT",
-"A3L04":"Third Year AIDS",
-"A3L05":"Third Year AIML",
-"A3L06":"Third Year CSE",
-
-"A4L01":"Final Year CSE",
-"A4L02":"Final Year EEE",
-"A4L03":"Final Year MECH",
-"A4L04":"Final Year CIVIL",
-"A4L05":"Final Year IT",
-"A4L06":"Final Year AIDS",
-
-"A5L01":"Computer Lab 1",
-"A5L02":"Computer Lab 2",
-
-// B BLOCK (14)
-"B1L01":"Second Year CSE",
-"B1L02":"Second Year EEE",
-"B1L03":"Second Year MECH",
-"B1L04":"First Year CIVIL",
+"A2L04":"First Year CSE A",
 "B1L05":"First Year EEE",
-
-"B2L01":"Third Year IT",
-"B2L02":"Third Year CSE",
-"B2L03":"Third Year AIML",
-"B2L04":"Third Year CIVIL",
-"B2L05":"Third Year EEE",
-
-"B3L01":"Final Year MECH",
-"B3L02":"Final Year CSE",
-"B3L03":"Final Year IT",
-"B3L04":"Final Year AIDS"
-
+"B1L04":"First Year CIVIL"
 };
 
 
-// 🔄 LOAD DATA
-document.getElementById("code").addEventListener("change", function(){
+// 🔄 LOAD
+code.addEventListener("change", function(){
 
-let code = this.value.toUpperCase();
-this.value = code;
+let c = this.value.toUpperCase();
+this.value = c;
 
-// show name instantly
-if(classMap[code]){
-className.value = classMap[code];
-title.innerText = code + " - " + classMap[code];
+if(classMap[c]){
+className.value = classMap[c];
+title.innerText = c + " - " + classMap[c];
 }
 
-// fetch from Firebase
-db.ref("classrooms/" + code).on("value", snap=>{
+db.ref("classrooms/" + c).on("value", snap=>{
 let d = snap.val();
 
 if(d){
@@ -251,19 +190,22 @@ end.value = d.end;
 status.value = d.status;
 projector.value = d.projector;
 cpu.value = d.cpu;
-strength.value = d.strength;
+
+// 🔒 AUTO LOAD ONLY (NO EDIT)
 benches.value = d.benches;
+strength.value = d.strength;
+
 purchaseDate.value = d.purchaseDate;
 replaceDate.value = d.replaceDate;
 
-title.innerText = code + " - " + d.className;
+title.innerText = c + " - " + d.className;
 }
 });
 
 });
 
 
-// 💾 SAVE FUNCTION
+// 💾 SAVE
 function saveData(){
 
 if(role === "student"){
@@ -271,10 +213,10 @@ alert("Students cannot edit ❌");
 return;
 }
 
-let code = document.getElementById("code").value;
+let c = code.value;
 
 let obj = {
-fullName: code + " - " + className.value,
+fullName: c + " - " + className.value,
 className: className.value,
 faculty: faculty.value,
 start: start.value,
@@ -282,15 +224,18 @@ end: end.value,
 status: status.value,
 projector: projector.value,
 cpu: cpu.value,
-strength: strength.value,
+
+// 🚫 NOT EDITABLE BUT SAVED (KEEP OLD VALUE)
 benches: benches.value,
+strength: strength.value,
+
 purchaseDate: purchaseDate.value,
 replaceDate: replaceDate.value
 };
 
-db.ref("classrooms/" + code).set(obj);
+db.ref("classrooms/" + c).set(obj);
 
-alert("Saved Successfully ✅");
+alert("Saved ✅");
 }
 
 </script>
