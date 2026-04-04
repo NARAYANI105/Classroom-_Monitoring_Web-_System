@@ -6,32 +6,65 @@
 <link rel="stylesheet" href="style.css">
 
 <style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI', sans-serif;
+}
+
+body{
+height:100vh;
+background: linear-gradient(135deg,#1d2671,#c33764);
+display:flex;
+justify-content:center;
+align-items:center;
+}
+
 .container{
-width:60%;
-margin:auto;
-margin-top:40px;
-padding:20px;
-box-shadow:0 0 10px gray;
-border-radius:10px;
+width:420px;
+background:#fff;
+padding:25px;
+border-radius:15px;
+box-shadow:0 10px 30px rgba(0,0,0,0.3);
+}
+
+h2{
+text-align:center;
+margin-bottom:20px;
+}
+
+label{
+display:block;
+margin-top:10px;
+font-weight:bold;
 }
 
 input, select{
 width:100%;
 padding:10px;
-margin:8px 0;
+margin-top:5px;
+border:1px solid #ccc;
+border-radius:8px;
 }
 
 button{
-padding:10px 20px;
-background:green;
+width:100%;
+padding:12px;
+margin-top:20px;
+background:#6a11cb;
 color:white;
 border:none;
+border-radius:10px;
+font-size:16px;
 cursor:pointer;
 }
 
-h2{
-text-align:center;
+button:hover{
+background:#2575fc;
 }
+
 </style>
 
 </head>
@@ -40,7 +73,7 @@ text-align:center;
 
 <div class="container">
 
-<h2>CLASSROOM DETAILS</h2>
+<h2>Classroom Details</h2>
 
 <label>Class Code</label>
 <input type="text" id="code" placeholder="A1L03">
@@ -75,15 +108,7 @@ text-align:center;
 <option>Not Working</option>
 </select>
 
-<label>Student Strength</label>
-<input type="number" id="strength">
-
-<label>Bench Details</label>
-<input type="text" id="bench">
-
-<br>
-
-<button onclick="saveData()">SAVE (STAFF ONLY)</button>
+<button onclick="saveData()">SAVE</button>
 
 </div>
 
@@ -93,6 +118,7 @@ text-align:center;
 
 <script>
 
+// 🔥 YOUR FIREBASE CONFIG
 const firebaseConfig = {
   apiKey: "AIzaSyCy6M3AZwwLyt3n8x8lXp7Ku7Do4TXeBf0",
   authDomain: "classroom-monitoring-sys-dd1cc.firebaseapp.com",
@@ -107,15 +133,32 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
 
-// 🔐 SIMPLE ADMIN CHECK
-let isAdmin = confirm("Are you STAFF / ADMIN?");
+// 🔐 ROLE (from login page)
+let role = localStorage.getItem("role");
 
-if(!isAdmin){
-document.querySelector("button").style.display="none";
+// ❗ fallback (if no login)
+if(!role){
+role = prompt("Enter role: admin / staff / student");
 }
 
 
-// 🔥 SAVE DATA
+// 🔒 STUDENT LOCK
+window.onload = function(){
+
+if(role === "student"){
+
+document.querySelectorAll("input, select").forEach(el=>{
+el.disabled = true;
+});
+
+document.querySelector("button").style.display = "none";
+
+}
+
+};
+
+
+// 💾 SAVE DATA
 function saveData(){
 
 let code = document.getElementById("code").value;
@@ -127,19 +170,17 @@ start: start.value,
 end: end.value,
 status: status.value,
 projector: projector.value,
-cpu: cpu.value,
-strength: strength.value,
-bench: bench.value
+cpu: cpu.value
 };
 
 db.ref("classrooms/" + code).set(obj);
 
-alert("Saved Successfully!");
+alert("Saved Successfully ✅");
 
 }
 
 
-// 🔥 LOAD DATA
+// 🔄 LOAD DATA
 document.getElementById("code").addEventListener("change", function(){
 
 let code = this.value;
@@ -155,8 +196,6 @@ end.value = data.end;
 status.value = data.status;
 projector.value = data.projector;
 cpu.value = data.cpu;
-strength.value = data.strength;
-bench.value = data.bench;
 }
 });
 
