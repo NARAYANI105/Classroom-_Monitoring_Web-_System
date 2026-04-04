@@ -4,7 +4,6 @@
 <title>Classroom Details</title>
 
 <style>
-
 *{
 margin:0;
 padding:0;
@@ -76,7 +75,6 @@ cursor:pointer;
 button:hover{
 background:#2575fc;
 }
-
 </style>
 
 </head>
@@ -149,7 +147,7 @@ background:#2575fc;
 
 </div>
 
-<button onclick="saveData()">SAVE</button>
+<button onclick="saveData()" id="saveBtn">SAVE</button>
 
 </div>
 
@@ -174,52 +172,40 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
 
-// 🔐 ROLE CONTROL
+// ✅ ROLE FROM LOGIN PAGE
 let role = localStorage.getItem("role");
 
-if(!role){
-role = prompt("Enter role: admin / staff / student");
-}
-
+// 🔒 STUDENT LOCK
 window.onload = function(){
 if(role === "student"){
 document.querySelectorAll("input, select").forEach(el=>el.disabled=true);
-document.querySelector("button").style.display="none";
+document.getElementById("saveBtn").style.display="none";
 }
 };
 
 
-// 💾 SAVE DATA
-function saveData(){
-
-let code = document.getElementById("code").value;
-
-let obj = {
-className: className.value,
-faculty: faculty.value,
-start: start.value,
-end: end.value,
-status: status.value,
-projector: projector.value,
-cpu: cpu.value,
-battery: battery.value,
-strength: strength.value,
-serviceDate: serviceDate.value,
-nextService: nextService.value
+// 🧠 CLASS CODE → NAME MAP
+const classMap = {
+"A1L03": "First Year CSE B",
+"A1L04": "First Year AIML",
+"A2L05": "First Year MECH",
+"A2L04": "First Year CSE A",
+"B1L05": "First Year EEE",
+"B1L04": "First Year CIVIL"
 };
 
-db.ref("classrooms/" + code).set(obj);
 
-alert("Saved Successfully ✅");
-
-}
-
-
-// 🔄 LOAD DATA
+// 🔄 AUTO FILL CLASS NAME
 document.getElementById("code").addEventListener("change", function(){
 
-let code = this.value;
+let code = this.value.toUpperCase();
+this.value = code;
 
+if(classMap[code]){
+className.value = classMap[code];
+}
+
+// LOAD DATA ALSO
 db.ref("classrooms/" + code).on("value", (snapshot)=>{
 let data = snapshot.val();
 
@@ -241,7 +227,35 @@ nextService.value = data.nextService;
 });
 
 
-// 🧠 AUTO NEXT SERVICE DATE (+30 days)
+// 💾 SAVE DATA
+function saveData(){
+
+let code = document.getElementById("code").value;
+
+let obj = {
+code: code,
+fullName: code + " - " + className.value,
+className: className.value,
+faculty: faculty.value,
+start: start.value,
+end: end.value,
+status: status.value,
+projector: projector.value,
+cpu: cpu.value,
+battery: battery.value,
+strength: strength.value,
+serviceDate: serviceDate.value,
+nextService: nextService.value
+};
+
+db.ref("classrooms/" + code).set(obj);
+
+alert("Saved Successfully ✅");
+
+}
+
+
+// 🧠 AUTO NEXT SERVICE DATE
 document.getElementById("serviceDate").addEventListener("change", function(){
 
 let d = new Date(this.value);
