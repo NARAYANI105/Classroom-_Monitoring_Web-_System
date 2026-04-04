@@ -4,7 +4,6 @@
 <title>Classroom Details</title>
 
 <style>
-
 *{
 margin:0;
 padding:0;
@@ -23,7 +22,7 @@ padding:20px;
 
 .container{
 width:90%;
-max-width:800px;
+max-width:900px;
 background:#fff;
 padding:25px;
 border-radius:15px;
@@ -76,7 +75,6 @@ cursor:pointer;
 button:hover{
 background:#2575fc;
 }
-
 </style>
 
 </head>
@@ -85,15 +83,13 @@ background:#2575fc;
 
 <div class="container">
 
-<h2>Classroom Details</h2>
+<h2 id="title">Classroom Details</h2>
 
 <div class="form-grid">
 
-<!-- LEFT -->
 <div>
-
 <label>Class Code</label>
-<input type="text" id="code" placeholder="A1L03">
+<input type="text" id="code">
 
 <label>Class Name</label>
 <input type="text" id="className">
@@ -119,11 +115,11 @@ background:#2575fc;
 <option>Not Working</option>
 </select>
 
+<label>Total Benches</label>
+<input type="number" id="benches">
 </div>
 
-<!-- RIGHT -->
 <div>
-
 <label>Faculty Name</label>
 <input type="text" id="faculty">
 
@@ -144,30 +140,25 @@ background:#2575fc;
 
 <label>Next Service Date</label>
 <input type="date" id="nextService">
-
 </div>
 
 </div>
 
-<button onclick="saveData()">SAVE</button>
+<button onclick="saveData()" id="saveBtn">SAVE</button>
 
 </div>
 
-<!-- FIREBASE -->
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
 <script>
 
-// 🔥 Firebase Config
+// 🔥 Firebase
 const firebaseConfig = {
-  apiKey: "AIzaSyCy6M3AZwwLyt3n8x8lXp7Ku7Do4TXeBf0",
+  apiKey: "YOUR_API_KEY",
   authDomain: "classroom-monitoring-sys-dd1cc.firebaseapp.com",
   databaseURL: "https://classroom-monitoring-sys-dd1cc-default-rtdb.firebaseio.com/",
   projectId: "classroom-monitoring-sys-dd1cc",
-  storageBucket: "classroom-monitoring-sys-dd1cc.firebasestorage.app",
-  messagingSenderId: "11335384409",
-  appId: "1:11335384409:web:cd78c74f1acaf4c576e048"
 };
 
 firebase.initializeApp(firebaseConfig);
@@ -177,24 +168,104 @@ const db = firebase.database();
 // 🔐 ROLE CONTROL
 let role = localStorage.getItem("role");
 
-if(!role){
-role = prompt("Enter role: admin / staff / student");
-}
-
 window.onload = function(){
 if(role === "student"){
 document.querySelectorAll("input, select").forEach(el=>el.disabled=true);
-document.querySelector("button").style.display="none";
+document.getElementById("saveBtn").style.display="none";
 }
 };
 
 
-// 💾 SAVE DATA
+// 🧠 40 CLASSROOM MAP
+const classMap = {
+
+// LEFT SIDE (26)
+"A1L01":"CSE A",
+"A1L02":"CSE B",
+"A1L03":"First Year CSE B",
+"A1L04":"First Year AIML",
+"A1L05":"IT",
+"A1L06":"CIVIL",
+"A2L01":"CSE A",
+"A2L02":"CSE B",
+"A2L03":"AIML",
+"A2L04":"First Year CSE A",
+"A2L05":"First Year MECH",
+"A2L06":"EEE",
+"A3L01":"MECH",
+"A3L02":"CIVIL",
+"A3L03":"IT",
+"A3L04":"AIDS",
+"A3L05":"AIML",
+"A3L06":"CSE",
+"A4L01":"CSE",
+"A4L02":"EEE",
+"A4L03":"MECH",
+"A4L04":"CIVIL",
+"A4L05":"IT",
+"A4L06":"AIDS",
+"A5L01":"LAB",
+"A5L02":"LAB",
+
+// RIGHT SIDE (14)
+"B1L01":"CSE",
+"B1L02":"EEE",
+"B1L03":"MECH",
+"B1L04":"First Year CIVIL",
+"B1L05":"First Year EEE",
+"B2L01":"IT",
+"B2L02":"CSE",
+"B2L03":"AIML",
+"B2L04":"CIVIL",
+"B2L05":"EEE",
+"B3L01":"MECH",
+"B3L02":"CSE",
+"B3L03":"IT",
+"B3L04":"AIDS"
+
+};
+
+
+// 🔄 AUTO LOAD
+document.getElementById("code").addEventListener("change", function(){
+
+let code = this.value.toUpperCase();
+this.value = code;
+
+if(classMap[code]){
+className.value = classMap[code];
+}
+
+db.ref("classrooms/" + code).on("value", (snap)=>{
+let d = snap.val();
+if(d){
+className.value = d.className;
+faculty.value = d.faculty;
+start.value = d.start;
+end.value = d.end;
+status.value = d.status;
+projector.value = d.projector;
+cpu.value = d.cpu;
+battery.value = d.battery;
+strength.value = d.strength;
+benches.value = d.benches;
+serviceDate.value = d.serviceDate;
+nextService.value = d.nextService;
+
+title.innerText = code + " - " + d.className;
+}
+});
+
+});
+
+
+// 💾 SAVE
 function saveData(){
 
-let code = document.getElementById("code").value;
+let code = code.value;
 
 let obj = {
+fullName: code + " - " + className.value,
 className: className.value,
 faculty: faculty.value,
 start: start.value,
@@ -204,51 +275,22 @@ projector: projector.value,
 cpu: cpu.value,
 battery: battery.value,
 strength: strength.value,
+benches: benches.value,
 serviceDate: serviceDate.value,
 nextService: nextService.value
 };
 
 db.ref("classrooms/" + code).set(obj);
-
-alert("Saved Successfully ✅");
+alert("Saved ✅");
 
 }
 
 
-// 🔄 LOAD DATA
-document.getElementById("code").addEventListener("change", function(){
-
-let code = this.value;
-
-db.ref("classrooms/" + code).on("value", (snapshot)=>{
-let data = snapshot.val();
-
-if(data){
-className.value = data.className;
-faculty.value = data.faculty;
-start.value = data.start;
-end.value = data.end;
-status.value = data.status;
-projector.value = data.projector;
-cpu.value = data.cpu;
-battery.value = data.battery;
-strength.value = data.strength;
-serviceDate.value = data.serviceDate;
-nextService.value = data.nextService;
-}
-});
-
-});
-
-
-// 🧠 AUTO NEXT SERVICE DATE (+30 days)
-document.getElementById("serviceDate").addEventListener("change", function(){
-
+// 📅 AUTO NEXT DATE
+serviceDate.addEventListener("change", function(){
 let d = new Date(this.value);
 d.setDate(d.getDate()+30);
-
 nextService.value = d.toISOString().split('T')[0];
-
 });
 
 </script>
