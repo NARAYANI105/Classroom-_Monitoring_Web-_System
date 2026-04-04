@@ -4,55 +4,40 @@
 <title>Classroom Details</title>
 
 <style>
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:'Segoe UI', sans-serif;
-}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI';}
 
 body{
-min-height:100vh;
-background: linear-gradient(135deg,#1d2671,#c33764);
+background:linear-gradient(135deg,#1d2671,#c33764);
 display:flex;
 justify-content:center;
 align-items:center;
-padding:20px;
+min-height:100vh;
 }
 
 .container{
-width:90%;
-max-width:900px;
 background:#fff;
 padding:25px;
 border-radius:15px;
-box-shadow:0 10px 30px rgba(0,0,0,0.3);
+width:90%;
+max-width:900px;
+box-shadow:0 10px 25px rgba(0,0,0,0.3);
 }
 
-h2{
-text-align:center;
-margin-bottom:20px;
-}
+h2{text-align:center;margin-bottom:20px;}
 
-.form-grid{
+.grid{
 display:grid;
 grid-template-columns:1fr 1fr;
 gap:20px;
 }
 
 @media(max-width:600px){
-.form-grid{
-grid-template-columns:1fr;
-}
+.grid{grid-template-columns:1fr;}
 }
 
-label{
-display:block;
-margin-top:10px;
-font-weight:bold;
-}
+label{font-weight:bold;margin-top:10px;display:block;}
 
-input, select{
+input,select{
 width:100%;
 padding:10px;
 margin-top:5px;
@@ -65,18 +50,16 @@ width:100%;
 padding:12px;
 margin-top:20px;
 background:#6a11cb;
-color:white;
+color:#fff;
 border:none;
 border-radius:10px;
-font-size:16px;
 cursor:pointer;
 }
 
-button:hover{
-background:#2575fc;
+.readonly{
+background:#eee;
 }
 </style>
-
 </head>
 
 <body>
@@ -85,14 +68,12 @@ background:#2575fc;
 
 <h2 id="title">Classroom Details</h2>
 
-<div class="form-grid">
+<div class="grid">
 
+<!-- LEFT -->
 <div>
-<label>Class Code</label>
-<input type="text" id="code">
-
-<label>Class Name</label>
-<input type="text" id="className">
+<label>Class (Code + Name)</label>
+<input id="code">
 
 <label>Start Time</label>
 <input type="time" id="start">
@@ -109,19 +90,14 @@ background:#2575fc;
 <option>Not Working</option>
 </select>
 
-<label>Battery</label>
-<select id="battery">
-<option>Working</option>
-<option>Not Working</option>
-</select>
-
 <label>Total Benches</label>
-<input type="number" id="benches">
+<input id="benches" readonly class="readonly">
 </div>
 
+<!-- RIGHT -->
 <div>
-<label>Faculty Name</label>
-<input type="text" id="faculty">
+<label>Faculty</label>
+<input id="faculty">
 
 <label>End Time</label>
 <input type="time" id="end">
@@ -133,13 +109,13 @@ background:#2575fc;
 </select>
 
 <label>Student Strength</label>
-<input type="number" id="strength">
+<input id="strength" readonly class="readonly">
 
-<label>Monitor Service Date</label>
-<input type="date" id="serviceDate">
+<label>Purchase Date</label>
+<input type="date" id="purchaseDate">
 
-<label>Next Service Date</label>
-<input type="date" id="nextService">
+<label>Replace Date</label>
+<input type="date" id="replaceDate">
 </div>
 
 </div>
@@ -153,12 +129,12 @@ background:#2575fc;
 
 <script>
 
-// 🔥 Firebase
+// 🔥 Firebase Config
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "classroom-monitoring-sys-dd1cc.firebaseapp.com",
-  databaseURL: "https://classroom-monitoring-sys-dd1cc-default-rtdb.firebaseio.com/",
-  projectId: "classroom-monitoring-sys-dd1cc",
+apiKey: "YOUR_KEY",
+authDomain: "YOUR_DOMAIN",
+databaseURL: "YOUR_DB_URL",
+projectId: "YOUR_ID"
 };
 
 firebase.initializeApp(firebaseConfig);
@@ -166,7 +142,7 @@ const db = firebase.database();
 
 
 // 🔐 ROLE CONTROL
-let role = localStorage.getItem("role");
+let role = localStorage.getItem("role") || "student";
 
 window.onload = function(){
 if(role === "student"){
@@ -176,85 +152,80 @@ document.getElementById("saveBtn").style.display="none";
 };
 
 
-// 🧠 40 CLASSROOM MAP
-const classMap = {
+// 🧠 FULL CLASS DATA (FROM YOUR CIRCULAR)
+const classData = {
 
-// LEFT SIDE (26)
-"A1L01":"CSE A",
-"A1L02":"CSE B",
-"A1L03":"First Year CSE B",
-"A1L04":"First Year AIML",
-"A1L05":"IT",
-"A1L06":"CIVIL",
-"A2L01":"CSE A",
-"A2L02":"CSE B",
-"A2L03":"AIML",
-"A2L04":"First Year CSE A",
-"A2L05":"First Year MECH",
-"A2L06":"EEE",
-"A3L01":"MECH",
-"A3L02":"CIVIL",
-"A3L03":"IT",
-"A3L04":"AIDS",
-"A3L05":"AIML",
-"A3L06":"CSE",
-"A4L01":"CSE",
-"A4L02":"EEE",
-"A4L03":"MECH",
-"A4L04":"CIVIL",
-"A4L05":"IT",
-"A4L06":"AIDS",
-"A5L01":"LAB",
-"A5L02":"LAB",
+"A1L03": {name:"First Year CSE B", strength:63, benches:32},
+"A1L04": {name:"First Year AIML", strength:63, benches:32},
 
-// RIGHT SIDE (14)
-"B1L01":"CSE",
-"B1L02":"EEE",
-"B1L03":"MECH",
-"B1L04":"First Year CIVIL",
-"B1L05":"First Year EEE",
-"B2L01":"IT",
-"B2L02":"CSE",
-"B2L03":"AIML",
-"B2L04":"CIVIL",
-"B2L05":"EEE",
-"B3L01":"MECH",
-"B3L02":"CSE",
-"B3L03":"IT",
-"B3L04":"AIDS"
+"A2L05": {name:"First Year MECH", strength:30, benches:15},
+"A2L04": {name:"First Year CSE A", strength:63, benches:32},
+"A2L03": {name:"First Year IT", strength:63, benches:30},
+"A2L02": {name:"First Year ECE B", strength:63, benches:32},
+"A2L01": {name:"First Year ECE A", strength:63, benches:32},
 
+"B0L01": {name:"First Year AD A", strength:63, benches:31},
+"B0L02": {name:"First Year AD B", strength:63, benches:31},
+"B0L03": {name:"First Year CSBS", strength:63, benches:31},
+
+"B1L05": {name:"First Year EEE", strength:63, benches:32},
+"B1L04": {name:"First Year CSE C", strength:63, benches:32},
+"B1L02": {name:"First Year Civil", strength:30, benches:25},
+
+"B3L05": {name:"Final Year AD A", strength:59, benches:30},
+"B3L04": {name:"Third Year CIVIL", strength:45, benches:25},
+"B3L03": {name:"Second Year CIVIL", strength:41, benches:25},
+"B3L02": {name:"Final Year CSBS", strength:60, benches:30},
+
+"C2L05": {name:"Second Year MECH", strength:42, benches:25},
+"C2L04": {name:"Third Year MECH", strength:63, benches:31},
+"C2L03": {name:"Final Year MECH", strength:50, benches:25},
+"C2L02": {name:"Third Year IT", strength:62, benches:31},
+"C2L01": {name:"Second Year IT", strength:64, benches:32},
+
+"C3L01": {name:"Third Year AD A", strength:59, benches:30},
+"C3L02": {name:"Third Year AD B", strength:59, benches:30},
+"C3L03": {name:"Second Year AD A", strength:63, benches:33},
+"C3L04": {name:"Second Year AD B", strength:63, benches:31},
+
+"B3R02": {name:"Second Year EEE", strength:65, benches:34},
+"B3R03": {name:"Third Year EEE", strength:64, benches:32},
+"B3R04": {name:"Third Year CSBS", strength:61, benches:31},
+"B3R05": {name:"Second Year CSBS", strength:55, benches:28},
+
+"C3R01": {name:"Second Year ECE-A", strength:64, benches:32},
+"C3R02": {name:"Second Year ECE-B", strength:64, benches:32},
+"C3R03": {name:"Third Year ECE-A", strength:63, benches:32},
+"C3R04": {name:"Third Year ECE-B", strength:62, benches:31},
+"C3R05": {name:"Final Year ECE-A", strength:59, benches:30},
+
+"C2R04": {name:"Second Year CSE A", strength:63, benches:32},
+"C2R05": {name:"Second Year CSE B", strength:63, benches:32},
+"C2R06": {name:"Second Year CSE C", strength:64, benches:32},
+
+"A2R02": {name:"Third Year CSE A", strength:64, benches:32},
+"A2R02A": {name:"Third Year CSB B", strength:63, benches:32}
 };
 
 
 // 🔄 AUTO LOAD
-document.getElementById("code").addEventListener("change", function(){
+code.addEventListener("change", function(){
 
-let code = this.value.toUpperCase();
-this.value = code;
+let full = this.value;
+let c = full.split(" - ")[0].toUpperCase();
 
-if(classMap[code]){
-className.value = classMap[code];
-}
+if(classData[c]){
 
-db.ref("classrooms/" + code).on("value", (snap)=>{
-let d = snap.val();
-if(d){
-className.value = d.className;
-faculty.value = d.faculty;
-start.value = d.start;
-end.value = d.end;
-status.value = d.status;
-projector.value = d.projector;
-cpu.value = d.cpu;
-battery.value = d.battery;
+let d = classData[c];
+
+this.value = c + " - " + d.name;
+title.innerText = this.value;
+
+// 🔥 AUTO FILL
 strength.value = d.strength;
 benches.value = d.benches;
-serviceDate.value = d.serviceDate;
-nextService.value = d.nextService;
 
-title.innerText = code + " - " + d.className;
 }
-});
 
 });
 
@@ -262,36 +233,32 @@ title.innerText = code + " - " + d.className;
 // 💾 SAVE
 function saveData(){
 
-let code = code.value;
+if(role === "student"){
+alert("Students cannot edit ❌");
+return;
+}
+
+let full = code.value;
+let c = full.split(" - ")[0];
 
 let obj = {
-fullName: code + " - " + className.value,
-className: className.value,
+fullName: full,
 faculty: faculty.value,
 start: start.value,
 end: end.value,
 status: status.value,
 projector: projector.value,
 cpu: cpu.value,
-battery: battery.value,
 strength: strength.value,
 benches: benches.value,
-serviceDate: serviceDate.value,
-nextService: nextService.value
+purchaseDate: purchaseDate.value,
+replaceDate: replaceDate.value
 };
 
-db.ref("classrooms/" + code).set(obj);
+db.ref("classrooms/" + c).set(obj);
+
 alert("Saved ✅");
-
 }
-
-
-// 📅 AUTO NEXT DATE
-serviceDate.addEventListener("change", function(){
-let d = new Date(this.value);
-d.setDate(d.getDate()+30);
-nextService.value = d.toISOString().split('T')[0];
-});
 
 </script>
 
