@@ -3,8 +3,6 @@
 <head>
 <title>Classroom Details</title>
 
-<link rel="stylesheet" href="style.css">
-
 <style>
 
 *{
@@ -15,15 +13,17 @@ font-family:'Segoe UI', sans-serif;
 }
 
 body{
-height:100vh;
+min-height:100vh;
 background: linear-gradient(135deg,#1d2671,#c33764);
 display:flex;
 justify-content:center;
 align-items:center;
+padding:20px;
 }
 
 .container{
-width:420px;
+width:90%;
+max-width:800px;
 background:#fff;
 padding:25px;
 border-radius:15px;
@@ -33,6 +33,18 @@ box-shadow:0 10px 30px rgba(0,0,0,0.3);
 h2{
 text-align:center;
 margin-bottom:20px;
+}
+
+.form-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:20px;
+}
+
+@media(max-width:600px){
+.form-grid{
+grid-template-columns:1fr;
+}
 }
 
 label{
@@ -75,20 +87,19 @@ background:#2575fc;
 
 <h2>Classroom Details</h2>
 
+<div class="form-grid">
+
+<!-- LEFT -->
+<div>
+
 <label>Class Code</label>
 <input type="text" id="code" placeholder="A1L03">
 
 <label>Class Name</label>
 <input type="text" id="className">
 
-<label>Faculty Name</label>
-<input type="text" id="faculty">
-
 <label>Start Time</label>
 <input type="time" id="start">
-
-<label>End Time</label>
-<input type="time" id="end">
 
 <label>Status</label>
 <select id="status">
@@ -96,17 +107,47 @@ background:#2575fc;
 <option>Occupied</option>
 </select>
 
+<label>CPU</label>
+<select id="cpu">
+<option>Working</option>
+<option>Not Working</option>
+</select>
+
+<label>Battery</label>
+<select id="battery">
+<option>Working</option>
+<option>Not Working</option>
+</select>
+
+</div>
+
+<!-- RIGHT -->
+<div>
+
+<label>Faculty Name</label>
+<input type="text" id="faculty">
+
+<label>End Time</label>
+<input type="time" id="end">
+
 <label>Projector</label>
 <select id="projector">
 <option>Working</option>
 <option>Not Working</option>
 </select>
 
-<label>CPU</label>
-<select id="cpu">
-<option>Working</option>
-<option>Not Working</option>
-</select>
+<label>Student Strength</label>
+<input type="number" id="strength">
+
+<label>Monitor Service Date</label>
+<input type="date" id="serviceDate">
+
+<label>Next Service Date</label>
+<input type="date" id="nextService">
+
+</div>
+
+</div>
 
 <button onclick="saveData()">SAVE</button>
 
@@ -118,7 +159,7 @@ background:#2575fc;
 
 <script>
 
-// 🔥 YOUR FIREBASE CONFIG
+// 🔥 Firebase Config
 const firebaseConfig = {
   apiKey: "AIzaSyCy6M3AZwwLyt3n8x8lXp7Ku7Do4TXeBf0",
   authDomain: "classroom-monitoring-sys-dd1cc.firebaseapp.com",
@@ -133,28 +174,18 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
 
-// 🔐 ROLE (from login page)
+// 🔐 ROLE CONTROL
 let role = localStorage.getItem("role");
 
-// ❗ fallback (if no login)
 if(!role){
 role = prompt("Enter role: admin / staff / student");
 }
 
-
-// 🔒 STUDENT LOCK
 window.onload = function(){
-
 if(role === "student"){
-
-document.querySelectorAll("input, select").forEach(el=>{
-el.disabled = true;
-});
-
-document.querySelector("button").style.display = "none";
-
+document.querySelectorAll("input, select").forEach(el=>el.disabled=true);
+document.querySelector("button").style.display="none";
 }
-
 };
 
 
@@ -170,7 +201,11 @@ start: start.value,
 end: end.value,
 status: status.value,
 projector: projector.value,
-cpu: cpu.value
+cpu: cpu.value,
+battery: battery.value,
+strength: strength.value,
+serviceDate: serviceDate.value,
+nextService: nextService.value
 };
 
 db.ref("classrooms/" + code).set(obj);
@@ -196,8 +231,23 @@ end.value = data.end;
 status.value = data.status;
 projector.value = data.projector;
 cpu.value = data.cpu;
+battery.value = data.battery;
+strength.value = data.strength;
+serviceDate.value = data.serviceDate;
+nextService.value = data.nextService;
 }
 });
+
+});
+
+
+// 🧠 AUTO NEXT SERVICE DATE (+30 days)
+document.getElementById("serviceDate").addEventListener("change", function(){
+
+let d = new Date(this.value);
+d.setDate(d.getDate()+30);
+
+nextService.value = d.toISOString().split('T')[0];
 
 });
 
