@@ -58,7 +58,6 @@ cursor:pointer;
 
 .readonly{
 background:#eee;
-cursor:not-allowed;
 }
 </style>
 </head>
@@ -73,11 +72,8 @@ cursor:not-allowed;
 
 <!-- LEFT -->
 <div>
-<label>Class Code</label>
+<label>Class (Code + Name)</label>
 <input id="code">
-
-<label>Class Name</label>
-<input id="className">
 
 <label>Start Time</label>
 <input type="time" id="start">
@@ -95,7 +91,7 @@ cursor:not-allowed;
 </select>
 
 <label>Total Benches</label>
-<input id="benches" class="readonly" readonly>
+<input id="benches" readonly class="readonly">
 </div>
 
 <!-- RIGHT -->
@@ -113,7 +109,7 @@ cursor:not-allowed;
 </select>
 
 <label>Student Strength</label>
-<input id="strength" class="readonly" readonly>
+<input id="strength" readonly class="readonly">
 
 <label>Purchase Date</label>
 <input type="date" id="purchaseDate">
@@ -128,7 +124,6 @@ cursor:not-allowed;
 
 </div>
 
-<!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
@@ -146,7 +141,7 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
 
-// 🔐 ROLE
+// 🔐 ROLE CONTROL
 let role = localStorage.getItem("role") || "student";
 
 window.onload = function(){
@@ -168,37 +163,35 @@ const classMap = {
 };
 
 
-// 🔄 LOAD
+// 🔄 LOAD DATA
 code.addEventListener("change", function(){
 
-let c = this.value.toUpperCase();
-this.value = c;
+let full = this.value;
+let split = full.split(" - ");
+let c = split[0].toUpperCase();
 
+// format properly
 if(classMap[c]){
-className.value = classMap[c];
-title.innerText = c + " - " + classMap[c];
+this.value = c + " - " + classMap[c];
+title.innerText = this.value;
 }
 
 db.ref("classrooms/" + c).on("value", snap=>{
 let d = snap.val();
 
 if(d){
-className.value = d.className;
 faculty.value = d.faculty;
 start.value = d.start;
 end.value = d.end;
 status.value = d.status;
 projector.value = d.projector;
 cpu.value = d.cpu;
-
-// 🔒 AUTO LOAD ONLY (NO EDIT)
-benches.value = d.benches;
 strength.value = d.strength;
-
+benches.value = d.benches;
 purchaseDate.value = d.purchaseDate;
 replaceDate.value = d.replaceDate;
 
-title.innerText = c + " - " + d.className;
+title.innerText = d.fullName;
 }
 });
 
@@ -213,22 +206,19 @@ alert("Students cannot edit ❌");
 return;
 }
 
-let c = code.value;
+let full = code.value;
+let c = full.split(" - ")[0];
 
 let obj = {
-fullName: c + " - " + className.value,
-className: className.value,
+fullName: full,
 faculty: faculty.value,
 start: start.value,
 end: end.value,
 status: status.value,
 projector: projector.value,
 cpu: cpu.value,
-
-// 🚫 NOT EDITABLE BUT SAVED (KEEP OLD VALUE)
-benches: benches.value,
 strength: strength.value,
-
+benches: benches.value,
 purchaseDate: purchaseDate.value,
 replaceDate: replaceDate.value
 };
