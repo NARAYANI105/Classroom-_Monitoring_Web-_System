@@ -4,29 +4,23 @@
 <title>Classroom Details</title>
 
 <style>
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:'Segoe UI', sans-serif;
-}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI';}
 
 body{
-min-height:100vh;
-background: linear-gradient(135deg,#1d2671,#c33764);
+background:linear-gradient(135deg,#1d2671,#c33764);
 display:flex;
 justify-content:center;
 align-items:center;
-padding:20px;
+min-height:100vh;
 }
 
 .container{
-width:90%;
-max-width:900px;
 background:#fff;
 padding:25px;
 border-radius:15px;
-box-shadow:0 10px 30px rgba(0,0,0,0.3);
+width:90%;
+max-width:900px;
+box-shadow:0 10px 25px rgba(0,0,0,0.3);
 }
 
 h2{
@@ -34,25 +28,23 @@ text-align:center;
 margin-bottom:20px;
 }
 
-.form-grid{
+.grid{
 display:grid;
 grid-template-columns:1fr 1fr;
 gap:20px;
 }
 
 @media(max-width:600px){
-.form-grid{
-grid-template-columns:1fr;
-}
+.grid{grid-template-columns:1fr;}
 }
 
 label{
-display:block;
-margin-top:10px;
 font-weight:bold;
+margin-top:10px;
+display:block;
 }
 
-input, select{
+input,select{
 width:100%;
 padding:10px;
 margin-top:5px;
@@ -65,18 +57,17 @@ width:100%;
 padding:12px;
 margin-top:20px;
 background:#6a11cb;
-color:white;
+color:#fff;
 border:none;
 border-radius:10px;
-font-size:16px;
 cursor:pointer;
+font-size:16px;
 }
 
 button:hover{
 background:#2575fc;
 }
 </style>
-
 </head>
 
 <body>
@@ -85,14 +76,15 @@ background:#2575fc;
 
 <h2 id="title">Classroom Details</h2>
 
-<div class="form-grid">
+<div class="grid">
 
+<!-- LEFT -->
 <div>
 <label>Class Code</label>
-<input type="text" id="code">
+<input id="code">
 
 <label>Class Name</label>
-<input type="text" id="className">
+<input id="className">
 
 <label>Start Time</label>
 <input type="time" id="start">
@@ -109,19 +101,14 @@ background:#2575fc;
 <option>Not Working</option>
 </select>
 
-<label>Battery</label>
-<select id="battery">
-<option>Working</option>
-<option>Not Working</option>
-</select>
-
 <label>Total Benches</label>
 <input type="number" id="benches">
 </div>
 
+<!-- RIGHT -->
 <div>
-<label>Faculty Name</label>
-<input type="text" id="faculty">
+<label>Faculty</label>
+<input id="faculty">
 
 <label>End Time</label>
 <input type="time" id="end">
@@ -135,11 +122,11 @@ background:#2575fc;
 <label>Student Strength</label>
 <input type="number" id="strength">
 
-<label>Monitor Service Date</label>
-<input type="date" id="serviceDate">
+<label>Purchase Date</label>
+<input type="date" id="purchaseDate">
 
-<label>Next Service Date</label>
-<input type="date" id="nextService">
+<label>Replace Date</label>
+<input type="date" id="replaceDate">
 </div>
 
 </div>
@@ -148,17 +135,18 @@ background:#2575fc;
 
 </div>
 
+<!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
 <script>
 
-// 🔥 Firebase
+// 🔥 YOUR FIREBASE CONFIG (keep yours)
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "classroom-monitoring-sys-dd1cc.firebaseapp.com",
-  databaseURL: "https://classroom-monitoring-sys-dd1cc-default-rtdb.firebaseio.com/",
-  projectId: "classroom-monitoring-sys-dd1cc",
+apiKey: "YOUR_KEY",
+authDomain: "YOUR_DOMAIN",
+databaseURL: "YOUR_DB_URL",
+projectId: "YOUR_ID"
 };
 
 firebase.initializeApp(firebaseConfig);
@@ -168,76 +156,93 @@ const db = firebase.database();
 // 🔐 ROLE CONTROL
 let role = localStorage.getItem("role");
 
+// Default = student (safe)
+if(!role){
+role = "student";
+}
+
 window.onload = function(){
+
 if(role === "student"){
 document.querySelectorAll("input, select").forEach(el=>el.disabled=true);
 document.getElementById("saveBtn").style.display="none";
 }
+
 };
 
 
-// 🧠 40 CLASSROOM MAP
+// 🧠 FULL 40 CLASS MAP
 const classMap = {
 
-// LEFT SIDE (26)
-"A1L01":"CSE A",
-"A1L02":"CSE B",
+// A BLOCK (26)
+"A1L01":"First Year CSE A",
+"A1L02":"First Year CSE B",
 "A1L03":"First Year CSE B",
 "A1L04":"First Year AIML",
-"A1L05":"IT",
-"A1L06":"CIVIL",
-"A2L01":"CSE A",
-"A2L02":"CSE B",
-"A2L03":"AIML",
+"A1L05":"First Year IT",
+"A1L06":"First Year CIVIL",
+
+"A2L01":"Second Year CSE A",
+"A2L02":"Second Year CSE B",
+"A2L03":"Second Year AIML",
 "A2L04":"First Year CSE A",
 "A2L05":"First Year MECH",
-"A2L06":"EEE",
-"A3L01":"MECH",
-"A3L02":"CIVIL",
-"A3L03":"IT",
-"A3L04":"AIDS",
-"A3L05":"AIML",
-"A3L06":"CSE",
-"A4L01":"CSE",
-"A4L02":"EEE",
-"A4L03":"MECH",
-"A4L04":"CIVIL",
-"A4L05":"IT",
-"A4L06":"AIDS",
-"A5L01":"LAB",
-"A5L02":"LAB",
+"A2L06":"Second Year EEE",
 
-// RIGHT SIDE (14)
-"B1L01":"CSE",
-"B1L02":"EEE",
-"B1L03":"MECH",
+"A3L01":"Third Year MECH",
+"A3L02":"Third Year CIVIL",
+"A3L03":"Third Year IT",
+"A3L04":"Third Year AIDS",
+"A3L05":"Third Year AIML",
+"A3L06":"Third Year CSE",
+
+"A4L01":"Final Year CSE",
+"A4L02":"Final Year EEE",
+"A4L03":"Final Year MECH",
+"A4L04":"Final Year CIVIL",
+"A4L05":"Final Year IT",
+"A4L06":"Final Year AIDS",
+
+"A5L01":"Computer Lab 1",
+"A5L02":"Computer Lab 2",
+
+// B BLOCK (14)
+"B1L01":"Second Year CSE",
+"B1L02":"Second Year EEE",
+"B1L03":"Second Year MECH",
 "B1L04":"First Year CIVIL",
 "B1L05":"First Year EEE",
-"B2L01":"IT",
-"B2L02":"CSE",
-"B2L03":"AIML",
-"B2L04":"CIVIL",
-"B2L05":"EEE",
-"B3L01":"MECH",
-"B3L02":"CSE",
-"B3L03":"IT",
-"B3L04":"AIDS"
+
+"B2L01":"Third Year IT",
+"B2L02":"Third Year CSE",
+"B2L03":"Third Year AIML",
+"B2L04":"Third Year CIVIL",
+"B2L05":"Third Year EEE",
+
+"B3L01":"Final Year MECH",
+"B3L02":"Final Year CSE",
+"B3L03":"Final Year IT",
+"B3L04":"Final Year AIDS"
 
 };
 
 
-// 🔄 AUTO LOAD
+// 🔄 LOAD DATA
 document.getElementById("code").addEventListener("change", function(){
 
 let code = this.value.toUpperCase();
 this.value = code;
 
+// show name instantly
 if(classMap[code]){
 className.value = classMap[code];
+title.innerText = code + " - " + classMap[code];
 }
 
-db.ref("classrooms/" + code).on("value", (snap)=>{
+// fetch from Firebase
+db.ref("classrooms/" + code).on("value", snap=>{
 let d = snap.val();
+
 if(d){
 className.value = d.className;
 faculty.value = d.faculty;
@@ -246,11 +251,10 @@ end.value = d.end;
 status.value = d.status;
 projector.value = d.projector;
 cpu.value = d.cpu;
-battery.value = d.battery;
 strength.value = d.strength;
 benches.value = d.benches;
-serviceDate.value = d.serviceDate;
-nextService.value = d.nextService;
+purchaseDate.value = d.purchaseDate;
+replaceDate.value = d.replaceDate;
 
 title.innerText = code + " - " + d.className;
 }
@@ -259,10 +263,15 @@ title.innerText = code + " - " + d.className;
 });
 
 
-// 💾 SAVE
+// 💾 SAVE FUNCTION
 function saveData(){
 
-let code = code.value;
+if(role === "student"){
+alert("Students cannot edit ❌");
+return;
+}
+
+let code = document.getElementById("code").value;
 
 let obj = {
 fullName: code + " - " + className.value,
@@ -273,25 +282,16 @@ end: end.value,
 status: status.value,
 projector: projector.value,
 cpu: cpu.value,
-battery: battery.value,
 strength: strength.value,
 benches: benches.value,
-serviceDate: serviceDate.value,
-nextService: nextService.value
+purchaseDate: purchaseDate.value,
+replaceDate: replaceDate.value
 };
 
 db.ref("classrooms/" + code).set(obj);
-alert("Saved ✅");
 
+alert("Saved Successfully ✅");
 }
-
-
-// 📅 AUTO NEXT DATE
-serviceDate.addEventListener("change", function(){
-let d = new Date(this.value);
-d.setDate(d.getDate()+30);
-nextService.value = d.toISOString().split('T')[0];
-});
 
 </script>
 
