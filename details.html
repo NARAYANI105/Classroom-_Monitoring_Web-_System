@@ -4,15 +4,9 @@
 <title>Classroom Details</title>
 
 <style>
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:'Segoe UI', sans-serif;
-}
-
 body{
-background:linear-gradient(135deg,#141E30,#243B55);
+font-family:Segoe UI;
+background:linear-gradient(135deg,#1e3c72,#2a5298);
 display:flex;
 justify-content:center;
 align-items:center;
@@ -20,73 +14,47 @@ min-height:100vh;
 }
 
 .container{
-background:#ffffff;
-padding:30px;
-border-radius:15px;
-width:90%;
-max-width:950px;
-box-shadow:0 15px 35px rgba(0,0,0,0.4);
+background:#fff;
+padding:25px;
+border-radius:12px;
+width:900px;
+box-shadow:0 10px 30px rgba(0,0,0,0.3);
 }
 
-h2{
-text-align:center;
-margin-bottom:20px;
-color:#333;
-}
+h2{text-align:center;margin-bottom:20px;}
 
 .grid{
 display:grid;
 grid-template-columns:1fr 1fr;
-gap:25px;
-}
-
-@media(max-width:700px){
-.grid{
-grid-template-columns:1fr;
-}
+gap:20px;
 }
 
 .box{
-background:#f7f9fc;
-padding:20px;
-border-radius:12px;
-box-shadow:0 5px 10px rgba(0,0,0,0.1);
+background:#f4f6f9;
+padding:15px;
+border-radius:10px;
 }
 
-label{
-font-weight:600;
-display:block;
-margin-top:10px;
-color:#444;
-}
+label{font-weight:bold;margin-top:10px;display:block;}
 
 input,select{
 width:100%;
-padding:10px;
+padding:8px;
 margin-top:5px;
-border-radius:8px;
+border-radius:6px;
 border:1px solid #ccc;
-font-size:14px;
 }
 
-.readonly{
-background:#eaeaea;
-}
+.readonly{background:#e0e0e0;}
 
 button{
+margin-top:20px;
 width:100%;
-padding:14px;
-margin-top:25px;
+padding:12px;
+background:#2a5298;
+color:#fff;
 border:none;
-border-radius:10px;
-background:#4e54c8;
-color:white;
-font-size:16px;
-cursor:pointer;
-}
-
-button:hover{
-background:#3b40a4;
+border-radius:8px;
 }
 </style>
 
@@ -100,12 +68,12 @@ background:#3b40a4;
 
 <div class="grid">
 
-<!-- LEFT BOX -->
+<!-- LEFT -->
 <div class="box">
 
 <label>Select Class</label>
 <select id="code">
-<option value="">-- Select Class --</option>
+<option value="">Select Class</option>
 
 <option value="A1L03">A1L03 - First Year CSE B</option>
 <option value="A1L04">A1L04 - First Year AIML</option>
@@ -159,93 +127,108 @@ background:#3b40a4;
 
 </select>
 
-<label>Start Time</label>
-<input type="time" id="start">
-
-<label>Status</label>
-<select id="status">
-<option>Available</option>
-<option>Occupied</option>
-</select>
-
-<label>CPU</label>
-<select id="cpu">
-<option>Working</option>
-<option>Not Working</option>
-</select>
-
 <label>Total Benches</label>
 <input id="benches" class="readonly" readonly>
 
+<label>Student Strength</label>
+<input id="strength" class="readonly" readonly>
+
 </div>
 
-<!-- RIGHT BOX -->
+<!-- RIGHT -->
 <div class="box">
 
 <label>Faculty</label>
 <input id="faculty">
 
-<label>End Time</label>
-<input type="time" id="end">
-
-<label>Projector</label>
-<select id="projector">
-<option>Working</option>
-<option>Not Working</option>
-</select>
-
-<label>Student Strength</label>
-<input id="strength" class="readonly" readonly>
-
 <label>Battery</label>
-<select id="battery">
+<select>
 <option>Working</option>
 <option>Not Working</option>
 </select>
-
-<label>Purchase Date</label>
-<input type="date" id="purchaseDate">
-
-<label>Replace Date</label>
-<input type="date" id="replaceDate">
 
 <label>Monitor Service Date</label>
-<input type="date" id="serviceDate">
+<input type="date">
 
 <label>Next Service Date</label>
-<input type="date" id="nextService">
+<input type="date">
 
 </div>
 
 </div>
 
-<button onclick="saveData()" id="saveBtn">SAVE</button>
+<button id="saveBtn">SAVE</button>
 
 </div>
 
 <script>
 
-// ROLE CONTROL
-let role = localStorage.getItem("role") || "student";
+// 🔐 ROLE
+localStorage.setItem("role","admin"); // CHANGE AS NEEDED
 
-window.onload = function(){
+let role = localStorage.getItem("role");
+
 if(role === "student"){
 document.querySelectorAll("input, select").forEach(el=>el.disabled=true);
 document.getElementById("saveBtn").style.display="none";
 }
-};
 
-// CLASS DATA
+// ✅ FULL DATA
 const classData = {
+
 "A1L03":{name:"First Year CSE B",strength:63,benches:32},
 "A1L04":{name:"First Year AIML",strength:63,benches:32},
 "A2L05":{name:"First Year MECH",strength:30,benches:15},
 "A2L04":{name:"First Year CSE A",strength:63,benches:32},
+"A2L03":{name:"First Year IT",strength:63,benches:30},
+"A2L02":{name:"First Year ECE B",strength:63,benches:32},
+"A2L01":{name:"First Year ECE A",strength:63,benches:32},
+
+"B0L01":{name:"First Year AD A",strength:63,benches:31},
+"B0L02":{name:"First Year AD B",strength:63,benches:31},
+"B0L03":{name:"First Year CSBS",strength:63,benches:31},
+
 "B1L05":{name:"First Year EEE",strength:63,benches:32},
-"B1L04":{name:"First Year CSE C",strength:63,benches:32}
+"B1L04":{name:"First Year CSE C",strength:63,benches:32},
+"B1L02":{name:"First Year Civil",strength:30,benches:25},
+
+"B3L05":{name:"Final Year AD A",strength:59,benches:30},
+"B3L04":{name:"Third Year CIVIL",strength:45,benches:25},
+"B3L03":{name:"Second Year CIVIL",strength:41,benches:25},
+"B3L02":{name:"Final Year CSBS",strength:60,benches:30},
+
+"C2L05":{name:"Second Year MECH",strength:42,benches:25},
+"C2L04":{name:"Third Year MECH",strength:63,benches:31},
+"C2L03":{name:"Final Year MECH",strength:50,benches:25},
+"C2L02":{name:"Third Year IT",strength:62,benches:31},
+"C2L01":{name:"Second Year IT",strength:64,benches:32},
+
+"C3L01":{name:"Third Year AD A",strength:59,benches:30},
+"C3L02":{name:"Third Year AD B",strength:59,benches:30},
+"C3L03":{name:"Second Year AD A",strength:63,benches:33},
+"C3L04":{name:"Second Year AD B",strength:63,benches:31},
+
+"B3R02":{name:"Second Year EEE",strength:65,benches:34},
+"B3R03":{name:"Third Year EEE",strength:64,benches:32},
+"B3R04":{name:"Third Year CSBS",strength:61,benches:31},
+"B3R05":{name:"Second Year CSBS",strength:55,benches:28},
+
+"C3R01":{name:"Second Year ECE-A",strength:64,benches:32},
+"C3R02":{name:"Second Year ECE-B",strength:64,benches:32},
+"C3R03":{name:"Third Year ECE-A",strength:63,benches:32},
+"C3R04":{name:"Third Year ECE-B",strength:62,benches:31},
+"C3R05":{name:"Final Year ECE-A",strength:59,benches:30},
+
+"C2R04":{name:"Second Year CSE A",strength:63,benches:32},
+"C2R05":{name:"Second Year CSE B",strength:63,benches:32},
+"C2R06":{name:"Second Year CSE C",strength:64,benches:32},
+
+"A2R02":{name:"Third Year CSE A",strength:64,benches:32},
+"A2R02A":{name:"Third Year CSB B",strength:63,benches:32}
+
 };
 
-// AUTO FILL
+// 🔥 AUTO FILL
 document.getElementById("code").addEventListener("change",function(){
 
 let c=this.value;
@@ -253,20 +236,12 @@ let c=this.value;
 if(classData[c]){
 let d=classData[c];
 
-document.getElementById("title").innerText=c+" - "+d.name;
-document.getElementById("strength").value=d.strength;
-document.getElementById("benches").value=d.benches;
+document.getElementById("title").innerText = c + " - " + d.name;
+document.getElementById("strength").value = d.strength;
+document.getElementById("benches").value = d.benches;
 }
 
 });
-
-function saveData(){
-if(role==="student"){
-alert("Students cannot edit ❌");
-return;
-}
-alert("Saved Successfully ✅");
-}
 
 </script>
 
