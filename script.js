@@ -212,3 +212,83 @@ db.ref("classrooms/" + c).set(obj);
 alert("Saved Successfully ✅");
 
 }
+// 🔐 ROLE (for testing)
+localStorage.setItem("role","admin");
+
+let role = localStorage.getItem("role");
+
+// DISABLE FOR STUDENT
+if(role === "student"){
+document.querySelectorAll("input, select").forEach(el=>el.disabled=true);
+document.getElementById("saveBtn").style.display="none";
+}
+
+// ✅ CLASS DATA (already given - keep your full 40 here)
+const classData = {
+"A1L03":{name:"First Year CSE B",strength:63,benches:32},
+// 👉 paste FULL 40 classes here (from previous message)
+};
+
+// 🔥 AUTO FILL + LOAD SAVED DATA
+document.getElementById("code").addEventListener("change",function(){
+
+let c = this.value;
+
+if(classData[c]){
+
+let d = classData[c];
+
+document.getElementById("title").innerText = c + " - " + d.name;
+document.getElementById("strength").value = d.strength;
+document.getElementById("benches").value = d.benches;
+
+// 🔥 LOAD SAVED DATA
+let saved = JSON.parse(localStorage.getItem(c));
+
+if(saved){
+document.getElementById("faculty").value = saved.faculty || "";
+document.getElementById("start").value = saved.start || "";
+document.getElementById("end").value = saved.end || "";
+document.getElementById("status").value = saved.status || "Available";
+document.getElementById("cpu").value = saved.cpu || "Working";
+document.getElementById("projector").value = saved.projector || "Working";
+document.getElementById("battery").value = saved.battery || "Working";
+document.getElementById("purchase").value = saved.purchase || "";
+document.getElementById("replace").value = saved.replace || "";
+document.getElementById("service").value = saved.service || "";
+document.getElementById("next").value = saved.next || "";
+}
+
+}
+
+});
+
+// 💾 SAVE FUNCTION
+function saveData(){
+
+let c = document.getElementById("code").value;
+
+if(!c){
+alert("Select Class First ❌");
+return;
+}
+
+let data = {
+faculty: document.getElementById("faculty").value,
+start: document.getElementById("start").value,
+end: document.getElementById("end").value,
+status: document.getElementById("status").value,
+cpu: document.getElementById("cpu").value,
+projector: document.getElementById("projector").value,
+battery: document.getElementById("battery").value,
+purchase: document.getElementById("purchase").value,
+replace: document.getElementById("replace").value,
+service: document.getElementById("service").value,
+next: document.getElementById("next").value
+};
+
+// SAVE TO LOCAL STORAGE
+localStorage.setItem(c, JSON.stringify(data));
+
+alert("Saved Successfully ✅");
+}
