@@ -17,7 +17,7 @@ min-height:100vh;
 background:#fff;
 padding:25px;
 border-radius:12px;
-width:900px;
+width:950px;
 box-shadow:0 10px 30px rgba(0,0,0,0.3);
 }
 
@@ -74,7 +74,6 @@ border-radius:8px;
 <label>Select Class</label>
 <select id="code">
 <option value="">Select Class</option>
-
 <option value="A1L03">A1L03 - First Year CSE B</option>
 <option value="A1L04">A1L04 - First Year AIML</option>
 <option value="A2L05">A2L05 - First Year MECH</option>
@@ -124,14 +123,25 @@ border-radius:8px;
 
 <option value="A2R02">A2R02 - Third Year CSE A</option>
 <option value="A2R02A">A2R02A - Third Year CSB B</option>
+</select>
 
+<label>Start Time</label>
+<input type="time" id="start">
+
+<label>Status</label>
+<select id="status">
+<option>Available</option>
+<option>Occupied</option>
+</select>
+
+<label>CPU</label>
+<select id="cpu">
+<option>Working</option>
+<option>Not Working</option>
 </select>
 
 <label>Total Benches</label>
 <input id="benches" class="readonly" readonly>
-
-<label>Student Strength</label>
-<input id="strength" class="readonly" readonly>
 
 </div>
 
@@ -141,43 +151,57 @@ border-radius:8px;
 <label>Faculty</label>
 <input id="faculty">
 
-<label>Battery</label>
-<select>
+<label>End Time</label>
+<input type="time" id="end">
+
+<label>Projector</label>
+<select id="projector">
 <option>Working</option>
 <option>Not Working</option>
 </select>
 
+<label>Student Strength</label>
+<input id="strength" class="readonly" readonly>
+
+<label>Battery</label>
+<select id="battery">
+<option>Working</option>
+<option>Not Working</option>
+</select>
+
+<label>Purchase Date</label>
+<input type="date" id="purchase">
+
+<label>Replace Date</label>
+<input type="date" id="replace">
+
 <label>Monitor Service Date</label>
-<input type="date">
+<input type="date" id="service">
 
 <label>Next Service Date</label>
-<input type="date">
+<input type="date" id="next">
 
 </div>
 
 </div>
 
-<button id="saveBtn">SAVE</button>
+<button>SAVE</button>
 
 </div>
 
 <script>
 
-// 🔐 ROLE
-localStorage.setItem("role","admin"); // CHANGE AS NEEDED
+// ROLE FIX
+localStorage.setItem("role","admin");
 
-let role = localStorage.getItem("role");
-
-if(role === "student"){
-document.querySelectorAll("input, select").forEach(el=>el.disabled=true);
-document.getElementById("saveBtn").style.display="none";
-}
-
-// ✅ FULL DATA
+// FULL DATA
 const classData = {
+
+// 🔹 LEFT SIDE (26)
 
 "A1L03":{name:"First Year CSE B",strength:63,benches:32},
 "A1L04":{name:"First Year AIML",strength:63,benches:32},
+
 "A2L05":{name:"First Year MECH",strength:30,benches:15},
 "A2L04":{name:"First Year CSE A",strength:63,benches:32},
 "A2L03":{name:"First Year IT",strength:63,benches:30},
@@ -208,6 +232,9 @@ const classData = {
 "C3L03":{name:"Second Year AD A",strength:63,benches:33},
 "C3L04":{name:"Second Year AD B",strength:63,benches:31},
 
+
+// 🔹 RIGHT SIDE (14)
+
 "B3R02":{name:"Second Year EEE",strength:65,benches:34},
 "B3R03":{name:"Third Year EEE",strength:64,benches:32},
 "B3R04":{name:"Third Year CSBS",strength:61,benches:31},
@@ -227,8 +254,7 @@ const classData = {
 "A2R02A":{name:"Third Year CSB B",strength:63,benches:32}
 
 };
-
-// 🔥 AUTO FILL
+// AUTO FILL
 document.getElementById("code").addEventListener("change",function(){
 
 let c=this.value;
