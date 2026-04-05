@@ -4,10 +4,9 @@
 <title>Classroom Details</title>
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI';}
-
 body{
-background:linear-gradient(135deg,#1d2671,#c33764);
+font-family:Segoe UI;
+background:linear-gradient(135deg,#1e3c72,#2a5298);
 display:flex;
 justify-content:center;
 align-items:center;
@@ -17,10 +16,9 @@ min-height:100vh;
 .container{
 background:#fff;
 padding:25px;
-border-radius:15px;
-width:90%;
-max-width:900px;
-box-shadow:0 10px 25px rgba(0,0,0,0.3);
+border-radius:12px;
+width:950px;
+box-shadow:0 10px 30px rgba(0,0,0,0.3);
 }
 
 h2{text-align:center;margin-bottom:20px;}
@@ -31,35 +29,35 @@ grid-template-columns:1fr 1fr;
 gap:20px;
 }
 
-@media(max-width:600px){
-.grid{grid-template-columns:1fr;}
+.box{
+background:#f4f6f9;
+padding:15px;
+border-radius:10px;
 }
 
 label{font-weight:bold;margin-top:10px;display:block;}
 
 input,select{
 width:100%;
-padding:10px;
+padding:8px;
 margin-top:5px;
+border-radius:6px;
 border:1px solid #ccc;
-border-radius:8px;
 }
+
+.readonly{background:#e0e0e0;}
 
 button{
+margin-top:20px;
 width:100%;
 padding:12px;
-margin-top:20px;
-background:#6a11cb;
+background:#2a5298;
 color:#fff;
 border:none;
-border-radius:10px;
-cursor:pointer;
-}
-
-.readonly{
-background:#eee;
+border-radius:8px;
 }
 </style>
+
 </head>
 
 <body>
@@ -71,10 +69,61 @@ background:#eee;
 <div class="grid">
 
 <!-- LEFT -->
-<div>
+<div class="box">
 
-<label>Class (Code + Name)</label>
-<input id="code" placeholder="Enter A1L03">
+<label>Select Class</label>
+<select id="code">
+<option value="">Select Class</option>
+<option value="A1L03">A1L03 - First Year CSE B</option>
+<option value="A1L04">A1L04 - First Year AIML</option>
+<option value="A2L05">A2L05 - First Year MECH</option>
+<option value="A2L04">A2L04 - First Year CSE A</option>
+<option value="A2L03">A2L03 - First Year IT</option>
+<option value="A2L02">A2L02 - First Year ECE B</option>
+<option value="A2L01">A2L01 - First Year ECE A</option>
+
+<option value="B0L01">B0L01 - First Year AD A</option>
+<option value="B0L02">B0L02 - First Year AD B</option>
+<option value="B0L03">B0L03 - First Year CSBS</option>
+
+<option value="B1L05">B1L05 - First Year EEE</option>
+<option value="B1L04">B1L04 - First Year CSE C</option>
+<option value="B1L02">B1L02 - First Year Civil</option>
+
+<option value="B3L05">B3L05 - Final Year AD A</option>
+<option value="B3L04">B3L04 - Third Year CIVIL</option>
+<option value="B3L03">B3L03 - Second Year CIVIL</option>
+<option value="B3L02">B3L02 - Final Year CSBS</option>
+
+<option value="C2L05">C2L05 - Second Year MECH</option>
+<option value="C2L04">C2L04 - Third Year MECH</option>
+<option value="C2L03">C2L03 - Final Year MECH</option>
+<option value="C2L02">C2L02 - Third Year IT</option>
+<option value="C2L01">C2L01 - Second Year IT</option>
+
+<option value="C3L01">C3L01 - Third Year AD A</option>
+<option value="C3L02">C3L02 - Third Year AD B</option>
+<option value="C3L03">C3L03 - Second Year AD A</option>
+<option value="C3L04">C3L04 - Second Year AD B</option>
+
+<option value="B3R02">B3R02 - Second Year EEE</option>
+<option value="B3R03">B3R03 - Third Year EEE</option>
+<option value="B3R04">B3R04 - Third Year CSBS</option>
+<option value="B3R05">B3R05 - Second Year CSBS</option>
+
+<option value="C3R01">C3R01 - Second Year ECE-A</option>
+<option value="C3R02">C3R02 - Second Year ECE-B</option>
+<option value="C3R03">C3R03 - Third Year ECE-A</option>
+<option value="C3R04">C3R04 - Third Year ECE-B</option>
+<option value="C3R05">C3R05 - Final Year ECE-A</option>
+
+<option value="C2R04">C2R04 - Second Year CSE A</option>
+<option value="C2R05">C2R05 - Second Year CSE B</option>
+<option value="C2R06">C2R06 - Second Year CSE C</option>
+
+<option value="A2R02">A2R02 - Third Year CSE A</option>
+<option value="A2R02A">A2R02A - Third Year CSB B</option>
+</select>
 
 <label>Start Time</label>
 <input type="time" id="start">
@@ -92,12 +141,12 @@ background:#eee;
 </select>
 
 <label>Total Benches</label>
-<input id="benches" readonly class="readonly">
+<input id="benches" class="readonly" readonly>
 
 </div>
 
 <!-- RIGHT -->
-<div>
+<div class="box">
 
 <label>Faculty</label>
 <input id="faculty">
@@ -112,7 +161,7 @@ background:#eee;
 </select>
 
 <label>Student Strength</label>
-<input id="strength" readonly class="readonly">
+<input id="strength" class="readonly" readonly>
 
 <label>Battery</label>
 <select id="battery">
@@ -121,141 +170,104 @@ background:#eee;
 </select>
 
 <label>Purchase Date</label>
-<input type="date" id="purchaseDate">
+<input type="date" id="purchase">
 
 <label>Replace Date</label>
-<input type="date" id="replaceDate">
+<input type="date" id="replace">
 
 <label>Monitor Service Date</label>
-<input type="date" id="serviceDate">
+<input type="date" id="service">
 
 <label>Next Service Date</label>
-<input type="date" id="nextService">
+<input type="date" id="next">
 
 </div>
 
 </div>
 
-<button onclick="saveData()" id="saveBtn">SAVE</button>
+<button>SAVE</button>
 
 </div>
-
-<!-- Firebase -->
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
 <script>
 
-// 🔥 Firebase Config
-const firebaseConfig = {
-apiKey: "YOUR_KEY",
-authDomain: "YOUR_DOMAIN",
-databaseURL: "YOUR_DB_URL",
-projectId: "YOUR_ID"
-};
+// ROLE FIX
+localStorage.setItem("role","admin");
 
-firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
-
-
-// ✅ GET ELEMENTS
-const code = document.getElementById("code");
-const strength = document.getElementById("strength");
-const benches = document.getElementById("benches");
-const title = document.getElementById("title");
-
-const faculty = document.getElementById("faculty");
-const start = document.getElementById("start");
-const end = document.getElementById("end");
-const status = document.getElementById("status");
-const projector = document.getElementById("projector");
-const cpu = document.getElementById("cpu");
-
-const battery = document.getElementById("battery");
-const purchaseDate = document.getElementById("purchaseDate");
-const replaceDate = document.getElementById("replaceDate");
-const serviceDate = document.getElementById("serviceDate");
-const nextService = document.getElementById("nextService");
-
-const saveBtn = document.getElementById("saveBtn");
-
-
-// 🔐 ROLE CONTROL
-let role = localStorage.getItem("role") || "student";
-
-window.onload = function(){
-if(role === "student"){
-document.querySelectorAll("input, select").forEach(el=>el.disabled=true);
-saveBtn.style.display="none";
-}
-};
-
-
-// 🧠 CLASS DATA
+// FULL DATA
 const classData = {
-"A1L03": {name:"First Year CSE B", strength:63, benches:32},
-"A1L04": {name:"First Year AIML", strength:63, benches:32},
-"A2L05": {name:"First Year MECH", strength:30, benches:15},
-"A2L04": {name:"First Year CSE A", strength:63, benches:32},
-"B1L05": {name:"First Year EEE", strength:63, benches:32},
-"B1L04": {name:"First Year CIVIL", strength:30, benches:25}
+
+// 🔹 LEFT SIDE (26)
+
+"A1L03":{name:"First Year CSE B",strength:63,benches:32},
+"A1L04":{name:"First Year AIML",strength:63,benches:32},
+
+"A2L05":{name:"First Year MECH",strength:30,benches:15},
+"A2L04":{name:"First Year CSE A",strength:63,benches:32},
+"A2L03":{name:"First Year IT",strength:63,benches:30},
+"A2L02":{name:"First Year ECE B",strength:63,benches:32},
+"A2L01":{name:"First Year ECE A",strength:63,benches:32},
+
+"B0L01":{name:"First Year AD A",strength:63,benches:31},
+"B0L02":{name:"First Year AD B",strength:63,benches:31},
+"B0L03":{name:"First Year CSBS",strength:63,benches:31},
+
+"B1L05":{name:"First Year EEE",strength:63,benches:32},
+"B1L04":{name:"First Year CSE C",strength:63,benches:32},
+"B1L02":{name:"First Year Civil",strength:30,benches:25},
+
+"B3L05":{name:"Final Year AD A",strength:59,benches:30},
+"B3L04":{name:"Third Year CIVIL",strength:45,benches:25},
+"B3L03":{name:"Second Year CIVIL",strength:41,benches:25},
+"B3L02":{name:"Final Year CSBS",strength:60,benches:30},
+
+"C2L05":{name:"Second Year MECH",strength:42,benches:25},
+"C2L04":{name:"Third Year MECH",strength:63,benches:31},
+"C2L03":{name:"Final Year MECH",strength:50,benches:25},
+"C2L02":{name:"Third Year IT",strength:62,benches:31},
+"C2L01":{name:"Second Year IT",strength:64,benches:32},
+
+"C3L01":{name:"Third Year AD A",strength:59,benches:30},
+"C3L02":{name:"Third Year AD B",strength:59,benches:30},
+"C3L03":{name:"Second Year AD A",strength:63,benches:33},
+"C3L04":{name:"Second Year AD B",strength:63,benches:31},
+
+
+// 🔹 RIGHT SIDE (14)
+
+"B3R02":{name:"Second Year EEE",strength:65,benches:34},
+"B3R03":{name:"Third Year EEE",strength:64,benches:32},
+"B3R04":{name:"Third Year CSBS",strength:61,benches:31},
+"B3R05":{name:"Second Year CSBS",strength:55,benches:28},
+
+"C3R01":{name:"Second Year ECE-A",strength:64,benches:32},
+"C3R02":{name:"Second Year ECE-B",strength:64,benches:32},
+"C3R03":{name:"Third Year ECE-A",strength:63,benches:32},
+"C3R04":{name:"Third Year ECE-B",strength:62,benches:31},
+"C3R05":{name:"Final Year ECE-A",strength:59,benches:30},
+
+"C2R04":{name:"Second Year CSE A",strength:63,benches:32},
+"C2R05":{name:"Second Year CSE B",strength:63,benches:32},
+"C2R06":{name:"Second Year CSE C",strength:64,benches:32},
+
+"A2R02":{name:"Third Year CSE A",strength:64,benches:32},
+"A2R02A":{name:"Third Year CSB B",strength:63,benches:32}
+
 };
+// AUTO FILL
+document.getElementById("code").addEventListener("change",function(){
 
-
-// 🔄 AUTO FILL
-code.addEventListener("input", function(){
-
-let input = this.value.toUpperCase().trim();
-let c = input.includes("-") ? input.split("-")[0].trim() : input;
+let c=this.value;
 
 if(classData[c]){
+let d=classData[c];
 
-let d = classData[c];
-
-this.value = c + " - " + d.name;
-title.innerText = this.value;
-
-strength.value = d.strength;
-benches.value = d.benches;
-
+document.getElementById("title").innerText = c + " - " + d.name;
+document.getElementById("strength").value = d.strength;
+document.getElementById("benches").value = d.benches;
 }
 
 });
-
-
-// 💾 SAVE
-function saveData(){
-
-if(role === "student"){
-alert("Students cannot edit ❌");
-return;
-}
-
-let full = code.value;
-let c = full.split(" - ")[0];
-
-let obj = {
-fullName: full,
-faculty: faculty.value,
-start: start.value,
-end: end.value,
-status: status.value,
-projector: projector.value,
-cpu: cpu.value,
-battery: battery.value,
-strength: strength.value,
-benches: benches.value,
-purchaseDate: purchaseDate.value,
-replaceDate: replaceDate.value,
-serviceDate: serviceDate.value,
-nextService: nextService.value
-};
-
-db.ref("classrooms/" + c).set(obj);
-
-alert("Saved Successfully ✅");
-
-}
 
 </script>
 
