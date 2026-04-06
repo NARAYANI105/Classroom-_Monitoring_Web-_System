@@ -5,57 +5,28 @@
 
 <style>
 body{
-font-family:Segoe UI;
-background:linear-gradient(135deg,#1e3c72,#2a5298);
-display:flex;
-justify-content:center;
-align-items:center;
-min-height:100vh;
+font-family: Arial;
+padding:20px;
 }
 
-.container{
-background:#fff;
-padding:25px;
-border-radius:12px;
-width:950px;
-box-shadow:0 10px 30px rgba(0,0,0,0.3);
+input, select{
+display:block;
+margin:8px 0;
+padding:6px;
+width:250px;
 }
 
-h2{text-align:center;margin-bottom:20px;}
-
-.grid{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:20px;
+/* 🔒 readonly style */
+.readonly-style{
+background:#e0e0e0 !important;
+color:#555;
+cursor:not-allowed;
+border:1px solid #aaa;
 }
-
-.box{
-background:#f4f6f9;
-padding:15px;
-border-radius:10px;
-}
-
-label{font-weight:bold;margin-top:10px;display:block;}
-
-input,select{
-width:100%;
-padding:8px;
-margin-top:5px;
-border-radius:6px;
-border:1px solid #ccc;
-}
-
-.readonly{background:#e0e0e0;}
 
 button{
-margin-top:20px;
-width:100%;
-padding:12px;
-background:#2a5298;
-color:#fff;
-border:none;
-border-radius:8px;
-cursor:pointer;
+margin-top:10px;
+padding:8px 15px;
 }
 </style>
 
@@ -63,20 +34,25 @@ cursor:pointer;
 
 <body>
 
-<div class="container">
+<h2 id="title">Class Details</h2>
 
-<h2 id="title">Classroom Details</h2>
-
-<div class="grid">
-
-<!-- LEFT -->
-<div class="box">
-
-<label>Select Class</label>
+<label>Class Code</label>
 <select id="code"></select>
+
+<label>Strength</label>
+<input type="text" id="strength">
+
+<label>Benches</label>
+<input type="text" id="benches">
+
+<label>Faculty</label>
+<input type="text" id="faculty">
 
 <label>Start Time</label>
 <input type="time" id="start">
+
+<label>End Time</label>
+<input type="time" id="end">
 
 <label>Status</label>
 <select id="status">
@@ -90,28 +66,11 @@ cursor:pointer;
 <option>Not Working</option>
 </select>
 
-<label>Total Benches</label>
-<input id="benches" class="readonly" readonly>
-
-</div>
-
-<!-- RIGHT -->
-<div class="box">
-
-<label>Faculty</label>
-<input id="faculty">
-
-<label>End Time</label>
-<input type="time" id="end">
-
 <label>Projector</label>
 <select id="projector">
 <option>Working</option>
 <option>Not Working</option>
 </select>
-
-<label>Student Strength</label>
-<input id="strength" class="readonly" readonly>
 
 <label>Battery</label>
 <select id="battery">
@@ -125,107 +84,15 @@ cursor:pointer;
 <label>Replace Date</label>
 <input type="date" id="replace">
 
-<label>Monitor Service Date</label>
+<label>Service Date</label>
 <input type="date" id="service">
 
-<label>Next Service Date</label>
+<label>Next Service</label>
 <input type="date" id="next">
 
-</div>
+<button onclick="saveData()">Save</button>
 
-</div>
-
-<button onclick="saveData()">SAVE</button>
-
-</div>
-
-<script>
-
-// CLASS DATA
-const classData = {
-"A1L03":{name:"First Year CSE B",strength:63,benches:32},
-"A1L04":{name:"First Year AIML",strength:63,benches:32},
-"A2L05":{name:"First Year MECH",strength:30,benches:15},
-"A2L04":{name:"First Year CSE A",strength:63,benches:32},
-"A2L03":{name:"First Year IT",strength:63,benches:30},
-"A2L02":{name:"First Year ECE B",strength:63,benches:32},
-"A2L01":{name:"First Year ECE A",strength:63,benches:32},
-"B1L05":{name:"First Year EEE",strength:63,benches:32},
-"B1L04":{name:"First Year CSE C",strength:63,benches:32},
-"B1L02":{name:"First Year Civil",strength:30,benches:25},
-"C2R04":{name:"Second Year CSE A",strength:63,benches:32}
-};
-
-// LOAD DROPDOWN
-const select = document.getElementById("code");
-select.innerHTML = `<option value="">Select Class</option>`;
-for(let key in classData){
-select.innerHTML += `<option value="${key}">${key} - ${classData[key].name}</option>`;
-}
-
-// ON CHANGE
-select.addEventListener("change",function(){
-
-let c = this.value;
-
-if(!c) return;
-
-let d = classData[c];
-
-// autofill
-document.getElementById("title").innerText = c + " - " + d.name;
-document.getElementById("strength").value = d.strength;
-document.getElementById("benches").value = d.benches;
-
-// load saved data
-let saved = JSON.parse(localStorage.getItem(c));
-
-if(saved){
-document.getElementById("faculty").value = saved.faculty || "";
-document.getElementById("start").value = saved.start || "";
-document.getElementById("end").value = saved.end || "";
-document.getElementById("status").value = saved.status || "Available";
-document.getElementById("cpu").value = saved.cpu || "Working";
-document.getElementById("projector").value = saved.projector || "Working";
-document.getElementById("battery").value = saved.battery || "Working";
-document.getElementById("purchase").value = saved.purchase || "";
-document.getElementById("replace").value = saved.replace || "";
-document.getElementById("service").value = saved.service || "";
-document.getElementById("next").value = saved.next || "";
-}
-
-});
-
-// SAVE FUNCTION
-function saveData(){
-
-let c = document.getElementById("code").value;
-
-if(!c){
-alert("Select class first!");
-return;
-}
-
-let data = {
-faculty:document.getElementById("faculty").value,
-start:document.getElementById("start").value,
-end:document.getElementById("end").value,
-status:document.getElementById("status").value,
-cpu:document.getElementById("cpu").value,
-projector:document.getElementById("projector").value,
-battery:document.getElementById("battery").value,
-purchase:document.getElementById("purchase").value,
-replace:document.getElementById("replace").value,
-service:document.getElementById("service").value,
-next:document.getElementById("next").value
-};
-
-localStorage.setItem(c,JSON.stringify(data));
-
-alert("Saved Successfully ✅");
-}
-
-</script>
+<script src="script.js"></script>
 
 </body>
 </html>
