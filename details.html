@@ -4,19 +4,49 @@
 <title>Classroom Details</title>
 
 <style>
+
+/* 🔥 PAGE STYLE */
 body{
 font-family: Arial;
+display:flex;
+justify-content:center;
 padding:20px;
+background:#f5f5f5;
 }
 
+/* 📦 FORM CONTAINER */
+.form-container{
+display:grid;
+grid-template-columns: 1fr 1fr;
+gap:40px;
+background:white;
+padding:20px;
+border-radius:10px;
+box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+/* 📄 COLUMN */
+.column{
+display:flex;
+flex-direction:column;
+}
+
+/* 🏷 LABEL */
+label{
+margin-top:10px;
+font-weight:bold;
+}
+
+/* 🔤 INPUT STYLE */
 input, select{
-display:block;
-margin:8px 0;
-padding:6px;
-width:250px;
+padding:8px;
+margin-top:5px;
+border:1px solid #ccc;
+border-radius:5px;
+width:100%;
 }
 
-/* 🔒 readonly style */
+/* 🔒 READONLY STYLE */
 .readonly-style{
 background:#e0e0e0 !important;
 color:#555;
@@ -24,17 +54,42 @@ cursor:not-allowed;
 border:1px solid #aaa;
 }
 
+/* 🔘 BUTTON */
 button{
-margin-top:10px;
-padding:8px 15px;
+margin-top:20px;
+padding:10px 20px;
+border:none;
+background:#007bff;
+color:white;
+border-radius:5px;
+cursor:pointer;
 }
+
+button:hover{
+background:#0056b3;
+}
+
+/* 📱 MOBILE RESPONSIVE */
+@media(max-width:700px){
+.form-container{
+grid-template-columns:1fr;
+}
+}
+
 </style>
 
 </head>
 
 <body>
 
+<div>
+
 <h2 id="title">Class Details</h2>
+
+<div class="form-container">
+
+<!-- LEFT COLUMN -->
+<div class="column">
 
 <label>Class Code</label>
 <select id="code"></select>
@@ -59,6 +114,11 @@ padding:8px 15px;
 <option>Available</option>
 <option>Occupied</option>
 </select>
+
+</div>
+
+<!-- RIGHT COLUMN -->
+<div class="column">
 
 <label>CPU</label>
 <select id="cpu">
@@ -90,7 +150,13 @@ padding:8px 15px;
 <label>Next Service</label>
 <input type="date" id="next">
 
+</div>
+
+</div>
+
 <button onclick="saveData()">Save</button>
+
+</div>
 
 <script src="script.js"></script>
 
