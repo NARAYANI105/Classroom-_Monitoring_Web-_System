@@ -1,11 +1,11 @@
-// 🔐 ROLE (login simulation)
-let role = localStorage.getItem("role") || "student";
-// test:
-// localStorage.setItem("role","admin")
-// localStorage.setItem("role","staff")
-// localStorage.setItem("role","student")
+// 🔐 ROLE SET (TESTING)
+localStorage.setItem("role","admin"); // change to staff / student if needed
 
-// 🔥 FIREBASE CONFIG (REPLACE YOUR VALUES)
+// ✅ GET ROLE
+let role = localStorage.getItem("role") || "student";
+
+
+// 🔥 FIREBASE CONFIG (REPLACE YOUR REAL VALUES)
 const firebaseConfig = {
   apiKey: "YOUR_API_KEY",
   authDomain: "YOUR_DOMAIN",
@@ -20,7 +20,6 @@ const db = firebase.database();
 // 📚 CLASS DATA (ALL 40)
 const classData = {
 
-// LEFT (26)
 "A1L03":{name:"First Year CSE B",strength:63,benches:32},
 "A1L04":{name:"First Year AIML",strength:63,benches:32},
 
@@ -54,7 +53,6 @@ const classData = {
 "C3L03":{name:"Second Year AD A",strength:63,benches:33},
 "C3L04":{name:"Second Year AD B",strength:63,benches:31},
 
-// RIGHT (14)
 "B3R02":{name:"Second Year EEE",strength:65,benches:34},
 "B3R03":{name:"Third Year EEE",strength:64,benches:32},
 "B3R04":{name:"Third Year CSBS",strength:61,benches:31},
@@ -92,54 +90,60 @@ const battery = document.getElementById("battery");
 const saveBtn = document.getElementById("saveBtn");
 
 
-// 📥 LOAD DROPDOWN
+// 📥 DROPDOWN LOAD
 code.innerHTML = `<option value="">Select Class</option>`;
 for(let c in classData){
 code.innerHTML += `<option value="${c}">${c} - ${classData[c].name}</option>`;
 }
 
 
-// 🔥 LOAD CLASS DETAILS
+// 🔄 LOAD CLASS
 function loadClass(c){
 
 if(!classData[c]) return;
 
 let d = classData[c];
 
-// static data
+// static
 title.innerText = c + " - " + d.name;
 strength.value = d.strength;
 benches.value = d.benches;
 
-// 🔄 FIREBASE LOAD
+// firebase load
 db.ref("classrooms/" + c).once("value")
 .then(snapshot=>{
-let saved = snapshot.val();
+let data = snapshot.val();
 
-if(saved){
-faculty.value = saved.faculty || "";
-start.value = saved.start || "";
-end.value = saved.end || "";
-status.value = saved.status || "Available";
-cpu.value = saved.cpu || "Working";
-projector.value = saved.projector || "Working";
-battery.value = saved.battery || "Working";
+if(data){
+faculty.value = data.faculty || "";
+start.value = data.start || "";
+end.value = data.end || "";
+status.value = data.status || "Available";
+cpu.value = data.cpu || "Working";
+projector.value = data.projector || "Working";
+battery.value = data.battery || "Working";
+}else{
+// reset
+faculty.value="";
+start.value="";
+end.value="";
+status.value="Available";
+cpu.value="Working";
+projector.value="Working";
+battery.value="Working";
 }
-})
-.catch(err=>{
-console.error(err);
 });
 
 }
 
 
-// 🔁 DROPDOWN CHANGE
+// 🔁 CHANGE EVENT
 code.addEventListener("change", function(){
 loadClass(this.value);
 });
 
 
-// 🔗 LOAD FROM URL
+// 🔗 URL AUTO LOAD
 const params = new URLSearchParams(window.location.search);
 const classParam = params.get("class");
 
@@ -157,7 +161,7 @@ document.querySelectorAll("input, select").forEach(el=>{
 el.disabled = true;
 });
 
-if(saveBtn) saveBtn.style.display = "none";
+if(saveBtn) saveBtn.style.display="none";
 
 }else{
 
@@ -165,10 +169,11 @@ document.querySelectorAll("input, select").forEach(el=>{
 el.disabled = false;
 });
 
-// always readonly
+// readonly fields
 strength.disabled = true;
 benches.disabled = true;
 code.disabled = true;
+
 }
 
 
@@ -176,7 +181,7 @@ code.disabled = true;
 function saveData(){
 
 if(role === "student"){
-alert("❌ Students cannot edit");
+alert("❌ No permission");
 return;
 }
 
@@ -199,14 +204,12 @@ strength: strength.value,
 benches: benches.value
 };
 
-// 🔥 FIREBASE SAVE
 db.ref("classrooms/" + c).set(data)
-.then(()=>{
-alert("✅ Saved Successfully");
-})
-.catch(err=>{
-console.error(err);
-alert("❌ Save failed");
-});
+.then(()=>alert("✅ Saved Successfully"))
+.catch(()=>alert("❌ Save failed"));
 
 }
+
+
+// 🔥 BUTTON LINK (IMPORTANT)
+saveBtn.onclick = saveData;
