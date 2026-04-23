@@ -1,14 +1,12 @@
-<script>
+// 🔐 LOGIN ROLE
+let user = localStorage.getItem("user") || "student";
+let role = "student";
 
-// 🔐 SET DEFAULT ROLE (first time only)
-if(!localStorage.getItem("role")){
-    localStorage.setItem("role","student"); 
-}
-
-const role = localStorage.getItem("role");
-
-// 📚 FULL CLASS DATA
+if(user === "admin.rit") role = "admin";
+else if(user === "staff.rit") role = "staff";
 const classData = {
+
+// 🔹 LEFT SIDE (26)
 
 "A1L03":{name:"First Year CSE B",strength:63,benches:32},
 "A1L04":{name:"First Year AIML",strength:63,benches:32},
@@ -43,6 +41,9 @@ const classData = {
 "C3L03":{name:"Second Year AD A",strength:63,benches:33},
 "C3L04":{name:"Second Year AD B",strength:63,benches:31},
 
+
+// 🔹 RIGHT SIDE (14)
+
 "B3R02":{name:"Second Year EEE",strength:65,benches:34},
 "B3R03":{name:"Third Year EEE",strength:64,benches:32},
 "B3R04":{name:"Third Year CSBS",strength:61,benches:31},
@@ -62,99 +63,76 @@ const classData = {
 "A2R02A":{name:"Third Year CSB B",strength:63,benches:32}
 
 };
+// 📥 DROPDOWN
+let code = document.getElementById("code");
 
-// 📥 LOAD DROPDOWN
-const select = document.getElementById("code");
-select.innerHTML = `<option value="">Select Class</option>`;
-
-for(let key in classData){
-select.innerHTML += `<option value="${key}">${key} - ${classData[key].name}</option>`;
+for(let c in classData){
+code.innerHTML += `<option value="${c}">${c} - ${classData[c].name}</option>`;
 }
 
-// 🔒 ROLE CONTROL
-function applyRoleControl(){
-
-if(role === "student"){
-
-document.querySelectorAll("input, select").forEach(el=>{
-if(el.id !== "code"){
-el.disabled = true;
-}
-});
-
-// hide save button
-document.querySelector("button").style.display = "none";
-
-}
-
-}
-
-applyRoleControl();
-
-// 🔄 ON CLASS CHANGE
-select.addEventListener("change",function(){
+// 🔄 AUTO FILL
+code.addEventListener("change", function(){
 
 let c = this.value;
-if(!c) return;
-
 let d = classData[c];
 
-// autofill
-document.getElementById("title").innerText = c + " - " + d.name;
-document.getElementById("strength").value = d.strength;
-document.getElementById("benches").value = d.benches;
+if(d){
+title.innerText = c + " - " + d.name;
+strength.value = d.strength;
+benches.value = d.benches;
+}
 
-// load saved data
+// LOAD SAVED
 let saved = JSON.parse(localStorage.getItem(c));
 
 if(saved){
-document.getElementById("faculty").value = saved.faculty || "";
-document.getElementById("start").value = saved.start || "";
-document.getElementById("end").value = saved.end || "";
-document.getElementById("status").value = saved.status || "Available";
-document.getElementById("cpu").value = saved.cpu || "Working";
-document.getElementById("projector").value = saved.projector || "Working";
-document.getElementById("battery").value = saved.battery || "Working";
-document.getElementById("purchase").value = saved.purchase || "";
-document.getElementById("replace").value = saved.replace || "";
-document.getElementById("service").value = saved.service || "";
-document.getElementById("next").value = saved.next || "";
+faculty.value = saved.faculty || "";
+start.value = saved.start || "";
+end.value = saved.end || "";
+status.value = saved.status || "Available";
+cpu.value = saved.cpu || "Working";
+projector.value = saved.projector || "Working";
+battery.value = saved.battery || "Working";
 }
 
 });
 
-// 💾 SAVE FUNCTION
+// 🔒 STUDENT LOCK
+if(role === "student"){
+
+document.querySelectorAll("input, select").forEach(el=>{
+
+if(!el.classList.contains("readonly")){
+el.disabled = true;
+}
+
+});
+
+document.getElementById("saveBtn").style.display = "none";
+
+}
+
+// 💾 SAVE
 function saveData(){
 
 if(role === "student"){
-alert("Students cannot edit ❌");
+alert("No permission ❌");
 return;
 }
 
-let c = document.getElementById("code").value;
-
-if(!c){
-alert("Select class first!");
-return;
-}
+let c = code.value;
 
 let data = {
-faculty:document.getElementById("faculty").value,
-start:document.getElementById("start").value,
-end:document.getElementById("end").value,
-status:document.getElementById("status").value,
-cpu:document.getElementById("cpu").value,
-projector:document.getElementById("projector").value,
-battery:document.getElementById("battery").value,
-purchase:document.getElementById("purchase").value,
-replace:document.getElementById("replace").value,
-service:document.getElementById("service").value,
-next:document.getElementById("next").value
+faculty: faculty.value,
+start: start.value,
+end: end.value,
+status: status.value,
+cpu: cpu.value,
+projector: projector.value,
+battery: battery.value
 };
 
-localStorage.setItem(c,JSON.stringify(data));
+localStorage.setItem(c, JSON.stringify(data));
 
-alert("Saved Successfully ✅");
+alert("Saved ✅");
 }
-
-</script>
