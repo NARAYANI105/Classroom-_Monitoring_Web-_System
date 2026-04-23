@@ -1,13 +1,15 @@
-// 🔐 LOGIN ROLE
+// 🔐 USER ROLE (LOGIN BASED)
 let user = localStorage.getItem("user") || "student";
-let role = "student";
 
+let role = "student";
 if(user === "admin.rit") role = "admin";
 else if(user === "staff.rit") role = "staff";
+
+
+// 📚 FULL CLASS DATA (40)
 const classData = {
 
-// 🔹 LEFT SIDE (26)
-
+// LEFT SIDE (26)
 "A1L03":{name:"First Year CSE B",strength:63,benches:32},
 "A1L04":{name:"First Year AIML",strength:63,benches:32},
 
@@ -41,9 +43,7 @@ const classData = {
 "C3L03":{name:"Second Year AD A",strength:63,benches:33},
 "C3L04":{name:"Second Year AD B",strength:63,benches:31},
 
-
-// 🔹 RIGHT SIDE (14)
-
+// RIGHT SIDE (14)
 "B3R02":{name:"Second Year EEE",strength:65,benches:34},
 "B3R03":{name:"Third Year EEE",strength:64,benches:32},
 "B3R04":{name:"Third Year CSBS",strength:61,benches:31},
@@ -61,19 +61,34 @@ const classData = {
 
 "A2R02":{name:"Third Year CSE A",strength:64,benches:32},
 "A2R02A":{name:"Third Year CSB B",strength:63,benches:32}
-
 };
-// 📥 DROPDOWN
-let code = document.getElementById("code");
 
+
+// 📥 ELEMENTS
+const code = document.getElementById("code");
+const strength = document.getElementById("strength");
+const benches = document.getElementById("benches");
+const title = document.getElementById("title");
+
+const faculty = document.getElementById("faculty");
+const start = document.getElementById("start");
+const end = document.getElementById("end");
+const status = document.getElementById("status");
+const cpu = document.getElementById("cpu");
+const projector = document.getElementById("projector");
+const battery = document.getElementById("battery");
+
+
+// 📥 DROPDOWN LOAD
+code.innerHTML = `<option value="">Select Class</option>`;
 for(let c in classData){
 code.innerHTML += `<option value="${c}">${c} - ${classData[c].name}</option>`;
 }
 
-// 🔄 AUTO FILL
-code.addEventListener("change", function(){
 
-let c = this.value;
+// 🔥 FUNCTION: AUTO FILL
+function fillClassDetails(c){
+
 let d = classData[c];
 
 if(d){
@@ -82,7 +97,7 @@ strength.value = d.strength;
 benches.value = d.benches;
 }
 
-// LOAD SAVED
+// LOAD SAVED DATA
 let saved = JSON.parse(localStorage.getItem(c));
 
 if(saved){
@@ -95,14 +110,37 @@ projector.value = saved.projector || "Working";
 battery.value = saved.battery || "Working";
 }
 
+}
+
+
+// 🔄 DROPDOWN CHANGE
+code.addEventListener("change", function(){
+fillClassDetails(this.value);
 });
+
+
+// 🔗 LOAD FROM URL
+const params = new URLSearchParams(window.location.search);
+const classParam = params.get("class");
+
+if(classParam){
+
+let codeOnly = classParam.split(" - ")[0];
+
+code.value = codeOnly;
+
+// 🔥 IMPORTANT CALL
+fillClassDetails(codeOnly);
+
+}
+
 
 // 🔒 STUDENT LOCK
 if(role === "student"){
 
 document.querySelectorAll("input, select").forEach(el=>{
 
-if(!el.classList.contains("readonly")){
+if(el.id !== "code" && !el.classList.contains("readonly")){
 el.disabled = true;
 }
 
@@ -112,7 +150,8 @@ document.getElementById("saveBtn").style.display = "none";
 
 }
 
-// 💾 SAVE
+
+// 💾 SAVE FUNCTION
 function saveData(){
 
 if(role === "student"){
@@ -121,6 +160,11 @@ return;
 }
 
 let c = code.value;
+
+if(!c){
+alert("Select Class ❌");
+return;
+}
 
 let data = {
 faculty: faculty.value,
@@ -134,5 +178,6 @@ battery: battery.value
 
 localStorage.setItem(c, JSON.stringify(data));
 
-alert("Saved ✅");
+alert("Saved Successfully ✅");
+
 }
