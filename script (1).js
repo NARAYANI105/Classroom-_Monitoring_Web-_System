@@ -1,69 +1,70 @@
-// 🔥 Firebase Config
-const firebaseConfig = {
-apiKey: "YOUR_KEY",
-authDomain: "YOUR_DOMAIN",
-databaseURL: "YOUR_DB_URL"const classData = {
+// 🔐 USER ROLE (LOGIN BASED)
+let user = localStorage.getItem("user") || "student";
 
-"A1L03": {name:"First Year CSE B", strength:63, benches:32},
-"A1L04": {name:"First Year AIML", strength:63, benches:32},
+let role = "student";
+if(user === "admin.rit") role = "admin";
+else if(user === "staff.rit") role = "staff";
 
-"A2L05": {name:"First Year MECH", strength:30, benches:15},
-"A2L04": {name:"First Year CSE A", strength:63, benches:32},
-"A2L03": {name:"First Year IT", strength:63, benches:30},
-"A2L02": {name:"First Year ECE B", strength:63, benches:32},
-"A2L01": {name:"First Year ECE A", strength:63, benches:32},
 
-"B0L01": {name:"First Year AD A", strength:63, benches:31},
-"B0L02": {name:"First Year AD B", strength:63, benches:31},
-"B0L03": {name:"First Year CSBS", strength:63, benches:31},
+// 📚 FULL CLASS DATA (40)
+const classData = {
 
-"B1L05": {name:"First Year EEE", strength:63, benches:32},
-"B1L04": {name:"First Year CSE C", strength:63, benches:32},
-"B1L02": {name:"First Year Civil", strength:30, benches:25},
+// LEFT SIDE (26)
+"A1L03":{name:"First Year CSE B",strength:63,benches:32},
+"A1L04":{name:"First Year AIML",strength:63,benches:32},
 
-"B3L05": {name:"Final Year AD A", strength:59, benches:30},
-"B3L04": {name:"Third Year CIVIL", strength:45, benches:25},
-"B3L03": {name:"Second Year CIVIL", strength:41, benches:25},
-"B3L02": {name:"Final Year CSBS", strength:60, benches:30},
+"A2L05":{name:"First Year MECH",strength:30,benches:15},
+"A2L04":{name:"First Year CSE A",strength:63,benches:32},
+"A2L03":{name:"First Year IT",strength:63,benches:30},
+"A2L02":{name:"First Year ECE B",strength:63,benches:32},
+"A2L01":{name:"First Year ECE A",strength:63,benches:32},
 
-"C2L05": {name:"Second Year MECH", strength:42, benches:25},
-"C2L04": {name:"Third Year MECH", strength:63, benches:31},
-"C2L03": {name:"Final Year MECH", strength:50, benches:25},
-"C2L02": {name:"Third Year IT", strength:62, benches:31},
-"C2L01": {name:"Second Year IT", strength:64, benches:32},
+"B0L01":{name:"First Year AD A",strength:63,benches:31},
+"B0L02":{name:"First Year AD B",strength:63,benches:31},
+"B0L03":{name:"First Year CSBS",strength:63,benches:31},
 
-"C3L01": {name:"Third Year AD A", strength:59, benches:30},
-"C3L02": {name:"Third Year AD B", strength:59, benches:30},
-"C3L03": {name:"Second Year AD A", strength:63, benches:33},
-"C3L04": {name:"Second Year AD B", strength:63, benches:31},
+"B1L05":{name:"First Year EEE",strength:63,benches:32},
+"B1L04":{name:"First Year CSE C",strength:63,benches:32},
+"B1L02":{name:"First Year Civil",strength:30,benches:25},
 
-"B3R02": {name:"Second Year EEE", strength:65, benches:34},
-"B3R03": {name:"Third Year EEE", strength:64, benches:32},
-"B3R04": {name:"Third Year CSBS", strength:61, benches:31},
-"B3R05": {name:"Second Year CSBS", strength:55, benches:28},
+"B3L05":{name:"Final Year AD A",strength:59,benches:30},
+"B3L04":{name:"Third Year CIVIL",strength:45,benches:25},
+"B3L03":{name:"Second Year CIVIL",strength:41,benches:25},
+"B3L02":{name:"Final Year CSBS",strength:60,benches:30},
 
-"C3R01": {name:"Second Year ECE-A", strength:64, benches:32},
-"C3R02": {name:"Second Year ECE-B", strength:64, benches:32},
-"C3R03": {name:"Third Year ECE-A", strength:63, benches:32},
-"C3R04": {name:"Third Year ECE-B", strength:62, benches:31},
-"C3R05": {name:"Final Year ECE-A", strength:59, benches:30},
+"C2L05":{name:"Second Year MECH",strength:42,benches:25},
+"C2L04":{name:"Third Year MECH",strength:63,benches:31},
+"C2L03":{name:"Final Year MECH",strength:50,benches:25},
+"C2L02":{name:"Third Year IT",strength:62,benches:31},
+"C2L01":{name:"Second Year IT",strength:64,benches:32},
 
-"C2R04": {name:"Second Year CSE A", strength:63, benches:32},
-"C2R05": {name:"Second Year CSE B", strength:63, benches:32},
-"C2R06": {name:"Second Year CSE C", strength:64, benches:32},
+"C3L01":{name:"Third Year AD A",strength:59,benches:30},
+"C3L02":{name:"Third Year AD B",strength:59,benches:30},
+"C3L03":{name:"Second Year AD A",strength:63,benches:33},
+"C3L04":{name:"Second Year AD B",strength:63,benches:31},
 
-"A2R02": {name:"Third Year CSE A", strength:64, benches:32},
-"A2R02A": {name:"Third Year CSB B", strength:63, benches:32}
+// RIGHT SIDE (14)
+"B3R02":{name:"Second Year EEE",strength:65,benches:34},
+"B3R03":{name:"Third Year EEE",strength:64,benches:32},
+"B3R04":{name:"Third Year CSBS",strength:61,benches:31},
+"B3R05":{name:"Second Year CSBS",strength:55,benches:28},
 
+"C3R01":{name:"Second Year ECE-A",strength:64,benches:32},
+"C3R02":{name:"Second Year ECE-B",strength:64,benches:32},
+"C3R03":{name:"Third Year ECE-A",strength:63,benches:32},
+"C3R04":{name:"Third Year ECE-B",strength:62,benches:31},
+"C3R05":{name:"Final Year ECE-A",strength:59,benches:30},
+
+"C2R04":{name:"Second Year CSE A",strength:63,benches:32},
+"C2R05":{name:"Second Year CSE B",strength:63,benches:32},
+"C2R06":{name:"Second Year CSE C",strength:64,benches:32},
+
+"A2R02":{name:"Third Year CSE A",strength:64,benches:32},
+"A2R02A":{name:"Third Year CSB B",strength:63,benches:32}
 };
-projectId: "YOUR_ID"
-};
-
-firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
 
 
-// ✅ GET ELEMENTS
+// 📥 ELEMENTS
 const code = document.getElementById("code");
 const strength = document.getElementById("strength");
 const benches = document.getElementById("benches");
@@ -73,141 +74,109 @@ const faculty = document.getElementById("faculty");
 const start = document.getElementById("start");
 const end = document.getElementById("end");
 const status = document.getElementById("status");
-const projector = document.getElementById("projector");
 const cpu = document.getElementById("cpu");
-const purchaseDate = document.getElementById("purchaseDate");
-const replaceDate = document.getElementById("replaceDate");
-const saveBtn = document.getElementById("saveBtn");
+const projector = document.getElementById("projector");
+const battery = document.getElementById("battery");
 
 
-// 🔐 ROLE CONTROL (LOGIN BASED)
-let role = localStorage.getItem("role") || "student";
-
-window.onload = function(){
-
-if(role === "student"){
-
-// ❌ Disable editing
-document.querySelectorAll("input, select").forEach(el=>{
-el.disabled = true;
-});
-
-// ❌ Hide save button
-saveBtn.style.display = "none";
-
+// 📥 DROPDOWN LOAD
+code.innerHTML = `<option value="">Select Class</option>`;
+for(let c in classData){
+code.innerHTML += `<option value="${c}">${c} - ${classData[c].name}</option>`;
 }
 
-};
 
-
-// 🧠 FULL CLASS DATA (26 + 14 CLASSROOMS)
-const classData = {
-
-"A1L03": {name:"First Year CSE B", strength:63, benches:32},
-"A1L04": {name:"First Year AIML", strength:63, benches:32},
-
-"A2L05": {name:"First Year MECH", strength:30, benches:15},
-"A2L04": {name:"First Year CSE A", strength:63, benches:32},
-"A2L03": {name:"First Year IT", strength:63, benches:30},
-"A2L02": {name:"First Year ECE B", strength:63, benches:32},
-"A2L01": {name:"First Year ECE A", strength:63, benches:32},
-
-"B0L01": {name:"First Year AD A", strength:63, benches:31},
-"B0L02": {name:"First Year AD B", strength:63, benches:31},
-"B0L03": {name:"First Year CSBS", strength:63, benches:31},
-
-"B1L05": {name:"First Year EEE", strength:63, benches:32},
-"B1L04": {name:"First Year CSE C", strength:63, benches:32},
-"B1L02": {name:"First Year Civil", strength:30, benches:25},
-
-"B3L05": {name:"Final Year AD A", strength:59, benches:30},
-"B3L04": {name:"Third Year CIVIL", strength:45, benches:25},
-"B3L03": {name:"Second Year CIVIL", strength:41, benches:25},
-"B3L02": {name:"Final Year CSBS", strength:60, benches:30},
-
-"C2L05": {name:"Second Year MECH", strength:42, benches:25},
-"C2L04": {name:"Third Year MECH", strength:63, benches:31},
-"C2L03": {name:"Final Year MECH", strength:50, benches:25},
-"C2L02": {name:"Third Year IT", strength:62, benches:31},
-"C2L01": {name:"Second Year IT", strength:64, benches:32},
-
-"C3L01": {name:"Third Year AD A", strength:59, benches:30},
-"C3L02": {name:"Third Year AD B", strength:59, benches:30},
-"C3L03": {name:"Second Year AD A", strength:63, benches:33},
-"C3L04": {name:"Second Year AD B", strength:63, benches:31},
-
-"B3R02": {name:"Second Year EEE", strength:65, benches:34},
-"B3R03": {name:"Third Year EEE", strength:64, benches:32},
-"B3R04": {name:"Third Year CSBS", strength:61, benches:31},
-"B3R05": {name:"Second Year CSBS", strength:55, benches:28},
-
-"C3R01": {name:"Second Year ECE-A", strength:64, benches:32},
-"C3R02": {name:"Second Year ECE-B", strength:64, benches:32},
-"C3R03": {name:"Third Year ECE-A", strength:63, benches:32},
-"C3R04": {name:"Third Year ECE-B", strength:62, benches:31},
-"C3R05": {name:"Final Year ECE-A", strength:59, benches:30},
-
-"C2R04": {name:"Second Year CSE A", strength:63, benches:32},
-"C2R05": {name:"Second Year CSE B", strength:63, benches:32},
-"C2R06": {name:"Second Year CSE C", strength:64, benches:32},
-
-"A2R02": {name:"Third Year CSE A", strength:64, benches:32},
-"A2R02A": {name:"Third Year CSB B", strength:63, benches:32}
-
-};
-
-
-// 🔄 AUTO FILL CLASS DETAILS
-code.addEventListener("input", function(){
-
-let input = this.value.toUpperCase().trim();
-
-// extract code only
-let c = input.includes("-") ? input.split("-")[0].trim() : input;
-
-if(classData[c]){
+// 🔥 FUNCTION: AUTO FILL
+function fillClassDetails(c){
 
 let d = classData[c];
 
-// ✅ show full name
-this.value = c + " - " + d.name;
-title.innerText = this.value;
-
-// ✅ auto fill
+if(d){
+title.innerText = c + " - " + d.name;
 strength.value = d.strength;
 benches.value = d.benches;
+}
 
+// LOAD SAVED DATA
+let saved = JSON.parse(localStorage.getItem(c));
+
+if(saved){
+faculty.value = saved.faculty || "";
+start.value = saved.start || "";
+end.value = saved.end || "";
+status.value = saved.status || "Available";
+cpu.value = saved.cpu || "Working";
+projector.value = saved.projector || "Working";
+battery.value = saved.battery || "Working";
+}
+
+}
+
+
+// 🔄 DROPDOWN CHANGE
+code.addEventListener("change", function(){
+fillClassDetails(this.value);
+});
+
+
+// 🔗 LOAD FROM URL
+const params = new URLSearchParams(window.location.search);
+const classParam = params.get("class");
+
+if(classParam){
+
+let codeOnly = classParam.split(" - ")[0];
+
+code.value = codeOnly;
+
+// 🔥 IMPORTANT CALL
+fillClassDetails(codeOnly);
+
+}
+
+
+// 🔒 STUDENT LOCK
+if(role === "student"){
+
+document.querySelectorAll("input, select").forEach(el=>{
+
+if(el.id !== "code" && !el.classList.contains("readonly")){
+el.disabled = true;
 }
 
 });
 
+document.getElementById("saveBtn").style.display = "none";
 
-// 💾 SAVE DATA TO FIREBASE
+}
+
+
+// 💾 SAVE FUNCTION
 function saveData(){
 
 if(role === "student"){
-alert("Students cannot edit ❌");
+alert("No permission ❌");
 return;
 }
 
-let full = code.value;
-let c = full.split(" - ")[0];
+let c = code.value;
 
-let obj = {
-fullName: full,
+if(!c){
+alert("Select Class ❌");
+return;
+}
+
+let data = {
 faculty: faculty.value,
 start: start.value,
 end: end.value,
 status: status.value,
-projector: projector.value,
 cpu: cpu.value,
-strength: strength.value,
-benches: benches.value,
-purchaseDate: purchaseDate.value,
-replaceDate: replaceDate.value
+projector: projector.value,
+battery: battery.value
 };
 
-db.ref("classrooms/" + c).set(obj);
+localStorage.setItem(c, JSON.stringify(data));
 
 alert("Saved Successfully ✅");
 
