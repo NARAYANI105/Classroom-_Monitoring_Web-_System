@@ -1,15 +1,26 @@
-// 🔐 USER ROLE (LOGIN BASED)
-let user = localStorage.getItem("user") || "student";
+// 🔐 ROLE (login simulation)
+let role = localStorage.getItem("role") || "student";
+// test:
+// localStorage.setItem("role","admin")
+// localStorage.setItem("role","staff")
+// localStorage.setItem("role","student")
 
-let role = "student";
-if(user === "admin.rit") role = "admin";
-else if(user === "staff.rit") role = "staff";
+// 🔥 FIREBASE CONFIG (REPLACE YOUR VALUES)
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_DOMAIN",
+  databaseURL: "YOUR_DB_URL",
+  projectId: "YOUR_PROJECT_ID"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
 
 
-// 📚 FULL CLASS DATA (40)
+// 📚 CLASS DATA (ALL 40)
 const classData = {
 
-// LEFT SIDE (26)
+// LEFT (26)
 "A1L03":{name:"First Year CSE B",strength:63,benches:32},
 "A1L04":{name:"First Year AIML",strength:63,benches:32},
 
@@ -43,17 +54,17 @@ const classData = {
 "C3L03":{name:"Second Year AD A",strength:63,benches:33},
 "C3L04":{name:"Second Year AD B",strength:63,benches:31},
 
-// RIGHT SIDE (14)
+// RIGHT (14)
 "B3R02":{name:"Second Year EEE",strength:65,benches:34},
 "B3R03":{name:"Third Year EEE",strength:64,benches:32},
 "B3R04":{name:"Third Year CSBS",strength:61,benches:31},
 "B3R05":{name:"Second Year CSBS",strength:55,benches:28},
 
-"C3R01":{name:"Second Year ECE-A",strength:64,benches:32},
-"C3R02":{name:"Second Year ECE-B",strength:64,benches:32},
-"C3R03":{name:"Third Year ECE-A",strength:63,benches:32},
-"C3R04":{name:"Third Year ECE-B",strength:62,benches:31},
-"C3R05":{name:"Final Year ECE-A",strength:59,benches:30},
+"C3R01":{name:"Second Year ECE A",strength:64,benches:32},
+"C3R02":{name:"Second Year ECE B",strength:64,benches:32},
+"C3R03":{name:"Third Year ECE A",strength:63,benches:32},
+"C3R04":{name:"Third Year ECE B",strength:62,benches:31},
+"C3R05":{name:"Final Year ECE A",strength:59,benches:30},
 
 "C2R04":{name:"Second Year CSE A",strength:63,benches:32},
 "C2R05":{name:"Second Year CSE B",strength:63,benches:32},
@@ -64,11 +75,11 @@ const classData = {
 };
 
 
-// 📥 ELEMENTS
+// 📌 ELEMENTS
 const code = document.getElementById("code");
+const title = document.getElementById("title");
 const strength = document.getElementById("strength");
 const benches = document.getElementById("benches");
-const title = document.getElementById("title");
 
 const faculty = document.getElementById("faculty");
 const start = document.getElementById("start");
@@ -78,27 +89,32 @@ const cpu = document.getElementById("cpu");
 const projector = document.getElementById("projector");
 const battery = document.getElementById("battery");
 
+const saveBtn = document.getElementById("saveBtn");
 
-// 📥 DROPDOWN LOAD
+
+// 📥 LOAD DROPDOWN
 code.innerHTML = `<option value="">Select Class</option>`;
 for(let c in classData){
 code.innerHTML += `<option value="${c}">${c} - ${classData[c].name}</option>`;
 }
 
 
-// 🔥 FUNCTION: AUTO FILL
-function fillClassDetails(c){
+// 🔥 LOAD CLASS DETAILS
+function loadClass(c){
+
+if(!classData[c]) return;
 
 let d = classData[c];
 
-if(d){
+// static data
 title.innerText = c + " - " + d.name;
 strength.value = d.strength;
 benches.value = d.benches;
-}
 
-// LOAD SAVED DATA
-let saved = JSON.parse(localStorage.getItem(c));
+// 🔄 FIREBASE LOAD
+db.ref("classrooms/" + c).once("value")
+.then(snapshot=>{
+let saved = snapshot.val();
 
 if(saved){
 faculty.value = saved.faculty || "";
@@ -109,13 +125,17 @@ cpu.value = saved.cpu || "Working";
 projector.value = saved.projector || "Working";
 battery.value = saved.battery || "Working";
 }
+})
+.catch(err=>{
+console.error(err);
+});
 
 }
 
 
-// 🔄 DROPDOWN CHANGE
+// 🔁 DROPDOWN CHANGE
 code.addEventListener("change", function(){
-fillClassDetails(this.value);
+loadClass(this.value);
 });
 
 
@@ -124,30 +144,31 @@ const params = new URLSearchParams(window.location.search);
 const classParam = params.get("class");
 
 if(classParam){
-
-let codeOnly = classParam.split(" - ")[0];
-
-code.value = codeOnly;
-
-// 🔥 IMPORTANT CALL
-fillClassDetails(codeOnly);
-
+let c = classParam.split(" - ")[0];
+code.value = c;
+loadClass(c);
 }
 
 
-// 🔒 STUDENT LOCK
+// 🔒 ROLE CONTROL
 if(role === "student"){
 
 document.querySelectorAll("input, select").forEach(el=>{
-
-if(el.id !== "code" && !el.classList.contains("readonly")){
 el.disabled = true;
-}
-
 });
 
-document.getElementById("saveBtn").style.display = "none";
+if(saveBtn) saveBtn.style.display = "none";
 
+}else{
+
+document.querySelectorAll("input, select").forEach(el=>{
+el.disabled = false;
+});
+
+// always readonly
+strength.disabled = true;
+benches.disabled = true;
+code.disabled = true;
 }
 
 
@@ -155,14 +176,14 @@ document.getElementById("saveBtn").style.display = "none";
 function saveData(){
 
 if(role === "student"){
-alert("No permission ❌");
+alert("❌ Students cannot edit");
 return;
 }
 
 let c = code.value;
 
 if(!c){
-alert("Select Class ❌");
+alert("Select class ❌");
 return;
 }
 
@@ -173,11 +194,19 @@ end: end.value,
 status: status.value,
 cpu: cpu.value,
 projector: projector.value,
-battery: battery.value
+battery: battery.value,
+strength: strength.value,
+benches: benches.value
 };
 
-localStorage.setItem(c, JSON.stringify(data));
-
-alert("Saved Successfully ✅");
+// 🔥 FIREBASE SAVE
+db.ref("classrooms/" + c).set(data)
+.then(()=>{
+alert("✅ Saved Successfully");
+})
+.catch(err=>{
+console.error(err);
+alert("❌ Save failed");
+});
 
 }
