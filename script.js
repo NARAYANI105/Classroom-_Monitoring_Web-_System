@@ -1,12 +1,23 @@
-// 🔐 ROLE (CHANGE HERE FOR TESTING)
-let role = localStorage.getItem("role") || "student";
-// localStorage.setItem("role","admin")
-// localStorage.setItem("role","staff")
-// localStorage.setItem("role","student")
+// 🔐 LOGIN SYSTEM (RUN ONLY FIRST TIME)
+if(!localStorage.getItem("role")){
+let pass = prompt("Enter Password:");
 
-// 📚 FULL 40 CLASS DATA (AUTO FILL)
+if(pass === "admin.RIT"){
+localStorage.setItem("role","admin");
+}
+else if(pass === "staff.RIT"){
+localStorage.setItem("role","staff");
+}
+else{
+localStorage.setItem("role","student"); // default
+}
+}
+
+let role = localStorage.getItem("role");
+
+
+// 📚 CLASS DATA (ALL 40)
 const classData = {
-
 "A1L03":{name:"First Year CSE B",strength:63,benches:32},
 "A1L04":{name:"First Year AIML",strength:63,benches:32},
 
@@ -59,6 +70,7 @@ const classData = {
 "A2R02A":{name:"Third Year CSB B",strength:63,benches:32}
 };
 
+
 // 📌 ELEMENTS
 const code = document.getElementById("code");
 const title = document.getElementById("title");
@@ -76,22 +88,30 @@ const battery = document.getElementById("battery");
 const saveBtn = document.getElementById("saveBtn");
 const lastSaved = document.getElementById("lastSaved");
 
-// 📥 DROPDOWN LOAD
+
+// 📥 DROPDOWN
 code.innerHTML = `<option value="">Select Class</option>`;
 for(let c in classData){
 code.innerHTML += `<option value="${c}">${c} - ${classData[c].name}</option>`;
 }
 
-// 🔄 LOAD CLASS
+
+// 🔁 LOAD CLASS
 function loadClass(c){
+
+if(!classData[c]) return;
 
 let d = classData[c];
 
+// static data
 title.innerText = c + " - " + d.name;
 strength.value = d.strength;
 benches.value = d.benches;
 
-// load saved
+// save last selected class
+localStorage.setItem("lastClass", c);
+
+// load saved data
 let saved = JSON.parse(localStorage.getItem(c));
 
 if(saved){
@@ -104,7 +124,6 @@ projector.value = saved.projector || "Working";
 battery.value = saved.battery || "Working";
 
 lastSaved.innerText = "Last Saved: " + (saved.lastSaved || "--");
-
 }else{
 faculty.value="";
 start.value="";
@@ -118,10 +137,20 @@ lastSaved.innerText = "Last Saved: --";
 }
 }
 
-// 🔁 CHANGE
+
+// 🔁 DROPDOWN CHANGE
 code.addEventListener("change",function(){
 loadClass(this.value);
 });
+
+
+// 🔥 AUTO LOAD LAST SELECTED CLASS
+let last = localStorage.getItem("lastClass");
+if(last){
+code.value = last;
+loadClass(last);
+}
+
 
 // 🔒 ROLE CONTROL
 if(role === "student"){
@@ -140,13 +169,15 @@ el.disabled = false;
 
 strength.disabled = true;
 benches.disabled = true;
+code.disabled = true; // class change only via previous page
 }
+
 
 // 💾 SAVE
 saveBtn.onclick = function(){
 
 if(role === "student"){
-alert("No permission ❌");
+alert("❌ No permission");
 return;
 }
 
@@ -157,7 +188,7 @@ alert("Select class ❌");
 return;
 }
 
-// 🕒 DATE + TIME
+// ⏰ DATE + TIME
 let now = new Date();
 let formatted =
 now.getDate().toString().padStart(2,'0') + "-" +
@@ -178,6 +209,6 @@ lastSaved: formatted
 
 localStorage.setItem(c, JSON.stringify(data));
 
-alert("Saved Successfully ✅");
+alert("✅ Saved Successfully");
 loadClass(c);
 };
