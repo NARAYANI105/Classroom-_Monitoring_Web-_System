@@ -32,13 +32,11 @@ margin-bottom:20px;
 display:grid;
 grid-template-columns:1fr 1fr;
 gap:25px;
-align-items:start;
 }
 
 .column{
 display:flex;
 flex-direction:column;
-justify-content:flex-start;
 }
 
 label{
@@ -51,7 +49,6 @@ padding:8px;
 margin-top:5px;
 border-radius:6px;
 border:1px solid #ccc;
-font-size:14px;
 }
 
 .readonly{
@@ -74,11 +71,11 @@ button:hover{
 background:#2575fc;
 }
 
-/* 📱 Mobile */
-@media(max-width:768px){
-.grid{
-grid-template-columns:1fr;
-}
+#lastSaved{
+margin-top:15px;
+font-size:14px;
+color:#555;
+text-align:center;
 }
 
 </style>
@@ -105,7 +102,7 @@ grid-template-columns:1fr;
 <input id="benches" class="readonly" readonly>
 
 <label>Faculty</label>
-<input id="faculty" placeholder="Enter faculty name">
+<input id="faculty">
 
 <label>Start Time</label>
 <input type="time" id="start">
@@ -146,15 +143,12 @@ grid-template-columns:1fr;
 
 </div>
 
-<button id="saveBtn" onclick="saveData()">Save</button>
+<button id="saveBtn">Save</button>
+
+<p id="lastSaved">Last Saved: --</p>
 
 </div>
 
-<!-- 🔥 FIREBASE CDN -->
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
-
-<!-- 🔥 YOUR SCRIPT -->
 <script src="script.js"></script>
 
 </body>
