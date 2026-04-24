@@ -1,4 +1,12 @@
-// 🔐 LOGIN SYSTEM (RUN ONLY FIRST TIME)
+// 🔗 AUTO LOAD CLASS FROM URL
+const params = new URLSearchParams(window.location.search);
+const classParam = params.get("class");
+
+if(classParam){
+let c = classParam.split(" - ")[0];  // only code
+code.value = c;
+loadClass(c);
+}// 🔐 LOGIN SYSTEM (RUN ONLY FIRST TIME)
 if(!localStorage.getItem("role")){
 let pass = prompt("Enter Password:");
 
