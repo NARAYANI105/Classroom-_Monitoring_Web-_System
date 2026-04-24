@@ -1,31 +1,15 @@
-// 🔗 AUTO LOAD CLASS FROM URL
-const params = new URLSearchParams(window.location.search);
-const classParam = params.get("class");
-
-if(classParam){
-let c = classParam.split(" - ")[0];  // only code
-code.value = c;
-loadClass(c);
-}// 🔐 LOGIN SYSTEM (RUN ONLY FIRST TIME)
-if(!localStorage.getItem("role")){
-let pass = prompt("Enter Password:");
-
-if(pass === "admin.RIT"){
-localStorage.setItem("role","admin");
-}
-else if(pass === "staff.RIT"){
-localStorage.setItem("role","staff");
-}
-else{
-localStorage.setItem("role","student"); // default
-}
-}
-
-let role = localStorage.getItem("role");
+// 🔐 ROLE (login simulation)
+let role = localStorage.getItem("role") || "Student";
+// test:
+// localStorage.setItem("role","student")
+// localStorage.setItem("role","staff")
+// localStorage.setItem("role","admin")
 
 
-// 📚 CLASS DATA (ALL 40)
+// 📚 ALL 40 CLASS DATA (26 + 14)
 const classData = {
+
+// LEFT SIDE (26)
 "A1L03":{name:"First Year CSE B",strength:63,benches:32},
 "A1L04":{name:"First Year AIML",strength:63,benches:32},
 
@@ -59,6 +43,8 @@ const classData = {
 "C3L03":{name:"Second Year AD A",strength:63,benches:33},
 "C3L04":{name:"Second Year AD B",strength:63,benches:31},
 
+
+// RIGHT SIDE (14)
 "B3R02":{name:"Second Year EEE",strength:65,benches:34},
 "B3R03":{name:"Third Year EEE",strength:64,benches:32},
 "B3R04":{name:"Third Year CSBS",strength:61,benches:31},
@@ -97,29 +83,26 @@ const saveBtn = document.getElementById("saveBtn");
 const lastSaved = document.getElementById("lastSaved");
 
 
-// 📥 DROPDOWN
+// 📥 DROPDOWN LOAD
 code.innerHTML = `<option value="">Select Class</option>`;
 for(let c in classData){
 code.innerHTML += `<option value="${c}">${c} - ${classData[c].name}</option>`;
 }
 
 
-// 🔁 LOAD CLASS
+// 🔥 LOAD CLASS FUNCTION
 function loadClass(c){
 
 if(!classData[c]) return;
 
 let d = classData[c];
 
-// static data
+// ✅ AUTO FILL
 title.innerText = c + " - " + d.name;
 strength.value = d.strength;
 benches.value = d.benches;
 
-// save last selected class
-localStorage.setItem("lastClass", c);
-
-// load saved data
+// 🔁 LOAD SAVED DATA
 let saved = JSON.parse(localStorage.getItem(c));
 
 if(saved){
@@ -130,8 +113,7 @@ status.value = saved.status || "Available";
 cpu.value = saved.cpu || "Working";
 projector.value = saved.projector || "Working";
 battery.value = saved.battery || "Working";
-
-lastSaved.innerText = "Last Saved: " + (saved.lastSaved || "--");
+lastSaved.innerText = "Last Saved: " + saved.time;
 }else{
 faculty.value="";
 start.value="";
@@ -140,28 +122,30 @@ status.value="Available";
 cpu.value="Working";
 projector.value="Working";
 battery.value="Working";
-
-lastSaved.innerText = "Last Saved: --";
+lastSaved.innerText = "Last Saved: ---";
 }
 }
 
 
 // 🔁 DROPDOWN CHANGE
-code.addEventListener("change",function(){
+code.addEventListener("change", function(){
 loadClass(this.value);
 });
 
 
-// 🔥 AUTO LOAD LAST SELECTED CLASS
-let last = localStorage.getItem("lastClass");
-if(last){
-code.value = last;
-loadClass(last);
+// 🔗 URL AUTO LOAD
+const params = new URLSearchParams(window.location.search);
+const classParam = params.get("class");
+
+if(classParam){
+let c = classParam.split(" - ")[0];
+code.value = c;
+loadClass(c);
 }
 
 
 // 🔒 ROLE CONTROL
-if(role === "student"){
+if(role === "Student"){
 
 document.querySelectorAll("input, select").forEach(el=>{
 el.disabled = true;
@@ -177,14 +161,14 @@ el.disabled = false;
 
 strength.disabled = true;
 benches.disabled = true;
-code.disabled = true; // class change only via previous page
+code.disabled = true;
 }
 
 
 // 💾 SAVE
-saveBtn.onclick = function(){
+function saveData(){
 
-if(role === "student"){
+if(role === "Student"){
 alert("❌ No permission");
 return;
 }
@@ -196,13 +180,9 @@ alert("Select class ❌");
 return;
 }
 
-// ⏰ DATE + TIME
+// 🕒 TIME FORMAT
 let now = new Date();
-let formatted =
-now.getDate().toString().padStart(2,'0') + "-" +
-(now.getMonth()+1).toString().padStart(2,'0') + "-" +
-now.getFullYear() + " | " +
-now.toLocaleTimeString();
+let time = now.toLocaleString("en-IN");
 
 let data = {
 faculty: faculty.value,
@@ -212,11 +192,12 @@ status: status.value,
 cpu: cpu.value,
 projector: projector.value,
 battery: battery.value,
-lastSaved: formatted
+time: time
 };
 
 localStorage.setItem(c, JSON.stringify(data));
 
+lastSaved.innerText = "Last Saved: " + time;
+
 alert("✅ Saved Successfully");
-loadClass(c);
-};
+}
