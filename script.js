@@ -1,27 +1,29 @@
-// 🔐 LOGIN SYSTEM
-let pass = prompt("Enter Password:\nRIT (Student)\nSTAFF.RIT\nADMIN.RIT");
+// 🔐 LOGIN SYSTEM (CLEAN VERSION)
+let pass = prompt("Enter your password");
 
-// convert to uppercase (important)
+// normalize
 pass = pass ? pass.toUpperCase().trim() : "";
 
+// default role
 let role = "Student";
 
+// check password
 if(pass === "ADMIN.RIT"){
     role = "Admin";
 }
 else if(pass === "STAFF.RIT"){
-    role = "Staff";
+    role = "staff";
 }
 else if(pass === "RIT"){
     role = "Student";
 }
 else{
-    alert("Invalid Password → Default Student Mode");
+    alert("Invalid Password");
     role = "Student";
 }
 
 // store role
-localStorage.setItem("role", role);// 🔐 ROLE (login simulation)
+localStorage.setItem("role", role);
 
 // test:
 // localStorage.setItem("role","Student")
