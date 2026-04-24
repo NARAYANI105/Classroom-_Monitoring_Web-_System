@@ -1,9 +1,9 @@
 // 🔐 USER ROLE (LOGIN BASED)
-let user = localStorage.getItem("user") || "student";
+let user = localStorage.getItem("user") || "Student";
 
 let role = "student";
-if(user === "admin.rit") role = "admin";
-else if(user === "staff.rit") role = "staff";
+if(user === "ADMIN.RIT") role = "Admin";
+else if(user === "STAFF.RIT") role = "Staff";
 
 
 // 📚 FULL CLASS DATA (40)
