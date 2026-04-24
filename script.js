@@ -52,7 +52,6 @@ const classData = {
 "C3L03":{name:"Second Year AD A",strength:63,benches:33},
 "C3L04":{name:"Second Year AD B",strength:63,benches:31},
 
-
 // RIGHT SIDE (14)
 "B3R02":{name:"Second Year EEE",strength:65,benches:34},
 "B3R03":{name:"Third Year EEE",strength:64,benches:32},
@@ -88,18 +87,11 @@ const saveBtn = document.getElementById("saveBtn");
 const lastSaved = document.getElementById("lastSaved");
 
 
-// ✅ SAVE BUTTON FIX
+// 💾 SAVE BUTTON
 saveBtn.addEventListener("click", saveData);
 
 
-// 📥 DROPDOWN
-code.innerHTML = `<option value="">Select Class</option>`;
-for(let c in classData){
-code.innerHTML += `<option value="${c}">${c} - ${classData[c].name}</option>`;
-}
-
-
-// 🔥 LOAD CLASS
+// 🔥 LOAD FUNCTION
 function loadClass(c){
 
 if(!classData[c]) return;
@@ -126,13 +118,19 @@ lastSaved.innerText = "Last Saved: ---";
 }
 
 
-// 🔁 CHANGE
-code.addEventListener("change", function(){
-loadClass(this.value);
-});
+// ✅ AUTO LOAD FROM PREVIOUS PAGE
+const params = new URLSearchParams(window.location.search);
+const classParam = params.get("class");
+
+if(classParam && classData[classParam]){
+loadClass(classParam);
+}else{
+let firstClass = Object.keys(classData)[0];
+loadClass(firstClass);
+}
 
 
-// 🔒 ROLE
+// 🔒 ROLE CONTROL
 if(role === "Student"){
 document.querySelectorAll("input, select").forEach(el=> el.disabled = true);
 saveBtn.style.display = "none";
@@ -142,7 +140,7 @@ benches.disabled = true;
 }
 
 
-// 💾 SAVE
+// 💾 SAVE FUNCTION
 function saveData(){
 
 if(role === "Student"){
@@ -150,12 +148,7 @@ alert("❌ No permission");
 return;
 }
 
-let c = code.value;
-
-if(!c){
-alert("Select class ❌");
-return;
-}
+let c = classParam || Object.keys(classData)[0];
 
 let now = new Date();
 
@@ -187,28 +180,26 @@ alert("✅ Saved Successfully");
 }
 
 
-// 🔴 LOGOUT BUTTON
+// 🔴 SMALL LOGOUT BUTTON
 let logoutBtn = document.createElement("button");
 logoutBtn.innerText = "Logout";
 
 logoutBtn.style.position = "fixed";
-logoutBtn.style.bottom = "12px";
-logoutBtn.style.right = "12px";
-logoutBtn.style.padding = "6px 12px";
-logoutBtn.style.background = "#b30000";
+logoutBtn.style.bottom = "10px";
+logoutBtn.style.right = "10px";
+logoutBtn.style.padding = "5px 10px";   // 👈 small size
+logoutBtn.style.background = "#d9534f"; // medium red
 logoutBtn.style.color = "white";
 logoutBtn.style.border = "none";
-logoutBtn.style.borderRadius = "5px";
-logoutBtn.style.fontSize = "12px";
+logoutBtn.style.borderRadius = "4px";
+logoutBtn.style.fontSize = "11px";
 logoutBtn.style.cursor = "pointer";
 
 document.body.appendChild(logoutBtn);
 
 
-// 🚪 LOGOUT ACTION
+// 🚪 LOGOUT
 logoutBtn.onclick = function(){
 localStorage.clear();
-window.open('', '_self');
-window.close();
 window.location.href = "about:blank";
 };
