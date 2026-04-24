@@ -4,10 +4,9 @@
 <title>Classroom Details</title>
 
 <style>
-
 body{
-font-family: 'Segoe UI', sans-serif;
-background: linear-gradient(135deg,#667eea,#764ba2);
+font-family:'Segoe UI',sans-serif;
+background:linear-gradient(135deg,#667eea,#764ba2);
 display:flex;
 justify-content:center;
 align-items:center;
@@ -23,10 +22,7 @@ width:750px;
 box-shadow:0 10px 25px rgba(0,0,0,0.2);
 }
 
-h2{
-text-align:center;
-margin-bottom:20px;
-}
+h2{text-align:center;margin-bottom:20px;}
 
 .grid{
 display:grid;
@@ -34,15 +30,9 @@ grid-template-columns:1fr 1fr;
 gap:25px;
 }
 
-.column{
-display:flex;
-flex-direction:column;
-}
+.column{display:flex;flex-direction:column;}
 
-label{
-font-weight:600;
-margin-top:10px;
-}
+label{font-weight:600;margin-top:10px;}
 
 input,select{
 padding:8px;
@@ -67,15 +57,11 @@ font-size:16px;
 cursor:pointer;
 }
 
-button:hover{
-background:#2575fc;
-}
-
 #lastSaved{
-margin-top:15px;
-font-size:14px;
-color:#555;
 text-align:center;
+margin-top:10px;
+font-size:14px;
+color:#444;
 }
 
 </style>
@@ -89,9 +75,7 @@ text-align:center;
 
 <div class="grid">
 
-<!-- LEFT -->
 <div class="column">
-
 <label>Class</label>
 <select id="code"></select>
 
@@ -115,12 +99,9 @@ text-align:center;
 <option>Available</option>
 <option>Occupied</option>
 </select>
-
 </div>
 
-<!-- RIGHT -->
 <div class="column">
-
 <label>CPU</label>
 <select id="cpu">
 <option>Working</option>
@@ -138,14 +119,12 @@ text-align:center;
 <option>Working</option>
 <option>Not Working</option>
 </select>
-
 </div>
 
 </div>
 
 <button id="saveBtn">Save</button>
-
-<p id="lastSaved">Last Saved: --</p>
+<div id="lastSaved">Last Saved: ---</div>
 
 </div>
 
