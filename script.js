@@ -205,10 +205,24 @@ alert("Select class ❌");
 return;
 }
 
-// 🕒 TIME FORMAT
-let now = new Date();
-let time = now.toLocaleString("en-IN");
 
+// 🕒 FORMAT DATE + TIME (CUSTOM FORMAT)
+let now = new Date();
+
+let day = now.getDate().toString().padStart(2,'0');
+let monthNames = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+let month = monthNames[now.getMonth()];
+let year = now.getFullYear();
+
+let hours = now.getHours();
+let minutes = now.getMinutes().toString().padStart(2,'0');
+
+let ampm = hours >= 12 ? "PM" : "AM";
+hours = hours % 12 || 12;
+
+let formattedTime = `${day} ${month} ${year} at ${hours}:${minutes} ${ampm}`;
+
+// 💾 DATA
 let data = {
 faculty: faculty.value,
 start: start.value,
@@ -217,12 +231,14 @@ status: status.value,
 cpu: cpu.value,
 projector: projector.value,
 battery: battery.value,
-time: time
+time: formattedTime
 };
 
+// SAVE
 localStorage.setItem(c, JSON.stringify(data));
 
-lastSaved.innerText = "Last Saved: " + time;
+// SHOW
+lastSaved.innerText = "Last Saved: " + formattedTime;
 
 alert("✅ Saved Successfully");
 }
