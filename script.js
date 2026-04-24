@@ -1,9 +1,32 @@
-// 🔐 ROLE (login simulation)
-let role = localStorage.getItem("role") || "Student";
+// 🔐 LOGIN SYSTEM
+let pass = prompt("Enter Password:\nRIT (Student)\nSTAFF.RIT\nADMIN.RIT");
+
+// convert to uppercase (important)
+pass = pass ? pass.toUpperCase().trim() : "";
+
+let role = "Student";
+
+if(pass === "ADMIN.RIT"){
+    role = "Admin";
+}
+else if(pass === "STAFF.RIT"){
+    role = "Staff";
+}
+else if(pass === "RIT"){
+    role = "Student";
+}
+else{
+    alert("Invalid Password → Default Student Mode");
+    role = "Student";
+}
+
+// store role
+localStorage.setItem("role", role);// 🔐 ROLE (login simulation)
+
 // test:
-// localStorage.setItem("role","student")
-// localStorage.setItem("role","staff")
-// localStorage.setItem("role","admin")
+// localStorage.setItem("role","Student")
+// localStorage.setItem("role","Staff")
+// localStorage.setItem("role","Admin")
 
 
 // 📚 ALL 40 CLASS DATA (26 + 14)
