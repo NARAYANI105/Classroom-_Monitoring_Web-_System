@@ -1,15 +1,12 @@
-// 🔐 USER ROLE (LOGIN BASED)
-let user = localStorage.getItem("user") || "Student";
+// 🔐 ROLE (CHANGE HERE FOR TESTING)
+let role = localStorage.getItem("role") || "student";
+// localStorage.setItem("role","admin")
+// localStorage.setItem("role","staff")
+// localStorage.setItem("role","student")
 
-let role = "student";
-if(user === "ADMIN.RIT") role = "Admin";
-else if(user === "STAFF.RIT") role = "Staff";
-
-
-// 📚 FULL CLASS DATA (40)
+// 📚 FULL 40 CLASS DATA (AUTO FILL)
 const classData = {
 
-// LEFT SIDE (26)
 "A1L03":{name:"First Year CSE B",strength:63,benches:32},
 "A1L04":{name:"First Year AIML",strength:63,benches:32},
 
@@ -43,17 +40,16 @@ const classData = {
 "C3L03":{name:"Second Year AD A",strength:63,benches:33},
 "C3L04":{name:"Second Year AD B",strength:63,benches:31},
 
-// RIGHT SIDE (14)
 "B3R02":{name:"Second Year EEE",strength:65,benches:34},
 "B3R03":{name:"Third Year EEE",strength:64,benches:32},
 "B3R04":{name:"Third Year CSBS",strength:61,benches:31},
 "B3R05":{name:"Second Year CSBS",strength:55,benches:28},
 
-"C3R01":{name:"Second Year ECE-A",strength:64,benches:32},
-"C3R02":{name:"Second Year ECE-B",strength:64,benches:32},
-"C3R03":{name:"Third Year ECE-A",strength:63,benches:32},
-"C3R04":{name:"Third Year ECE-B",strength:62,benches:31},
-"C3R05":{name:"Final Year ECE-A",strength:59,benches:30},
+"C3R01":{name:"Second Year ECE A",strength:64,benches:32},
+"C3R02":{name:"Second Year ECE B",strength:64,benches:32},
+"C3R03":{name:"Third Year ECE A",strength:63,benches:32},
+"C3R04":{name:"Third Year ECE B",strength:62,benches:31},
+"C3R05":{name:"Final Year ECE A",strength:59,benches:30},
 
 "C2R04":{name:"Second Year CSE A",strength:63,benches:32},
 "C2R05":{name:"Second Year CSE B",strength:63,benches:32},
@@ -63,12 +59,11 @@ const classData = {
 "A2R02A":{name:"Third Year CSB B",strength:63,benches:32}
 };
 
-
-// 📥 ELEMENTS
+// 📌 ELEMENTS
 const code = document.getElementById("code");
+const title = document.getElementById("title");
 const strength = document.getElementById("strength");
 const benches = document.getElementById("benches");
-const title = document.getElementById("title");
 
 const faculty = document.getElementById("faculty");
 const start = document.getElementById("start");
@@ -78,6 +73,8 @@ const cpu = document.getElementById("cpu");
 const projector = document.getElementById("projector");
 const battery = document.getElementById("battery");
 
+const saveBtn = document.getElementById("saveBtn");
+const lastSaved = document.getElementById("lastSaved");
 
 // 📥 DROPDOWN LOAD
 code.innerHTML = `<option value="">Select Class</option>`;
@@ -85,19 +82,16 @@ for(let c in classData){
 code.innerHTML += `<option value="${c}">${c} - ${classData[c].name}</option>`;
 }
 
-
-// 🔥 FUNCTION: AUTO FILL
-function fillClassDetails(c){
+// 🔄 LOAD CLASS
+function loadClass(c){
 
 let d = classData[c];
 
-if(d){
 title.innerText = c + " - " + d.name;
 strength.value = d.strength;
 benches.value = d.benches;
-}
 
-// LOAD SAVED DATA
+// load saved
 let saved = JSON.parse(localStorage.getItem(c));
 
 if(saved){
@@ -108,51 +102,48 @@ status.value = saved.status || "Available";
 cpu.value = saved.cpu || "Working";
 projector.value = saved.projector || "Working";
 battery.value = saved.battery || "Working";
+
+lastSaved.innerText = "Last Saved: " + (saved.lastSaved || "--");
+
+}else{
+faculty.value="";
+start.value="";
+end.value="";
+status.value="Available";
+cpu.value="Working";
+projector.value="Working";
+battery.value="Working";
+
+lastSaved.innerText = "Last Saved: --";
+}
 }
 
-}
-
-
-// 🔄 DROPDOWN CHANGE
-code.addEventListener("change", function(){
-fillClassDetails(this.value);
+// 🔁 CHANGE
+code.addEventListener("change",function(){
+loadClass(this.value);
 });
 
-
-// 🔗 LOAD FROM URL
-const params = new URLSearchParams(window.location.search);
-const classParam = params.get("class");
-
-if(classParam){
-
-let codeOnly = classParam.split(" - ")[0];
-
-code.value = codeOnly;
-
-// 🔥 IMPORTANT CALL
-fillClassDetails(codeOnly);
-
-}
-
-
-// 🔒 STUDENT LOCK
+// 🔒 ROLE CONTROL
 if(role === "student"){
 
 document.querySelectorAll("input, select").forEach(el=>{
-
-if(el.id !== "code" && !el.classList.contains("readonly")){
 el.disabled = true;
-}
-
 });
 
-document.getElementById("saveBtn").style.display = "none";
+saveBtn.style.display = "none";
 
+}else{
+
+document.querySelectorAll("input, select").forEach(el=>{
+el.disabled = false;
+});
+
+strength.disabled = true;
+benches.disabled = true;
 }
 
-
-// 💾 SAVE FUNCTION
-function saveData(){
+// 💾 SAVE
+saveBtn.onclick = function(){
 
 if(role === "student"){
 alert("No permission ❌");
@@ -162,9 +153,17 @@ return;
 let c = code.value;
 
 if(!c){
-alert("Select Class ❌");
+alert("Select class ❌");
 return;
 }
+
+// 🕒 DATE + TIME
+let now = new Date();
+let formatted =
+now.getDate().toString().padStart(2,'0') + "-" +
+(now.getMonth()+1).toString().padStart(2,'0') + "-" +
+now.getFullYear() + " | " +
+now.toLocaleTimeString();
 
 let data = {
 faculty: faculty.value,
@@ -173,11 +172,12 @@ end: end.value,
 status: status.value,
 cpu: cpu.value,
 projector: projector.value,
-battery: battery.value
+battery: battery.value,
+lastSaved: formatted
 };
 
 localStorage.setItem(c, JSON.stringify(data));
 
 alert("Saved Successfully ✅");
-
-}
+loadClass(c);
+};
