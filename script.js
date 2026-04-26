@@ -18,7 +18,6 @@ localStorage.setItem("role", role);
 // 📚 ALL 40 CLASS DATA
 const classData = {
 
-// LEFT SIDE (26)
 "A1L03":{name:"First Year CSE B",strength:63,benches:32},
 "A1L04":{name:"First Year AIML",strength:63,benches:32},
 
@@ -52,7 +51,6 @@ const classData = {
 "C3L03":{name:"Second Year AD A",strength:63,benches:33},
 "C3L04":{name:"Second Year AD B",strength:63,benches:31},
 
-// RIGHT SIDE (14)
 "B3R02":{name:"Second Year EEE",strength:65,benches:34},
 "B3R03":{name:"Third Year EEE",strength:64,benches:32},
 "B3R04":{name:"Third Year CSBS",strength:61,benches:31},
@@ -87,11 +85,14 @@ const saveBtn = document.getElementById("saveBtn");
 const lastSaved = document.getElementById("lastSaved");
 
 
-// 💾 SAVE BUTTON
-saveBtn.addEventListener("click", saveData);
+// 📥 DROPDOWN LOAD
+code.innerHTML = `<option value="">Select Class</option>`;
+for(let c in classData){
+    code.innerHTML += `<option value="${c}">${c} - ${classData[c].name}</option>`;
+}
 
 
-// 🔥 LOAD FUNCTION
+// 🔥 LOAD CLASS
 function loadClass(c){
 
 if(!classData[c]) return;
@@ -118,14 +119,22 @@ lastSaved.innerText = "Last Saved: ---";
 }
 
 
-// ✅ AUTO LOAD FROM PREVIOUS PAGE
+// 🔁 DROPDOWN CHANGE
+code.addEventListener("change", function(){
+loadClass(this.value);
+});
+
+
+// 🔗 URL AUTO LOAD
 const params = new URLSearchParams(window.location.search);
 const classParam = params.get("class");
 
 if(classParam && classData[classParam]){
+code.value = classParam;
 loadClass(classParam);
 }else{
 let firstClass = Object.keys(classData)[0];
+code.value = firstClass;
 loadClass(firstClass);
 }
 
@@ -140,7 +149,11 @@ benches.disabled = true;
 }
 
 
-// 💾 SAVE FUNCTION
+// 💾 SAVE BUTTON
+saveBtn.addEventListener("click", saveData);
+
+
+// 💾 SAVE FUNCTION (✅ FIXED)
 function saveData(){
 
 if(role === "Student"){
@@ -148,7 +161,13 @@ alert("❌ No permission");
 return;
 }
 
-let c = classParam || Object.keys(classData)[0];
+// ✅ CURRENT CLASS CORRECT AH EDUTHU
+let c = code.value;
+
+if(!c){
+alert("Select class ❌");
+return;
+}
 
 let now = new Date();
 
@@ -187,8 +206,8 @@ logoutBtn.innerText = "Logout";
 logoutBtn.style.position = "fixed";
 logoutBtn.style.bottom = "10px";
 logoutBtn.style.right = "10px";
-logoutBtn.style.padding = "5px 10px";   // 👈 small size
-logoutBtn.style.background = "#d9534f"; // medium red
+logoutBtn.style.padding = "5px 10px";
+logoutBtn.style.background = "#d9534f";
 logoutBtn.style.color = "white";
 logoutBtn.style.border = "none";
 logoutBtn.style.borderRadius = "4px";
