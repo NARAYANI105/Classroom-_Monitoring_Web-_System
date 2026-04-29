@@ -15,7 +15,7 @@ else{
 localStorage.setItem("role", role);
 
 
-// 📚 ALL 40 CLASS DATA
+// 📚 ALL CLASS DATA
 const classData = {
 "A1L03":{name:"First Year CSE B",strength:63,benches:32},
 "A1L04":{name:"First Year AIML",strength:63,benches:32},
@@ -50,6 +50,7 @@ const classData = {
 "C3L03":{name:"Second Year AD A",strength:63,benches:33},
 "C3L04":{name:"Second Year AD B",strength:63,benches:31},
 
+// RIGHT SIDE
 "B3R02":{name:"Second Year EEE",strength:65,benches:34},
 "B3R03":{name:"Third Year EEE",strength:64,benches:32},
 "B3R04":{name:"Third Year CSBS",strength:61,benches:31},
@@ -76,9 +77,10 @@ const title = document.getElementById("title");
 const strength = document.getElementById("strength");
 const benches = document.getElementById("benches");
 
-const faculty = document.getElementById("faculty");
-const start = document.getElementById("start");
-const end = document.getElementById("end");
+const status = document.getElementById("status");
+const cpu = document.getElementById("cpu");
+const projector = document.getElementById("projector");
+const battery = document.getElementById("battery");
 
 const saveBtn = document.getElementById("saveBtn");
 const lastSaved = document.getElementById("lastSaved");
@@ -105,14 +107,16 @@ benches.value = d.benches;
 let saved = JSON.parse(localStorage.getItem(c));
 
 if(saved){
-faculty.value = saved.faculty || "";
-start.value = saved.start || "";
-end.value = saved.end || "";
+status.value = saved.status || "Available";
+cpu.value = saved.cpu || "Working";
+projector.value = saved.projector || "Working";
+battery.value = saved.battery || "Working";
 lastSaved.innerText = "Last Saved: " + saved.time;
 }else{
-faculty.value="";
-start.value="";
-end.value="";
+status.value="Available";
+cpu.value="Working";
+projector.value="Working";
+battery.value="Working";
 lastSaved.innerText = "Last Saved: ---";
 }
 }
@@ -124,40 +128,22 @@ loadClass(this.value);
 });
 
 
-// 🔗 URL AUTO LOAD
-const params = new URLSearchParams(window.location.search);
-const classParam = params.get("class");
-
-if(classParam && classData[classParam]){
-code.value = classParam;
-loadClass(classParam);
-}else{
+// 🔗 AUTO LOAD FIRST CLASS
 let firstClass = Object.keys(classData)[0];
 code.value = firstClass;
 loadClass(firstClass);
-}
 
 
-// 🔒 ROLE CONTROL ✅ FIX HERE ONLY
+// 🔒 ROLE CONTROL
 if(role === "Student"){
-
-// 👇 dropdown enable, others disable
 document.querySelectorAll("input, select").forEach(el=>{
-    if(el.id !== "code"){
-        el.disabled = true;
-    }
+    if(el.id !== "code") el.disabled = true;
 });
-
 saveBtn.style.display = "none";
-
 }else{
 strength.disabled = true;
 benches.disabled = true;
 }
-
-
-// 💾 SAVE BUTTON
-saveBtn.addEventListener("click", saveData);
 
 
 // 💾 SAVE FUNCTION
@@ -176,24 +162,13 @@ return;
 }
 
 let now = new Date();
-
-let day = now.getDate().toString().padStart(2,'0');
-let monthNames = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
-let month = monthNames[now.getMonth()];
-let year = now.getFullYear();
-
-let hours = now.getHours();
-let minutes = now.getMinutes().toString().padStart(2,'0');
-
-let ampm = hours >= 12 ? "PM" : "AM";
-hours = hours % 12 || 12;
-
-let formattedTime = `${day} ${month} ${year} at ${hours}:${minutes} ${ampm}`;
+let formattedTime = now.toLocaleString();
 
 let data = {
-faculty: faculty.value,
-start: start.value,
-end: end.value,
+status: status.value,
+cpu: cpu.value,
+projector: projector.value,
+battery: battery.value,
 time: formattedTime
 };
 
@@ -205,29 +180,27 @@ alert("✅ Saved Successfully");
 }
 
 
+// 💾 SAVE CLICK
+saveBtn.addEventListener("click", saveData);
+
+
+// 🔴 SMALL LOGOUT BUTTON
 let logoutBtn = document.createElement("button");
 logoutBtn.innerText = "Logout";
 
 logoutBtn.style.position = "fixed";
 logoutBtn.style.bottom = "15px";
 logoutBtn.style.right = "15px";
-
-// 👇 SIZE CONTROL (small box)
 logoutBtn.style.padding = "6px 12px";
-logoutBtn.style.width = "auto";
-logoutBtn.style.display = "inline-block";
-
-// 👇 COLOR (medium red)
 logoutBtn.style.background = "#d9534f";
 logoutBtn.style.color = "white";
-
 logoutBtn.style.border = "none";
 logoutBtn.style.borderRadius = "6px";
 logoutBtn.style.fontSize = "12px";
 logoutBtn.style.cursor = "pointer";
-logoutBtn.style.boxShadow = "0 2px 6px rgba(0,0,0,0.2)";
 
 document.body.appendChild(logoutBtn);
+
 
 // 🚪 LOGOUT
 logoutBtn.onclick = function(){
