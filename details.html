@@ -1,46 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Classroom Details</title>
 
 <style>
-
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
-
 body{
     font-family:'Segoe UI',sans-serif;
     background:linear-gradient(135deg,#667eea,#764ba2);
-    min-height:100vh;
     display:flex;
     justify-content:center;
     align-items:center;
-    padding:30px;
+    min-height:100vh;
+    margin:0;
 }
 
 .container{
-    width:1100px;
-    background:white;
-    border-radius:15px;
-    padding:30px;
+    background:#fff;
+    padding:25px;
+    border-radius:12px;
+    width:900px;
     box-shadow:0 10px 25px rgba(0,0,0,0.2);
 }
 
 h2{
     text-align:center;
-    margin-bottom:25px;
-    color:#333;
+    margin-bottom:20px;
 }
 
 .grid{
     display:grid;
     grid-template-columns:1fr 1fr;
-    gap:30px;
+    gap:25px;
 }
 
 .column{
@@ -49,59 +39,44 @@ h2{
 }
 
 label{
-    font-size:15px;
     font-weight:600;
-    margin-bottom:8px;
-    margin-top:15px;
+    margin-top:10px;
 }
 
-input,select{
-    width:100%;
-    padding:12px;
-    border-radius:8px;
+input,select,textarea{
+    padding:8px;
+    margin-top:5px;
+    border-radius:6px;
     border:1px solid #ccc;
-    font-size:15px;
+}
+
+textarea{
+    resize:none;
+    height:90px;
 }
 
 .readonly{
-    background:#ececec;
+    background:#eaeaea;
 }
 
 button{
+    margin-top:20px;
     width:100%;
-    margin-top:30px;
-    padding:14px;
+    padding:12px;
     border:none;
-    border-radius:10px;
+    border-radius:8px;
     background:#6a11cb;
-    color:white;
-    font-size:18px;
+    color:#fff;
+    font-size:16px;
     cursor:pointer;
 }
 
-button:hover{
-    background:#4f0f99;
-}
-
 #lastSaved{
-    margin-top:15px;
     text-align:center;
-    color:#444;
+    margin-top:10px;
     font-size:14px;
+    color:#444;
 }
-
-@media(max-width:900px){
-
-.grid{
-    grid-template-columns:1fr;
-}
-
-.container{
-    width:100%;
-}
-
-}
-
 </style>
 </head>
 
@@ -113,36 +88,28 @@ button:hover{
 
 <div class="grid">
 
-<!-- LEFT SIDE -->
-
+<!-- LEFT -->
 <div class="column">
 
 <label>Class</label>
 <select id="code"></select>
 
-<label>CPU Status</label>
-<select id="cpu">
-<option>Working</option>
-<option>Not Working</option>
-</select>
-
-<label>Projector Status</label>
-<select id="projector">
-<option>Working</option>
-<option>Not Working</option>
-</select>
-
-<label>Battery Status</label>
-<select id="battery">
-<option>Working</option>
-<option>Not Working</option>
-</select>
-
 <label>Student Strength</label>
-<input type="text" id="strength" class="readonly" readonly>
+<input id="strength" class="readonly" readonly>
 
 <label>Total Benches</label>
-<input type="text" id="benches" class="readonly" readonly>
+<input id="benches" class="readonly" readonly>
+
+<label>Class Advisor</label>
+<textarea id="advisor" class="readonly" readonly></textarea>
+
+<label>Mentor Details</label>
+<textarea id="mentor" class="readonly" readonly></textarea>
+
+</div>
+
+<!-- RIGHT -->
+<div class="column">
 
 <label>Status</label>
 <select id="status">
@@ -150,35 +117,23 @@ button:hover{
 <option>Occupied</option>
 </select>
 
-</div>
+<label>CPU</label>
+<select id="cpu">
+<option>Working</option>
+<option>Not Working</option>
+</select>
 
-<!-- RIGHT SIDE -->
+<label>Projector</label>
+<select id="projector">
+<option>Working</option>
+<option>Not Working</option>
+</select>
 
-<div class="column">
-
-<label>Class Advisor</label>
-<input type="text" id="classAdvisor" class="readonly" readonly>
-
-<label>Class Advisor Mail</label>
-<input type="text" id="classAdvisorMail" class="readonly" readonly>
-
-<label>Mentor 1</label>
-<input type="text" id="mentor1" class="readonly" readonly>
-
-<label>Mentor 1 Mail</label>
-<input type="text" id="mentor1mail" class="readonly" readonly>
-
-<label>Mentor 2</label>
-<input type="text" id="mentor2" class="readonly" readonly>
-
-<label>Mentor 2 Mail</label>
-<input type="text" id="mentor2mail" class="readonly" readonly>
-
-<label>Mentor 3</label>
-<input type="text" id="mentor3" class="readonly" readonly>
-
-<label>Mentor 3 Mail</label>
-<input type="text" id="mentor3mail" class="readonly" readonly>
+<label>Battery</label>
+<select id="battery">
+<option>Working</option>
+<option>Not Working</option>
+</select>
 
 </div>
 
@@ -186,236 +141,532 @@ button:hover{
 
 <button id="saveBtn">Save</button>
 
-<div id="lastSaved">Last Saved : ---</div>
+<div id="lastSaved">Last Saved: ---</div>
 
 </div>
 
 <script>
 
+// 🔐 LOGIN SYSTEM
+let pass = prompt("Enter your password");
+pass = pass ? pass.toUpperCase().trim() : "";
+
+let role = "Student";
+
+if(pass === "ADMIN.RIT") role = "Admin";
+else if(pass === "STAFF.RIT") role = "Staff";
+else if(pass === "RIT") role = "Student";
+else{
+    alert("Invalid Password");
+    role = "Student";
+}
+
+localStorage.setItem("role", role);
+
+
+// 📚 CLASS DATA
 const classData = {
 
-"CSE-I-A":{
-strength:"63",
-benches:"32",
-
-classAdvisor:"Mrs.C.Krishnakala AP/CSE",
-classAdvisorMail:"krishnakala@ritrjpm.ac.in",
-
-mentor1:"Dr.K.Vijayalakshmi Professor & Head",
-mentor1mail:"vijayalakshmi@ritrjpm.ac.in",
-
-mentor2:"Mrs.Latha AP/CSE",
-mentor2mail:"latha@ritrjpm.ac.in",
-
-mentor3:"Mrs.Deepalakshmi AP/CSE",
-mentor3mail:"deepalakshmi@ritrjpm.ac.in"
+"A1L03":{
+name:"First Year CSE B",
+strength:63,
+benches:32,
+advisor:"Mrs.S.Manjula - smanjula@ritrjpm.ac.in",
+mentor:`Dr.K.Vijayalakshmi - kvijayalakshmi@ritrjpm.ac.in
+Mrs.S.Manjula - smanjula@ritrjpm.ac.in
+Mrs.G.Kanmani - gkanmani@ritrjpm.ac.in
+Dr.S.Pooranam - spooranam@ritrjpm.ac.in`
 },
 
-"CSE-I-B":{
-strength:"63",
-benches:"32",
-
-classAdvisor:"Mrs.S.Manjula AP/CSE",
-classAdvisorMail:"manjula@ritrjpm.ac.in",
-
-mentor1:"Dr.K.Vijayalakshmi Professor & Head",
-mentor1mail:"vijayalakshmi@ritrjpm.ac.in",
-
-mentor2:"Mrs.G.Kanmani AP/CSE",
-mentor2mail:"kanmani@ritrjpm.ac.in",
-
-mentor3:"Dr.S.Pooranam ASP/CSE",
-mentor3mail:"pooranam@ritrjpm.ac.in"
+"A1L04":{
+name:"First Year AIML",
+strength:63,
+benches:32,
+advisor:"Not Available",
+mentor:"Not Available"
 },
 
-"CSE-I-C":{
-strength:"63",
-benches:"32",
-
-classAdvisor:"K.Bala Karthik AP/CSE",
-classAdvisorMail:"balakarthik@ritrjpm.ac.in",
-
-mentor1:"Dr.K.Vijayalakshmi Professor & Head",
-mentor1mail:"vijayalakshmi@ritrjpm.ac.in",
-
-mentor2:"Ms.Mahalakshmi M AP/CSE",
-mentor2mail:"mahalakshmi@ritrjpm.ac.in",
-
-mentor3:"Dr.P.Thiruramanathan ASP/CSE",
-mentor3mail:"thiruramanathan@ritrjpm.ac.in"
+"A2L05":{
+name:"First Year MECH",
+strength:30,
+benches:15,
+advisor:"Dr.S.Maharajan - smaharajan@ritrjpm.ac.in",
+mentor:`Dr.S.Maharajan - smaharajan@ritrjpm.ac.in
+Mr.C.Gururaj - cgururaj@ritrjpm.ac.in
+Dr.M.Ashokkumar - mashokkumar@ritrjpm.ac.in`
 },
 
-"IT-I":{
-strength:"63",
-benches:"32",
-
-classAdvisor:"Mrs.P.Ramya",
-classAdvisorMail:"ramya@ritrjpm.ac.in",
-
-mentor1:"Mrs.M.Muthukumar",
-mentor1mail:"muthukumar@ritrjpm.ac.in",
-
-mentor2:"Mrs.Ranjitha",
-mentor2mail:"ranjitha@ritrjpm.ac.in",
-
-mentor3:"Not Available",
-mentor3mail:"Not Available"
+"A2L04":{
+name:"First Year CSE A",
+strength:63,
+benches:32,
+advisor:"Mrs.C.Krishnakala - ckrishnakala@ritrjpm.ac.in",
+mentor:`Dr.K.Vijayalakshmi - kvijayalakshmi@ritrjpm.ac.in
+Mrs.C.Krishnakala - ckrishnakala@ritrjpm.ac.in
+Mrs.Latha - latha@ritrjpm.ac.in
+Mrs.Deepalakshmi - deepalakshmi@ritrjpm.ac.in`
 },
 
-"AIDS-I-A":{
-strength:"63",
-benches:"32",
-
-classAdvisor:"S.Pradeepha",
-classAdvisorMail:"pradeepha@ritrjpm.ac.in",
-
-mentor1:"Mr.M.Ramnath AP/AD",
-mentor1mail:"ramnath@ritrjpm.ac.in",
-
-mentor2:"Mr.R.Muthu Eswaran AP/AD",
-mentor2mail:"muthueswaran@ritrjpm.ac.in",
-
-mentor3:"Not Available",
-mentor3mail:"Not Available"
+"A2L03":{
+name:"First Year IT",
+strength:63,
+benches:30,
+advisor:"Mrs.P.Ramya - ramya@ritrjpm.ac.in",
+mentor:`Mrs.M.Muthukumar - muthukumar@ritrjpm.ac.in
+Mrs.Ranjitha - ranjitha@ritrjpm.ac.in`
 },
 
-"MECH-I":{
-strength:"63",
-benches:"32",
-
-classAdvisor:"Dr.S.Maharajan ASP-I/Mech",
-classAdvisorMail:"maharajan@ritrjpm.ac.in",
-
-mentor1:"Mr.C.Gururaj AP(SG)/Mech",
-mentor1mail:"gururaj@ritrjpm.ac.in",
-
-mentor2:"Dr.M.Ashokkumar AP-III/Mech",
-mentor2mail:"ashokkumar@ritrjpm.ac.in",
-
-mentor3:"Not Available",
-mentor3mail:"Not Available"
+"A2L02":{
+name:"First Year ECE B",
+strength:63,
+benches:32,
+advisor:"Not Available",
+mentor:"Not Available"
 },
 
-"CIVIL-I":{
-strength:"63",
-benches:"32",
-
-classAdvisor:"Not Available",
-classAdvisorMail:"Not Available",
-
-mentor1:"Not Available",
-mentor1mail:"Not Available",
-
-mentor2:"Not Available",
-mentor2mail:"Not Available",
-
-mentor3:"Not Available",
-mentor3mail:"Not Available"
+"A2L01":{
+name:"First Year ECE A",
+strength:63,
+benches:32,
+advisor:"Not Available",
+mentor:"Not Available"
 },
 
-"ECE-I-A":{
-strength:"63",
-benches:"32",
-
-classAdvisor:"Not Available",
-classAdvisorMail:"Not Available",
-
-mentor1:"Not Available",
-mentor1mail:"Not Available",
-
-mentor2:"Not Available",
-mentor2mail:"Not Available",
-
-mentor3:"Not Available",
-mentor3mail:"Not Available"
+"B0L01":{
+name:"First Year AD A",
+strength:63,
+benches:31,
+advisor:"S.Pradeepha - spradeepha@ritrjpm.ac.in",
+mentor:"Not Available"
 },
 
-"AIML-I-A":{
-strength:"63",
-benches:"32",
-
-classAdvisor:"Not Available",
-classAdvisorMail:"Not Available",
-
-mentor1:"Not Available",
-mentor1mail:"Not Available",
-
-mentor2:"Not Available",
-mentor2mail:"Not Available",
-
-mentor3:"Not Available",
-mentor3mail:"Not Available"
+"B0L02":{
+name:"First Year AD B",
+strength:63,
+benches:31,
+advisor:"Dr.S.V.Anandhi - svanandhi@ritrjpm.ac.in",
+mentor:"Not Available"
 },
 
-"CSBS-I-A":{
-strength:"63",
-benches:"32",
+"B0L03":{
+name:"First Year CSBS",
+strength:63,
+benches:31,
+advisor:"Not Available",
+mentor:"Not Available"
+},
 
-classAdvisor:"Not Available",
-classAdvisorMail:"Not Available",
+"B1L05":{
+name:"First Year EEE",
+strength:63,
+benches:32,
+advisor:"Not Available",
+mentor:"Not Available"
+},
 
-mentor1:"Not Available",
-mentor1mail:"Not Available",
+"B1L04":{
+name:"First Year CSE C",
+strength:63,
+benches:32,
+advisor:"K.Bala Karthik - balakarthik@ritrjpm.ac.in",
+mentor:`Dr.K.Vijayalakshmi - kvijayalakshmi@ritrjpm.ac.in
+K.Bala Karthik - balakarthik@ritrjpm.ac.in
+Ms.Mahalakshmi - mahalakshmi@ritrjpm.ac.in
+Dr.P.Thiruramanathan - thiruramanathan@ritrjpm.ac.in`
+},
 
-mentor2:"Not Available",
-mentor2mail:"Not Available",
+"B1L02":{
+name:"First Year CIVIL",
+strength:30,
+benches:25,
+advisor:"Not Available",
+mentor:"Not Available"
+},
 
-mentor3:"Not Available",
-mentor3mail:"Not Available"
+"B3L05":{
+name:"Final Year AD A",
+strength:59,
+benches:30,
+advisor:"Dr.C.Karpagavalli - ckarpagavalli@ritrjpm.ac.in",
+mentor:"Not Available"
+},
+
+"B3L04":{
+name:"Third Year CIVIL",
+strength:45,
+benches:25,
+advisor:"Not Available",
+mentor:"Not Available"
+},
+
+"B3L03":{
+name:"Second Year CIVIL",
+strength:41,
+benches:25,
+advisor:"Not Available",
+mentor:"Not Available"
+},
+
+"B3L02":{
+name:"Final Year CSBS",
+strength:60,
+benches:30,
+advisor:"Not Available",
+mentor:"Not Available"
+},
+
+"C2L05":{
+name:"Second Year MECH",
+strength:42,
+benches:25,
+advisor:"Dr.J.Jerold John Britto - jeroldjohn@ritrjpm.ac.in",
+mentor:"Mr.R.Prabhakaran - rprabhakaran@ritrjpm.ac.in"
+},
+
+"C2L04":{
+name:"Third Year MECH",
+strength:63,
+benches:31,
+advisor:"Mr.R.Prabhakaran - rprabhakaran@ritrjpm.ac.in",
+mentor:`Dr.J.Jerold John Britto - jeroldjohn@ritrjpm.ac.in
+Dr.R.Venkatesh - rvenkatesh@ritrjpm.ac.in`
+},
+
+"C2L03":{
+name:"Final Year MECH",
+strength:50,
+benches:25,
+advisor:"Mr.L.Karthikeyan - lkarthikeyan@ritrjpm.ac.in",
+mentor:`Dr.R.Arun Kumar - arunkumar@ritrjpm.ac.in
+Mr.M.Sivagaminathan - sivagaminathan@ritrjpm.ac.in`
+},
+
+"C2L02":{
+name:"Third Year IT",
+strength:62,
+benches:31,
+advisor:"Dr.G.Mareeswari - mareeswari@ritrjpm.ac.in",
+mentor:`Mrs.G.Sivasathiya - sivasathiya@ritrjpm.ac.in
+Mrs.M.Rethinakumari - rethinakumari@ritrjpm.ac.in`
+},
+
+"C2L01":{
+name:"Second Year IT",
+strength:64,
+benches:32,
+advisor:"Mrs.M.Thulasdevi - thulasdevi@ritrjpm.ac.in",
+mentor:"Mrs.B.Thevahi - thevahi@ritrjpm.ac.in"
+},
+
+"C3L01":{
+name:"Third Year AD A",
+strength:59,
+benches:30,
+advisor:"C.Usharani - usharani@ritrjpm.ac.in",
+mentor:"Not Available"
+},
+
+"C3L02":{
+name:"Third Year AD B",
+strength:59,
+benches:30,
+advisor:"Dr.M.Ramnath - mramnath@ritrjpm.ac.in",
+mentor:"Not Available"
+},
+
+"C3L03":{
+name:"Second Year AD A",
+strength:63,
+benches:33,
+advisor:"B.Revathi - brevathi@ritrjpm.ac.in",
+mentor:"Not Available"
+},
+
+"C3L04":{
+name:"Second Year AD B",
+strength:63,
+benches:31,
+advisor:"P.Vetrivel - pvetrivel@ritrjpm.ac.in",
+mentor:"Not Available"
+},
+
+"B3R02":{
+name:"Second Year EEE",
+strength:65,
+benches:34,
+advisor:"Not Available",
+mentor:"Not Available"
+},
+
+"B3R03":{
+name:"Third Year EEE",
+strength:64,
+benches:32,
+advisor:"Not Available",
+mentor:"Not Available"
+},
+
+"B3R04":{
+name:"Third Year CSBS",
+strength:61,
+benches:31,
+advisor:"Not Available",
+mentor:"Not Available"
+},
+
+"B3R05":{
+name:"Second Year CSBS",
+strength:55,
+benches:28,
+advisor:"Not Available",
+mentor:"Not Available"
+},
+
+"C3R01":{
+name:"Second Year ECE A",
+strength:64,
+benches:32,
+advisor:"Not Available",
+mentor:"Not Available"
+},
+
+"C3R02":{
+name:"Second Year ECE B",
+strength:64,
+benches:32,
+advisor:"Not Available",
+mentor:"Not Available"
+},
+
+"C3R03":{
+name:"Third Year ECE A",
+strength:63,
+benches:32,
+advisor:"Not Available",
+mentor:"Not Available"
+},
+
+"C3R04":{
+name:"Third Year ECE B",
+strength:62,
+benches:31,
+advisor:"Not Available",
+mentor:"Not Available"
+},
+
+"C3R05":{
+name:"Final Year ECE A",
+strength:59,
+benches:30,
+advisor:"Not Available",
+mentor:"Not Available"
+},
+
+"C2R04":{
+name:"Second Year CSE A",
+strength:63,
+benches:32,
+advisor:"Ms.G.Sakthi Priya - gsakthipriya@ritrjpm.ac.in",
+mentor:`Mrs.K.Vijayalakshmi - kvijayalakshmi@ritrjpm.ac.in
+Ms.G.Sakthi Priya - gsakthipriya@ritrjpm.ac.in
+Mrs.M.Arunthathi - arunthathi@ritrjpm.ac.in
+Dr.A.Sivanesh Kumar - sivaneshkumar@ritrjpm.ac.in`
+},
+
+"C2R05":{
+name:"Second Year CSE B",
+strength:63,
+benches:32,
+advisor:"Mrs.P.Devisri - pdevisri@ritrjpm.ac.in",
+mentor:`Mrs.K.Vijayalakshmi - kvijayalakshmi@ritrjpm.ac.in
+Mrs.P.Devisri - pdevisri@ritrjpm.ac.in
+Ms.S.Nandhini - snandhini@ritrjpm.ac.in
+Mrs.S.Shunmuga Priya - sshunmugapriya@ritrjpm.ac.in`
+},
+
+"C2R06":{
+name:"Second Year CSE C",
+strength:64,
+benches:32,
+advisor:"Dr.I.Gethzi Ahila Poornima - gethzi@ritrjpm.ac.in",
+mentor:`Mrs.K.Vijayalakshmi - kvijayalakshmi@ritrjpm.ac.in
+Dr.I.Gethzi Ahila Poornima - gethzi@ritrjpm.ac.in
+Mr.R.Bala Murugan - balamurugan@ritrjpm.ac.in
+Dr.M.Pandi - mpandi@ritrjpm.ac.in`
+},
+
+"A2R02":{
+name:"Third Year CSE A",
+strength:64,
+benches:32,
+advisor:"Dr.M.Swarna Sudha - swarnasudha@ritrjpm.ac.in",
+mentor:`Mrs.K.Vijayalakshmi - kvijayalakshmi@ritrjpm.ac.in
+Dr.M.Swarna Sudha - swarnasudha@ritrjpm.ac.in
+Mrs.R.Madhu - rmadhu@ritrjpm.ac.in`
+},
+
+"A2R02A":{
+name:"Third Year CSBS B",
+strength:63,
+benches:32,
+advisor:"Not Available",
+mentor:"Not Available"
 }
 
 };
 
+
+// 📌 ELEMENTS
 const code = document.getElementById("code");
+const title = document.getElementById("title");
+const strength = document.getElementById("strength");
+const benches = document.getElementById("benches");
+const advisor = document.getElementById("advisor");
+const mentor = document.getElementById("mentor");
 
-for(let key in classData){
+const status = document.getElementById("status");
+const cpu = document.getElementById("cpu");
+const projector = document.getElementById("projector");
+const battery = document.getElementById("battery");
 
-    let option = document.createElement("option");
+const saveBtn = document.getElementById("saveBtn");
+const lastSaved = document.getElementById("lastSaved");
 
-    option.value = key;
-    option.textContent = key;
 
-    code.appendChild(option);
+// 📥 LOAD DROPDOWN
+code.innerHTML = `<option value="">Select Class</option>`;
+
+for(let c in classData){
+code.innerHTML += `<option value="${c}">
+${c} - ${classData[c].name}
+</option>`;
 }
 
-function loadClassData(){
 
-    let selected = code.value;
+// 🔥 LOAD CLASS
+function loadClass(c){
 
-    let data = classData[selected];
+if(!classData[c]) return;
 
-    document.getElementById("title").innerText = selected + " Classroom Details";
+let d = classData[c];
 
-    document.getElementById("strength").value = data.strength;
-    document.getElementById("benches").value = data.benches;
+title.innerText = c + " - " + d.name;
 
-    document.getElementById("classAdvisor").value = data.classAdvisor;
-    document.getElementById("classAdvisorMail").value = data.classAdvisorMail;
+strength.value = d.strength;
+benches.value = d.benches;
 
-    document.getElementById("mentor1").value = data.mentor1;
-    document.getElementById("mentor1mail").value = data.mentor1mail;
+advisor.value = d.advisor;
+mentor.value = d.mentor;
 
-    document.getElementById("mentor2").value = data.mentor2;
-    document.getElementById("mentor2mail").value = data.mentor2mail;
+let saved = JSON.parse(localStorage.getItem(c));
 
-    document.getElementById("mentor3").value = data.mentor3;
-    document.getElementById("mentor3mail").value = data.mentor3mail;
+if(saved){
+status.value = saved.status || "Available";
+cpu.value = saved.cpu || "Working";
+projector.value = saved.projector || "Working";
+battery.value = saved.battery || "Working";
+
+lastSaved.innerText = "Last Saved: " + saved.time;
+
+}else{
+
+status.value="Available";
+cpu.value="Working";
+projector.value="Working";
+battery.value="Working";
+
+lastSaved.innerText = "Last Saved: ---";
+}
 }
 
-code.addEventListener("change",loadClassData);
 
-loadClassData();
-
-document.getElementById("saveBtn").addEventListener("click",()=>{
-
-    let now = new Date();
-
-    document.getElementById("lastSaved").innerText =
-    "Last Saved : " + now.toLocaleString();
-
-    alert("Saved Successfully");
-
+// 🔁 CHANGE
+code.addEventListener("change", function(){
+loadClass(this.value);
 });
+
+
+// 🚀 AUTO LOAD
+let firstClass = Object.keys(classData)[0];
+code.value = firstClass;
+loadClass(firstClass);
+
+
+// 🔒 ROLE CONTROL
+if(role === "Student"){
+
+document.querySelectorAll("input, select, textarea").forEach(el=>{
+if(el.id !== "code") el.disabled = true;
+});
+
+saveBtn.style.display = "none";
+
+}else{
+
+strength.disabled = true;
+benches.disabled = true;
+advisor.disabled = true;
+mentor.disabled = true;
+
+}
+
+
+// 💾 SAVE
+function saveData(){
+
+if(role === "Student"){
+alert("❌ No permission");
+return;
+}
+
+let c = code.value;
+
+let now = new Date();
+
+let data = {
+status: status.value,
+cpu: cpu.value,
+projector: projector.value,
+battery: battery.value,
+time: now.toLocaleString()
+};
+
+localStorage.setItem(c, JSON.stringify(data));
+
+lastSaved.innerText =
+"Last Saved: " + data.time;
+
+alert("✅ Saved Successfully");
+
+}
+
+
+// SAVE BUTTON
+saveBtn.addEventListener("click", saveData);
+
+
+// 🔴 LOGOUT
+let logoutBtn = document.createElement("button");
+
+logoutBtn.innerText = "Logout";
+
+logoutBtn.style.position = "fixed";
+logoutBtn.style.bottom = "15px";
+logoutBtn.style.right = "15px";
+logoutBtn.style.padding = "6px 12px";
+logoutBtn.style.background = "#d9534f";
+logoutBtn.style.color = "white";
+logoutBtn.style.border = "none";
+logoutBtn.style.borderRadius = "6px";
+logoutBtn.style.fontSize = "12px";
+logoutBtn.style.cursor = "pointer";
+
+document.body.appendChild(logoutBtn);
+
+logoutBtn.onclick = function(){
+localStorage.clear();
+window.location.href = "about:blank";
+};
 
 </script>
 
