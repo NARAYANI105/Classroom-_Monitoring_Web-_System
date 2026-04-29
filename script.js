@@ -205,23 +205,29 @@ alert("✅ Saved Successfully");
 }
 
 
-// 🔴 SMALL LOGOUT BUTTON
 let logoutBtn = document.createElement("button");
 logoutBtn.innerText = "Logout";
 
 logoutBtn.style.position = "fixed";
-logoutBtn.style.bottom = "10px";
-logoutBtn.style.right = "10px";
-logoutBtn.style.padding = "5px 10px";
+logoutBtn.style.bottom = "15px";
+logoutBtn.style.right = "15px";
+
+// 👇 SIZE CONTROL (small box)
+logoutBtn.style.padding = "6px 12px";
+logoutBtn.style.width = "auto";
+logoutBtn.style.display = "inline-block";
+
+// 👇 COLOR (medium red)
 logoutBtn.style.background = "#d9534f";
 logoutBtn.style.color = "white";
+
 logoutBtn.style.border = "none";
-logoutBtn.style.borderRadius = "4px";
-logoutBtn.style.fontSize = "11px";
+logoutBtn.style.borderRadius = "6px";
+logoutBtn.style.fontSize = "12px";
 logoutBtn.style.cursor = "pointer";
+logoutBtn.style.boxShadow = "0 2px 6px rgba(0,0,0,0.2)";
 
 document.body.appendChild(logoutBtn);
-
 
 // 🚪 LOGOUT
 logoutBtn.onclick = function(){
