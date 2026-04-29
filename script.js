@@ -17,7 +17,6 @@ localStorage.setItem("role", role);
 
 // 📚 ALL 40 CLASS DATA
 const classData = {
-
 "A1L03":{name:"First Year CSE B",strength:63,benches:32},
 "A1L04":{name:"First Year AIML",strength:63,benches:32},
 
@@ -139,10 +138,18 @@ loadClass(firstClass);
 }
 
 
-// 🔒 ROLE CONTROL
+// 🔒 ROLE CONTROL ✅ FIX HERE ONLY
 if(role === "Student"){
-document.querySelectorAll("input, select").forEach(el=> el.disabled = true);
+
+// 👇 dropdown enable, others disable
+document.querySelectorAll("input, select").forEach(el=>{
+    if(el.id !== "code"){
+        el.disabled = true;
+    }
+});
+
 saveBtn.style.display = "none";
+
 }else{
 strength.disabled = true;
 benches.disabled = true;
@@ -153,7 +160,7 @@ benches.disabled = true;
 saveBtn.addEventListener("click", saveData);
 
 
-// 💾 SAVE FUNCTION (✅ FIXED)
+// 💾 SAVE FUNCTION
 function saveData(){
 
 if(role === "Student"){
@@ -161,7 +168,6 @@ alert("❌ No permission");
 return;
 }
 
-// ✅ CURRENT CLASS CORRECT AH EDUTHU
 let c = code.value;
 
 if(!c){
