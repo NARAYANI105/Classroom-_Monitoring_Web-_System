@@ -1,113 +1,113 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Classroom Details</title>
 
 <style>
 
-/* 🔥 PAGE STYLE */
 body{
-font-family: Arial;
-display:flex;
-justify-content:center;
-padding:20px;
-background:#f5f5f5;
+    font-family:'Segoe UI',sans-serif;
+    background:linear-gradient(135deg,#667eea,#764ba2);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+    margin:0;
 }
 
-/* 📦 FORM CONTAINER */
-.form-container{
-display:grid;
-grid-template-columns: 1fr 1fr;
-gap:40px;
-background:white;
-padding:20px;
-border-radius:10px;
-box-shadow:0 0 10px rgba(0,0,0,0.1);
+.container{
+    background:#fff;
+    padding:25px;
+    border-radius:12px;
+    width:850px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.2);
 }
 
-/* 📄 COLUMN */
+h2{
+    text-align:center;
+    margin-bottom:20px;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:25px;
+}
+
 .column{
-display:flex;
-flex-direction:column;
+    display:flex;
+    flex-direction:column;
 }
 
-/* 🏷 LABEL */
 label{
-margin-top:10px;
-font-weight:bold;
+    font-weight:600;
+    margin-top:10px;
 }
 
-/* 🔤 INPUT STYLE */
-input, select{
-padding:8px;
-margin-top:5px;
-border:1px solid #ccc;
-border-radius:5px;
-width:100%;
+input,select{
+    padding:8px;
+    margin-top:5px;
+    border-radius:6px;
+    border:1px solid #ccc;
 }
 
-/* 🔒 READONLY STYLE */
-.readonly-style{
-background:#e0e0e0 !important;
-color:#555;
-cursor:not-allowed;
-border:1px solid #aaa;
+.readonly{
+    background:#eaeaea;
 }
 
-/* 🔘 BUTTON */
 button{
-margin-top:20px;
-padding:10px 20px;
-border:none;
-background:#007bff;
-color:white;
-border-radius:5px;
-cursor:pointer;
+    margin-top:20px;
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:8px;
+    background:#6a11cb;
+    color:#fff;
+    font-size:16px;
+    cursor:pointer;
 }
 
 button:hover{
-background:#0056b3;
+    background:#4d0ea1;
 }
 
-/* 📱 MOBILE RESPONSIVE */
-@media(max-width:700px){
-.form-container{
-grid-template-columns:1fr;
-}
+#lastSaved{
+    text-align:center;
+    margin-top:10px;
+    font-size:14px;
+    color:#444;
 }
 
 </style>
-
 </head>
 
 <body>
 
-<div>
+<div class="container">
 
-<h2 id="title">Class Details</h2>
+<h2 id="title">Classroom Details</h2>
 
-<div class="form-container">
+<div class="grid">
 
-<!-- LEFT COLUMN -->
+<!-- LEFT SIDE -->
 <div class="column">
 
-<label>Class Code</label>
+<label>Class</label>
 <select id="code"></select>
 
-<label>Strength</label>
-<input type="text" id="strength">
+<label>Student Strength</label>
+<input id="strength" class="readonly" readonly>
 
-<label>Benches</label>
-<input type="text" id="benches">
+<label>Total Benches</label>
+<input id="benches" class="readonly" readonly>
 
-<label>Faculty</label>
-<input type="text" id="faculty">
+<label>Class Advisor</label>
+<input id="classAdvisor" class="readonly" readonly>
 
-<label>Start Time</label>
-<input type="time" id="start">
-
-<label>End Time</label>
-<input type="time" id="end">
+<label>Class Advisor Mail</label>
+<input id="classAdvisorMail" class="readonly" readonly>
 
 <label>Status</label>
 <select id="status">
@@ -117,7 +117,7 @@ grid-template-columns:1fr;
 
 </div>
 
-<!-- RIGHT COLUMN -->
+<!-- RIGHT SIDE -->
 <div class="column">
 
 <label>CPU</label>
@@ -138,27 +138,939 @@ grid-template-columns:1fr;
 <option>Not Working</option>
 </select>
 
-<label>Purchase Date</label>
-<input type="date" id="purchase">
+<label>Mentor 1</label>
+<input id="mentor1" class="readonly" readonly>
 
-<label>Replace Date</label>
-<input type="date" id="replace">
+<label>Mentor 1 Mail</label>
+<input id="mentor1mail" class="readonly" readonly>
 
-<label>Service Date</label>
-<input type="date" id="service">
+<label>Mentor 2</label>
+<input id="mentor2" class="readonly" readonly>
 
-<label>Next Service</label>
-<input type="date" id="next">
+<label>Mentor 2 Mail</label>
+<input id="mentor2mail" class="readonly" readonly>
+
+<label>Mentor 3</label>
+<input id="mentor3" class="readonly" readonly>
+
+<label>Mentor 3 Mail</label>
+<input id="mentor3mail" class="readonly" readonly>
 
 </div>
 
 </div>
 
-<button onclick="saveData()">Save</button>
+<button id="saveBtn">Save</button>
+
+<div id="lastSaved">Last Saved: ---</div>
 
 </div>
 
-<script src="script.js"></script>
+<script>
+
+const classData = {
+
+"CSE-I-A":{
+strength:"63",
+benches:"32",
+classAdvisor:"Mrs.C.Krishnakala AP/CSE",
+classAdvisorMail:"krishnakala@ritrjpm.ac.in",
+mentor1:"Dr.K.Vijayalakshmi Professor & Head",
+mentor1mail:"vijayalakshmi@ritrjpm.ac.in",
+mentor2:"Mrs.Latha AP/CSE",
+mentor2mail:"latha@ritrjpm.ac.in",
+mentor3:"Mrs.Deepalakshmi AP/CSE",
+mentor3mail:"deepalakshmi@ritrjpm.ac.in"
+},
+
+"CSE-I-B":{
+strength:"63",
+benches:"32",
+classAdvisor:"Mrs.S.Manjula AP/CSE",
+classAdvisorMail:"manjula@ritrjpm.ac.in",
+mentor1:"Dr.K.Vijayalakshmi Professor & Head",
+mentor1mail:"vijayalakshmi@ritrjpm.ac.in",
+mentor2:"Mrs.G.Kanmani AP/CSE",
+mentor2mail:"kanmani@ritrjpm.ac.in",
+mentor3:"Dr.S.Pooranam ASP/CSE",
+mentor3mail:"pooranam@ritrjpm.ac.in"
+},
+
+"CSE-I-C":{
+strength:"63",
+benches:"32",
+classAdvisor:"K.Bala Karthik AP/CSE",
+classAdvisorMail:"balakarthik@ritrjpm.ac.in",
+mentor1:"Dr.K.Vijayalakshmi Professor & Head",
+mentor1mail:"vijayalakshmi@ritrjpm.ac.in",
+mentor2:"Ms.Mahalakshmi M AP/CSE",
+mentor2mail:"mahalakshmi@ritrjpm.ac.in",
+mentor3:"Dr.P.Thiruramanathan ASP/CSE",
+mentor3mail:"thiruramanathan@ritrjpm.ac.in"
+},
+
+"CSE-II-A":{
+strength:"63",
+benches:"32",
+classAdvisor:"Ms.G.Sakthi Priya AP/CSE",
+classAdvisorMail:"sakthipriya@ritrjpm.ac.in",
+mentor1:"Mrs.M.Arunthathi AP/CSE",
+mentor1mail:"arunthathi@ritrjpm.ac.in",
+mentor2:"Dr.A.Sivanesh Kumar ASP/CSE",
+mentor2mail:"sivaneshkumar@ritrjpm.ac.in",
+mentor3:"Not Available",
+mentor3mail:"Not Available"
+},
+
+"CSE-II-B":{
+strength:"63",
+benches:"32",
+classAdvisor:"Mrs.P.Devisri AP/CSE",
+classAdvisorMail:"devisri@ritrjpm.ac.in",
+mentor1:"Ms.S.Nandhini AP/CSE",
+mentor1mail:"nandhini@ritrjpm.ac.in",
+mentor2:"Mrs.S.Shunmuga Priya AP/CSE",
+mentor2mail:"shunmugapriya@ritrjpm.ac.in",
+mentor3:"Not Available",
+mentor3mail:"Not Available"
+},
+
+"CSE-II-C":{
+strength:"63",
+benches:"32",
+classAdvisor:"Dr.I.Gethzi Ahila Poornima",
+classAdvisorMail:"gethziahila@ritrjpm.ac.in",
+mentor1:"Mr.R.Bala Murugan AP/CSE",
+mentor1mail:"balamurugan@ritrjpm.ac.in",
+mentor2:"Dr.M.Pandi Professor",
+mentor2mail:"pandi@ritrjpm.ac.in",
+mentor3:"Not Available",
+mentor3mail:"Not Available"
+},
+
+"CSE-III-A":{
+strength:"63",
+benches:"32",
+classAdvisor:"Dr.M.Swarna Sudha ASP/CSE",
+classAdvisorMail:"swarnasudha@ritrjpm.ac.in",
+mentor1:"Mrs.R.Madhu AP/CSE",
+mentor1mail:"madhu@ritrjpm.ac.in",
+mentor2:"Not Available",
+mentor2mail:"Not Available",
+mentor3:"Not Available",
+mentor3mail:"Not Available"
+},
+
+"CSE-III-B":{
+strength:"63",
+benches:"32",
+classAdvisor:"Mrs.S.Vijaya Amala Devi AP/CSE",
+classAdvisorMail:"vijayaamala@ritrjpm.ac.in",
+mentor1:"Ms.Rajarajeswari P AP/CSE",
+mentor1mail:"rajarajeswari@ritrjpm.ac.in",
+mentor2:"Mrs.Sabeena AP/CSE",
+mentor2mail:"sabeena@ritrjpm.ac.in",
+mentor3:"Not Available",
+mentor3mail:"Not Available"
+},
+
+"CSE-IV-A":{
+strength:"63",
+benches:"32",
+classAdvisor:"Mrs.B.Vijayalakshmi AP(SG)/CSE",
+classAdvisorMail:"bvijayalakshmi@ritrjpm.ac.in",
+mentor1:"Mrs.K.Jeyageetha AP/CSE",
+mentor1mail:"jeyageetha@ritrjpm.ac.in",
+mentor2:"Mrs.M.Dhivya AP/CSE",
+mentor2mail:"dhivya@ritrjpm.ac.in",
+mentor3:"Not Available",
+mentor3mail:"Not Available"
+},
+
+"CSE-IV-B":{
+strength:"63",
+benches:"32",
+classAdvisor:"Mr.K.Vignesh Saravanan AP(SG)/CSE",
+classAdvisorMail:"vigneshsaravanan@ritrjpm.ac.in",
+mentor1:"Mrs.K.Jeyakarthika",
+mentor1mail:"jeyakarthika@ritrjpm.ac.in",
+mentor2:"Not Available",
+mentor2mail:"Not Available",
+mentor3:"Not Available",
+mentor3mail:"Not Available"
+}
+// EXISTING classData OBJECT KULLA
+// ITHA APPEND PANUNGA
+
+// ================= IT DEPARTMENT =================
+
+"IT-I":{
+strength:"63",
+benches:"32",
+classAdvisor:"Mrs.P.Ramya",
+classAdvisorMail:"ramya@ritrjpm.ac.in",
+
+mentor1:"Mrs.M.Muthukumar",
+mentor1mail:"muthukumar@ritrjpm.ac.in",
+
+mentor2:"Mrs.Ranjitha",
+mentor2mail:"ranjitha@ritrjpm.ac.in",
+
+mentor3:"Not Available",
+mentor3mail:"Not Available"
+},
+
+"IT-II":{
+strength:"63",
+benches:"32",
+classAdvisor:"Mrs.M.Thulasdevi",
+classAdvisorMail:"thulasdevi@ritrjpm.ac.in",
+
+mentor1:"Mrs.B.Thevahi",
+mentor1mail:"thevahi@ritrjpm.ac.in",
+
+mentor2:"Not Available",
+mentor2mail:"Not Available",
+
+mentor3:"Not Available",
+mentor3mail:"Not Available"
+},
+
+"IT-III":{
+strength:"63",
+benches:"32",
+classAdvisor:"Dr.G.Mareeswari",
+classAdvisorMail:"mareeswari@ritrjpm.ac.in",
+
+mentor1:"Mrs.G.Sivasathiya",
+mentor1mail:"sivasathiya@ritrjpm.ac.in",
+
+mentor2:"Mrs.M.Rethinakumari",
+mentor2mail:"rethinakumari@ritrjpm.ac.in",
+
+mentor3:"Not Available",
+mentor3mail:"Not Available"
+},
+
+"IT-IV":{
+strength:"63",
+benches:"32",
+classAdvisor:"Mr.S.Sakkaravarthi",
+classAdvisorMail:"sakkaravarthi@ritrjpm.ac.in",
+
+mentor1:"Dr.K.Palraj",
+mentor1mail:"palraj@ritrjpm.ac.in",
+
+mentor2:"Mrs.A.Alagulakshmi",
+mentor2mail:"alagulakshmi@ritrjpm.ac.in",
+
+mentor3:"Not Available",
+mentor3mail:"Not Available"
+},
+
+// ================= AD / AIDS DEPARTMENT =================
+
+"AIDS-I-A":{
+strength:"63",
+benches:"32",
+classAdvisor:"S.Pradeepha",
+classAdvisorMail:"pradeepha@ritrjpm.ac.in",
+
+mentor1:"Mr.M.Ramnath AP/AD",
+mentor1mail:"ramnath@ritrjpm.ac.in",
+
+mentor2:"Mr.R.Muthu Eswaran AP/AD",
+mentor2mail:"muthueswaran@ritrjpm.ac.in",
+
+mentor3:"Not Available",
+mentor3mail:"Not Available"
+},
+
+"AIDS-I-B":{
+strength:"63",
+benches:"32",
+classAdvisor:"Dr.S.V.Anandhi",
+classAdvisorMail:"anandhi@ritrjpm.ac.in",
+
+mentor1:"Dr.S.Selva Birundha ASP/AD",
+mentor1mail:"selvabirundha@ritrjpm.ac.in",
+
+mentor2:"Ms.K.Dhanalakshmi AP/AD",
+mentor2mail:"dhanalakshmi@ritrjpm.ac.in",
+
+mentor3:"Not Available",
+mentor3mail:"Not Available"
+},
+
+"AIDS-II-A":{
+strength:"63",
+benches:"32",
+classAdvisor:"B.Revathi",
+classAdvisorMail:"revathi@ritrjpm.ac.in",
+
+mentor1:"Mr.P.Vetrivel AP/AD",
+mentor1mail:"vetrivel@ritrjpm.ac.in",
+
+mentor2:"Not Available",
+mentor2mail:"Not Available",
+
+mentor3:"Not Available",
+mentor3mail:"Not Available"
+},
+
+"AIDS-II-B":{
+strength:"63",
+benches:"32",
+classAdvisor:"P.Vetrivel",
+classAdvisorMail:"vetrivel@ritrjpm.ac.in",
+
+mentor1:"Mr.P.Vetrivel AP/AD",
+mentor1mail:"vetrivel@ritrjpm.ac.in",
+
+mentor2:"Not Available",
+mentor2mail:"Not Available",
+
+mentor3:"Not Available",
+mentor3mail:"Not Available"
+},
+
+"AIDS-III-A":{
+strength:"63",
+benches:"32",
+classAdvisor:"C.Usharani",
+classAdvisorMail:"usharani@ritrjpm.ac.in",
+
+mentor1:"Dr.M.Ramnath",
+mentor1mail:"ramnath@ritrjpm.ac.in",
+
+mentor2:"Not Available",
+mentor2mail:"Not Available",
+
+mentor3:"Not Available",
+mentor3mail:"Not Available"
+},
+
+"AIDS-III-B":{
+strength:"63",
+benches:"32",
+classAdvisor:"Dr.M.Ramnath",
+classAdvisorMail:"ramnath@ritrjpm.ac.in",
+
+mentor1:"Not Available",
+mentor1mail:"Not Available",
+
+mentor2:"Not Available",
+mentor2mail:"Not Available",
+
+mentor3:"Not Available",
+mentor3mail:"Not Available"
+},
+
+"AIDS-IV-A":{
+strength:"63",
+benches:"32",
+classAdvisor:"Dr.C.Karpagavalli",
+classAdvisorMail:"karpagavalli@ritrjpm.ac.in",
+
+mentor1:"Not Available",
+mentor1mail:"Not Available",
+
+mentor2:"Not Available",
+mentor2mail:"Not Available",
+
+mentor3:"Not Available",
+mentor3mail:"Not Available"
+},
+
+"AIDS-IV-B":{
+strength:"63",
+benches:"32",
+classAdvisor:"V.Logapriya",
+classAdvisorMail:"logapriya@ritrjpm.ac.in",
+
+mentor1:"Not Available",
+mentor1mail:"Not Available",
+
+mentor2:"Not Available",
+mentor2mail:"Not Available",
+
+mentor3:"Not Available",
+mentor3mail:"Not Available"
+},
+
+// ================= MECH DEPARTMENT =================
+
+"MECH-I":{
+strength:"63",
+benches:"32",
+classAdvisor:"Dr.S.Maharajan ASP-I/Mech",
+classAdvisorMail:"maharajan@ritrjpm.ac.in",
+
+mentor1:"Mr.C.Gururaj AP(SG)/Mech",
+mentor1mail:"gururaj@ritrjpm.ac.in",
+
+mentor2:"Dr.M.Ashokkumar AP-III/Mech",
+mentor2mail:"ashokkumar@ritrjpm.ac.in",
+
+mentor3:"Not Available",
+mentor3mail:"Not Available"
+},
+
+"MECH-II":{
+strength:"63",
+benches:"32",
+classAdvisor:"Dr.J.Jerold John Britto",
+classAdvisorMail:"jeroldjohnbritto@ritrjpm.ac.in",
+
+mentor1:"Mr.R.Prabhakaran AP-II/Mech",
+mentor1mail:"prabhakaran@ritrjpm.ac.in",
+
+mentor2:"Not Available",
+mentor2mail:"Not Available",
+
+mentor3:"Not Available",
+mentor3mail:"Not Available"
+},
+
+"MECH-III":{
+strength:"63",
+benches:"32",
+classAdvisor:"Mr.R.Prabhakaran AP-II/Mech",
+classAdvisorMail:"prabhakaran@ritrjpm.ac.in",
+
+mentor1:"Dr.J.Jerold John Britto",
+mentor1mail:"jeroldjohnbritto@ritrjpm.ac.in",
+
+mentor2:"Dr.R.Venkatesh AP-III/Mech",
+mentor2mail:"venkatesh@ritrjpm.ac.in",
+
+mentor3:"Not Available",
+mentor3mail:"Not Available"
+},
+
+"MECH-IV":{
+strength:"63",
+benches:"32",
+classAdvisor:"Mr.L.Karthikeyan AP(SG)/Mech",
+classAdvisorMail:"karthikeyan@ritrjpm.ac.in",
+
+mentor1:"Dr.R.Arun Kumar AP-III/Mech",
+mentor1mail:"arunkumar@ritrjpm.ac.in",
+
+mentor2:"Mr.M.Sivagaminathan alias Balaji",
+mentor2mail:"sivagaminathan@ritrjpm.ac.in",
+
+mentor3:"Not Available",
+mentor3mail:"Not Available"
+},
+
+// ================= CIVIL DEPARTMENT =================
+
+"CIVIL-I":{
+strength:"63",
+benches:"32",
+classAdvisor:"Not Available",
+classAdvisorMail:"Not Available",
+
+mentor1:"Not Available",
+mentor1mail:"Not Available",
+
+mentor2:"Not Available",
+mentor2mail:"Not Available",
+
+mentor3:"Not Available",
+mentor3mail:"Not Available"
+},
+// ================= ECE DEPARTMENT =================
+
+"ECE-I-A":{
+strength:"63",
+benches:"32",
+classAdvisor:"Not Available",
+classAdvisorMail:"Not Available",
+
+mentor1:"Not Available",
+mentor1mail:"Not Available",
+
+mentor2:"Not Available",
+mentor2mail:"Not Available",
+
+mentor3:"Not Available",
+mentor3mail:"Not Available"
+},
+
+"ECE-I-B":{
+strength:"63",
+benches:"32",
+classAdvisor:"Not Available",
+classAdvisorMail:"Not Available",
+
+mentor1:"Not Available",
+mentor1mail:"Not Available",
+
+mentor2:"Not Available",
+mentor2mail:"Not Available",
+
+mentor3:"Not Available",
+mentor3mail:"Not Available"
+},
+
+"ECE-II-A":{
+strength:"63",
+benches:"32",
+classAdvisor:"Not Available",
+classAdvisorMail:"Not Available",
+
+mentor1:"Not Available",
+mentor1mail:"Not Available",
+
+mentor2:"Not Available",
+mentor2mail:"Not Available",
+
+mentor3:"Not Available",
+mentor3mail:"Not Available"
+},
+
+"ECE-II-B":{
+strength:"63",
+benches:"32",
+classAdvisor:"Not Available",
+classAdvisorMail:"Not Available",
+
+mentor1:"Not Available",
+mentor1mail:"Not Available",
+
+mentor2:"Not Available",
+mentor2mail:"Not Available",
+
+mentor3:"Not Available",
+mentor3mail:"Not Available"
+},
+
+"ECE-III-A":{
+strength:"63",
+benches:"32",
+classAdvisor:"Not Available",
+classAdvisorMail:"Not Available",
+
+mentor1:"Not Available",
+mentor1mail:"Not Available",
+
+mentor2:"Not Available",
+mentor2mail:"Not Available",
+
+mentor3:"Not Available",
+mentor3mail:"Not Available"
+},
+
+"ECE-III-B":{
+strength:"63",
+benches:"32",
+classAdvisor:"Not Available",
+classAdvisorMail:"Not Available",
+
+mentor1:"Not Available",
+mentor1mail:"Not Available",
+
+mentor2:"Not Available",
+mentor2mail:"Not Available",
+
+mentor3:"Not Available",
+mentor3mail:"Not Available"
+},
+
+"ECE-IV-A":{
+strength:"63",
+benches:"32",
+classAdvisor:"Not Available",
+classAdvisorMail:"Not Available",
+
+mentor1:"Not Available",
+mentor1mail:"Not Available",
+
+mentor2:"Not Available",
+mentor2mail:"Not Available",
+
+mentor3:"Not Available",
+mentor3mail:"Not Available"
+},
+
+"ECE-IV-B":{
+strength:"63",
+benches:"32",
+classAdvisor:"Not Available",
+classAdvisorMail:"Not Available",
+
+mentor1:"Not Available",
+mentor1mail:"Not Available",
+
+mentor2:"Not Available",
+mentor2mail:"Not Available",
+
+mentor3:"Not Available",
+mentor3mail:"Not Available"
+},
+
+// ================= AIML DEPARTMENT =================
+
+"AIML-I-A":{
+strength:"63",
+benches:"32",
+classAdvisor:"Not Available",
+classAdvisorMail:"Not Available",
+
+mentor1:"Not Available",
+mentor1mail:"Not Available",
+
+mentor2:"Not Available",
+mentor2mail:"Not Available",
+
+mentor3:"Not Available",
+mentor3mail:"Not Available"
+},
+
+"AIML-I-B":{
+strength:"63",
+benches:"32",
+classAdvisor:"Not Available",
+classAdvisorMail:"Not Available",
+
+mentor1:"Not Available",
+mentor1mail:"Not Available",
+
+mentor2:"Not Available",
+mentor2mail:"Not Available",
+
+mentor3:"Not Available",
+mentor3mail:"Not Available"
+},
+
+"AIML-II-A":{
+strength:"63",
+benches:"32",
+classAdvisor:"Not Available",
+classAdvisorMail:"Not Available",
+
+mentor1:"Not Available",
+mentor1mail:"Not Available",
+
+mentor2:"Not Available",
+mentor2mail:"Not Available",
+
+mentor3:"Not Available",
+mentor3mail:"Not Available"
+},
+
+"AIML-II-B":{
+strength:"63",
+benches:"32",
+classAdvisor:"Not Available",
+classAdvisorMail:"Not Available",
+
+mentor1:"Not Available",
+mentor1mail:"Not Available",
+
+mentor2:"Not Available",
+mentor2mail:"Not Available",
+
+mentor3:"Not Available",
+mentor3mail:"Not Available"
+},
+
+"AIML-III-A":{
+strength:"63",
+benches:"32",
+classAdvisor:"Not Available",
+classAdvisorMail:"Not Available",
+
+mentor1:"Not Available",
+mentor1mail:"Not Available",
+
+mentor2:"Not Available",
+mentor2mail:"Not Available",
+
+mentor3:"Not Available",
+mentor3mail:"Not Available"
+},
+
+"AIML-III-B":{
+strength:"63",
+benches:"32",
+classAdvisor:"Not Available",
+classAdvisorMail:"Not Available",
+
+mentor1:"Not Available",
+mentor1mail:"Not Available",
+
+mentor2:"Not Available",
+mentor2mail:"Not Available",
+
+mentor3:"Not Available",
+mentor3mail:"Not Available"
+},
+
+"AIML-IV-A":{
+strength:"63",
+benches:"32",
+classAdvisor:"Not Available",
+classAdvisorMail:"Not Available",
+
+mentor1:"Not Available",
+mentor1mail:"Not Available",
+
+mentor2:"Not Available",
+mentor2mail:"Not Available",
+
+mentor3:"Not Available",
+mentor3mail:"Not Available"
+},
+
+"AIML-IV-B":{
+strength:"63",
+benches:"32",
+classAdvisor:"Not Available",
+classAdvisorMail:"Not Available",
+
+mentor1:"Not Available",
+mentor1mail:"Not Available",
+
+mentor2:"Not Available",
+mentor2mail:"Not Available",
+
+mentor3:"Not Available",
+mentor3mail:"Not Available"
+},
+
+// ================= CSBS DEPARTMENT =================
+
+"CSBS-I-A":{
+strength:"63",
+benches:"32",
+classAdvisor:"Not Available",
+classAdvisorMail:"Not Available",
+
+mentor1:"Not Available",
+mentor1mail:"Not Available",
+
+mentor2:"Not Available",
+mentor2mail:"Not Available",
+
+mentor3:"Not Available",
+mentor3mail:"Not Available"
+},
+
+"CSBS-I-B":{
+strength:"63",
+benches:"32",
+classAdvisor:"Not Available",
+classAdvisorMail:"Not Available",
+
+mentor1:"Not Available",
+mentor1mail:"Not Available",
+
+mentor2:"Not Available",
+mentor2mail:"Not Available",
+
+mentor3:"Not Available",
+mentor3mail:"Not Available"
+},
+
+"CSBS-II-A":{
+strength:"63",
+benches:"32",
+classAdvisor:"Not Available",
+classAdvisorMail:"Not Available",
+
+mentor1:"Not Available",
+mentor1mail:"Not Available",
+
+mentor2:"Not Available",
+mentor2mail:"Not Available",
+
+mentor3:"Not Available",
+mentor3mail:"Not Available"
+},
+
+"CSBS-II-B":{
+strength:"63",
+benches:"32",
+classAdvisor:"Not Available",
+classAdvisorMail:"Not Available",
+
+mentor1:"Not Available",
+mentor1mail:"Not Available",
+
+mentor2:"Not Available",
+mentor2mail:"Not Available",
+
+mentor3:"Not Available",
+mentor3mail:"Not Available"
+},
+
+"CSBS-III-A":{
+strength:"63",
+benches:"32",
+classAdvisor:"Not Available",
+classAdvisorMail:"Not Available",
+
+mentor1:"Not Available",
+mentor1mail:"Not Available",
+
+mentor2:"Not Available",
+mentor2mail:"Not Available",
+
+mentor3:"Not Available",
+mentor3mail:"Not Available"
+},
+
+"CSBS-III-B":{
+strength:"63",
+benches:"32",
+classAdvisor:"Not Available",
+classAdvisorMail:"Not Available",
+
+mentor1:"Not Available",
+mentor1mail:"Not Available",
+
+mentor2:"Not Available",
+mentor2mail:"Not Available",
+
+mentor3:"Not Available",
+mentor3mail:"Not Available"
+},
+
+"CSBS-IV-A":{
+strength:"63",
+benches:"32",
+classAdvisor:"Not Available",
+classAdvisorMail:"Not Available",
+
+mentor1:"Not Available",
+mentor1mail:"Not Available",
+
+mentor2:"Not Available",
+mentor2mail:"Not Available",
+
+mentor3:"Not Available",
+mentor3mail:"Not Available"
+},
+
+"CSBS-IV-B":{
+strength:"63",
+benches:"32",
+classAdvisor:"Not Available",
+classAdvisorMail:"Not Available",
+
+mentor1:"Not Available",
+mentor1mail:"Not Available",
+
+mentor2:"Not Available",
+mentor2mail:"Not Available",
+
+mentor3:"Not Available",
+mentor3mail:"Not Available"
+},
+"CIVIL-II":{
+strength:"63",
+benches:"32",
+classAdvisor:"Not Available",
+classAdvisorMail:"Not Available",
+
+mentor1:"Not Available",
+mentor1mail:"Not Available",
+
+mentor2:"Not Available",
+mentor2mail:"Not Available",
+
+mentor3:"Not Available",
+mentor3mail:"Not Available"
+},
+
+"CIVIL-III":{
+strength:"63",
+benches:"32",
+classAdvisor:"Not Available",
+classAdvisorMail:"Not Available",
+
+mentor1:"Not Available",
+mentor1mail:"Not Available",
+
+mentor2:"Not Available",
+mentor2mail:"Not Available",
+
+mentor3:"Not Available",
+mentor3mail:"Not Available"
+},
+
+"CIVIL-IV":{
+strength:"63",
+benches:"32",
+classAdvisor:"Not Available",
+classAdvisorMail:"Not Available",
+
+mentor1:"Not Available",
+mentor1mail:"Not Available",
+
+mentor2:"Not Available",
+mentor2mail:"Not Available",
+
+mentor3:"Not Available",
+mentor3mail:"Not Available"
+},
+};
+
+const code=document.getElementById("code");
+
+for(let key in classData){
+
+    let option=document.createElement("option");
+
+    option.value=key;
+    option.textContent=key;
+
+    code.appendChild(option);
+}
+
+function loadClassData(){
+
+    let selected=code.value;
+
+    let data=classData[selected];
+
+    document.getElementById("title").innerText=selected;
+
+    document.getElementById("strength").value=data.strength;
+    document.getElementById("benches").value=data.benches;
+
+    document.getElementById("classAdvisor").value=data.classAdvisor;
+    document.getElementById("classAdvisorMail").value=data.classAdvisorMail;
+
+    document.getElementById("mentor1").value=data.mentor1;
+    document.getElementById("mentor1mail").value=data.mentor1mail;
+
+    document.getElementById("mentor2").value=data.mentor2;
+    document.getElementById("mentor2mail").value=data.mentor2mail;
+
+    document.getElementById("mentor3").value=data.mentor3;
+    document.getElementById("mentor3mail").value=data.mentor3mail;
+}
+
+code.addEventListener("change",loadClassData);
+
+loadClassData();
+
+document.getElementById("saveBtn").addEventListener("click",()=>{
+
+    let now=new Date();
+
+    document.getElementById("lastSaved").innerText=
+    "Last Saved : "+now.toLocaleString();
+
+    alert("Saved Successfully");
+
+});
+
+</script>
 
 </body>
 </html>
