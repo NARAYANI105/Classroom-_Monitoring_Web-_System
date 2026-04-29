@@ -1,209 +1,140 @@
-// 🔐 LOGIN SYSTEM
-let pass = prompt("Enter your password");
-pass = pass ? pass.toUpperCase().trim() : "";
+<!DOCTYPE html>
+<html>
+<head>
+<title>Classroom Details</title>
 
-let role = "Student";
-
-if(pass === "ADMIN.RIT") role = "Admin";
-else if(pass === "STAFF.RIT") role = "Staff";
-else if(pass === "RIT") role = "Student";
-else{
-    alert("Invalid Password");
-    role = "Student";
+<style>
+body{
+    font-family:'Segoe UI',sans-serif;
+    background:linear-gradient(135deg,#667eea,#764ba2);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+    margin:0;
 }
 
-localStorage.setItem("role", role);
-
-
-// 📚 ALL CLASS DATA
-const classData = {
-"A1L03":{name:"First Year CSE B",strength:63,benches:32},
-"A1L04":{name:"First Year AIML",strength:63,benches:32},
-
-"A2L05":{name:"First Year MECH",strength:30,benches:15},
-"A2L04":{name:"First Year CSE A",strength:63,benches:32},
-"A2L03":{name:"First Year IT",strength:63,benches:30},
-"A2L02":{name:"First Year ECE B",strength:63,benches:32},
-"A2L01":{name:"First Year ECE A",strength:63,benches:32},
-
-"B0L01":{name:"First Year AD A",strength:63,benches:31},
-"B0L02":{name:"First Year AD B",strength:63,benches:31},
-"B0L03":{name:"First Year CSBS",strength:63,benches:31},
-
-"B1L05":{name:"First Year EEE",strength:63,benches:32},
-"B1L04":{name:"First Year CSE C",strength:63,benches:32},
-"B1L02":{name:"First Year Civil",strength:30,benches:25},
-
-"B3L05":{name:"Final Year AD A",strength:59,benches:30},
-"B3L04":{name:"Third Year CIVIL",strength:45,benches:25},
-"B3L03":{name:"Second Year CIVIL",strength:41,benches:25},
-"B3L02":{name:"Final Year CSBS",strength:60,benches:30},
-
-"C2L05":{name:"Second Year MECH",strength:42,benches:25},
-"C2L04":{name:"Third Year MECH",strength:63,benches:31},
-"C2L03":{name:"Final Year MECH",strength:50,benches:25},
-"C2L02":{name:"Third Year IT",strength:62,benches:31},
-"C2L01":{name:"Second Year IT",strength:64,benches:32},
-
-"C3L01":{name:"Third Year AD A",strength:59,benches:30},
-"C3L02":{name:"Third Year AD B",strength:59,benches:30},
-"C3L03":{name:"Second Year AD A",strength:63,benches:33},
-"C3L04":{name:"Second Year AD B",strength:63,benches:31},
-
-// RIGHT SIDE
-"B3R02":{name:"Second Year EEE",strength:65,benches:34},
-"B3R03":{name:"Third Year EEE",strength:64,benches:32},
-"B3R04":{name:"Third Year CSBS",strength:61,benches:31},
-"B3R05":{name:"Second Year CSBS",strength:55,benches:28},
-
-"C3R01":{name:"Second Year ECE A",strength:64,benches:32},
-"C3R02":{name:"Second Year ECE B",strength:64,benches:32},
-"C3R03":{name:"Third Year ECE A",strength:63,benches:32},
-"C3R04":{name:"Third Year ECE B",strength:62,benches:31},
-"C3R05":{name:"Final Year ECE A",strength:59,benches:30},
-
-"C2R04":{name:"Second Year CSE A",strength:63,benches:32},
-"C2R05":{name:"Second Year CSE B",strength:63,benches:32},
-"C2R06":{name:"Second Year CSE C",strength:64,benches:32},
-
-"A2R02":{name:"Third Year CSE A",strength:64,benches:32},
-"A2R02A":{name:"Third Year CSB B",strength:63,benches:32}
-};
-
-
-// 📌 ELEMENTS
-const code = document.getElementById("code");
-const title = document.getElementById("title");
-const strength = document.getElementById("strength");
-const benches = document.getElementById("benches");
-
-const status = document.getElementById("status");
-const cpu = document.getElementById("cpu");
-const projector = document.getElementById("projector");
-const battery = document.getElementById("battery");
-
-const saveBtn = document.getElementById("saveBtn");
-const lastSaved = document.getElementById("lastSaved");
-
-
-// 📥 DROPDOWN LOAD
-code.innerHTML = `<option value="">Select Class</option>`;
-for(let c in classData){
-    code.innerHTML += `<option value="${c}">${c} - ${classData[c].name}</option>`;
+.container{
+    background:#fff;
+    padding:25px;
+    border-radius:12px;
+    width:750px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.2);
 }
 
-
-// 🔥 LOAD CLASS
-function loadClass(c){
-
-if(!classData[c]) return;
-
-let d = classData[c];
-
-title.innerText = c + " - " + d.name;
-strength.value = d.strength;
-benches.value = d.benches;
-
-let saved = JSON.parse(localStorage.getItem(c));
-
-if(saved){
-status.value = saved.status || "Available";
-cpu.value = saved.cpu || "Working";
-projector.value = saved.projector || "Working";
-battery.value = saved.battery || "Working";
-lastSaved.innerText = "Last Saved: " + saved.time;
-}else{
-status.value="Available";
-cpu.value="Working";
-projector.value="Working";
-battery.value="Working";
-lastSaved.innerText = "Last Saved: ---";
-}
+h2{
+    text-align:center;
+    margin-bottom:20px;
 }
 
-
-// 🔁 DROPDOWN CHANGE
-code.addEventListener("change", function(){
-loadClass(this.value);
-});
-
-
-// 🔗 AUTO LOAD FIRST CLASS
-let firstClass = Object.keys(classData)[0];
-code.value = firstClass;
-loadClass(firstClass);
-
-
-// 🔒 ROLE CONTROL
-if(role === "Student"){
-document.querySelectorAll("input, select").forEach(el=>{
-    if(el.id !== "code") el.disabled = true;
-});
-saveBtn.style.display = "none";
-}else{
-strength.disabled = true;
-benches.disabled = true;
+.grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:25px;
 }
 
-
-// 💾 SAVE FUNCTION
-function saveData(){
-
-if(role === "Student"){
-alert("❌ No permission");
-return;
+.column{
+    display:flex;
+    flex-direction:column;
 }
 
-let c = code.value;
-
-if(!c){
-alert("Select class ❌");
-return;
+label{
+    font-weight:600;
+    margin-top:10px;
 }
 
-let now = new Date();
-let formattedTime = now.toLocaleString();
-
-let data = {
-status: status.value,
-cpu: cpu.value,
-projector: projector.value,
-battery: battery.value,
-time: formattedTime
-};
-
-localStorage.setItem(c, JSON.stringify(data));
-
-lastSaved.innerText = "Last Saved: " + formattedTime;
-
-alert("✅ Saved Successfully");
+input,select{
+    padding:8px;
+    margin-top:5px;
+    border-radius:6px;
+    border:1px solid #ccc;
 }
 
+.readonly{
+    background:#eaeaea;
+}
 
-// 💾 SAVE CLICK
-saveBtn.addEventListener("click", saveData);
+button{
+    margin-top:20px;
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:8px;
+    background:#6a11cb;
+    color:#fff;
+    font-size:16px;
+    cursor:pointer;
+}
 
+#lastSaved{
+    text-align:center;
+    margin-top:10px;
+    font-size:14px;
+    color:#444;
+}
+</style>
+</head>
 
-// 🔴 SMALL LOGOUT BUTTON
-let logoutBtn = document.createElement("button");
-logoutBtn.innerText = "Logout";
+<body>
 
-logoutBtn.style.position = "fixed";
-logoutBtn.style.bottom = "15px";
-logoutBtn.style.right = "15px";
-logoutBtn.style.padding = "6px 12px";
-logoutBtn.style.background = "#d9534f";
-logoutBtn.style.color = "white";
-logoutBtn.style.border = "none";
-logoutBtn.style.borderRadius = "6px";
-logoutBtn.style.fontSize = "12px";
-logoutBtn.style.cursor = "pointer";
+<div class="container">
 
-document.body.appendChild(logoutBtn);
+<h2 id="title">Classroom Details</h2>
 
+<div class="grid">
 
-// 🚪 LOGOUT
-logoutBtn.onclick = function(){
-localStorage.clear();
-window.location.href = "about:blank";
-};
+<!-- LEFT SIDE -->
+<div class="column">
+
+<label>Class</label>
+<select id="code"></select>
+
+<label>Student Strength</label>
+<input id="strength" class="readonly" readonly>
+
+<label>Total Benches</label>
+<input id="benches" class="readonly" readonly>
+
+<label>Status</label>
+<select id="status">
+<option>Available</option>
+<option>Occupied</option>
+</select>
+
+</div>
+
+<!-- RIGHT SIDE -->
+<div class="column">
+
+<label>CPU</label>
+<select id="cpu">
+<option>Working</option>
+<option>Not Working</option>
+</select>
+
+<label>Projector</label>
+<select id="projector">
+<option>Working</option>
+<option>Not Working</option>
+</select>
+
+<label>Battery</label>
+<select id="battery">
+<option>Working</option>
+<option>Not Working</option>
+</select>
+
+</div>
+
+</div>
+
+<button id="saveBtn">Save</button>
+
+<div id="lastSaved">Last Saved: ---</div>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
