@@ -119,15 +119,23 @@ font-size:12px;
 cursor:pointer;
 width:auto;
 }
+  function logout(){
 
-.logoutBtn:hover{
-background:#ad1457;
-}
+localStorage.clear();
 
-@media(max-width:850px){
+document.body.innerHTML = `
+<div style="
+height:100vh;
+background:white;
+">
+</div>
+`;
 
-.grid{
-grid-template-columns:1fr;
+setTimeout(() => {
+document.body.innerHTML = "";
+window.location.href = "about:blank";
+},500);
+
 }
 
 .container{
