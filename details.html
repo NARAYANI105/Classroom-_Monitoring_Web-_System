@@ -120,9 +120,34 @@ cursor:pointer;
 width:auto;
 }
 
-.logoutBtn:hover{
-background:#ad1457;
+<script>
+
+function logout(){
+
+localStorage.clear();
+
+document.body.innerHTML = `
+<div style="
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+font-family:Segoe UI;
+font-size:28px;
+background:black;
+color:white;
+">
+Logged Out Successfully
+</div>
+`;
+
+setTimeout(() => {
+window.location.href = "about:blank";
+},1000);
+
 }
+
+</script>
 
 @media(max-width:850px){
 
