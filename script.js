@@ -15,694 +15,366 @@ else {
 localStorage.setItem("role", role);
 
 
-// 📚 ALL CLASS DATA + MENTOR DETAILS
+// 📚 FULL CLASS DATA
+
 const classData = {
 
-    // ================= LEFT SIDE =================
-
-    "A1L03": {
-        name: "First Year CSE B",
-        strength: 63,
-        benches: 32,
-        advisor: "Mrs.S.Manjula, AP/CSE",
-        advisorMail: "smanjula@ritrjpm.ac.in",
-
-        mentor1: "Dr.K.Vijayalakshmi Professor & Head",
-        mentor1Mail: "kvijayalakshmi@ritrjpm.ac.in",
-
-        mentor2: "Mrs.S.Manjula, AP/CSE",
-        mentor2Mail: "smanjula@ritrjpm.ac.in",
-
-        mentor3: "Mrs.G.Kanmani, AP/CSE",
-        mentor3Mail: "gkanmani@ritrjpm.ac.in"
-    },
-
-    "A1L04": {
-        name: "First Year AIML",
-        strength: 63,
-        benches: 32,
-        advisor: "Not Available",
-        advisorMail: "Not Available",
-
-        mentor1: "Not Available",
-        mentor1Mail: "Not Available",
-
-        mentor2: "Not Available",
-        mentor2Mail: "Not Available",
-
-        mentor3: "Not Available",
-        mentor3Mail: "Not Available"
-    },
-
-    "A2L05": {
-        name: "First Year MECH",
-        strength: 30,
-        benches: 15,
-        advisor: "Dr.S.Maharajan, ASP-I/Mech",
-        advisorMail: "smaharajan@ritrjpm.ac.in",
-
-        mentor1: "Dr.S.Maharajan, ASP-I/Mech",
-        mentor1Mail: "smaharajan@ritrjpm.ac.in",
-
-        mentor2: "Mr.C.Gururaj, AP(SG)/Mech",
-        mentor2Mail: "cgururaj@ritrjpm.ac.in",
-
-        mentor3: "Dr.M.Ashokkumar, AP-III/Mech",
-        mentor3Mail: "mashokkumar@ritrjpm.ac.in"
-    },
-
-    "A2L04": {
-        name: "First Year CSE A",
-        strength: 63,
-        benches: 32,
-        advisor: "Mrs.C.Krishnakala, AP/CSE",
-        advisorMail: "ckrishnakala@ritrjpm.ac.in",
-
-        mentor1: "Dr.K.Vijayalakshmi Professor & Head",
-        mentor1Mail: "kvijayalakshmi@ritrjpm.ac.in",
-
-        mentor2: "Mrs.C.Krishnakala, AP/CSE",
-        mentor2Mail: "ckrishnakala@ritrjpm.ac.in",
-
-        mentor3: "Mrs.Latha, AP/CSE",
-        mentor3Mail: "latha@ritrjpm.ac.in"
-    },
-
-    "A2L03": {
-        name: "First Year IT",
-        strength: 63,
-        benches: 30,
-        advisor: "Mrs.P.Ramya",
-        advisorMail: "ramya@ritrjpm.ac.in",
-
-        mentor1: "Mrs.M.Muthukumar",
-        mentor1Mail: "muthukumar@ritrjpm.ac.in",
-
-        mentor2: "Mrs.Ranjitha",
-        mentor2Mail: "ranjitha@ritrjpm.ac.in",
-
-        mentor3: "Not Available",
-        mentor3Mail: "Not Available"
-    },
-
-    "A2L02": {
-        name: "First Year ECE B",
-        strength: 63,
-        benches: 32,
-        advisor: "Not Available",
-        advisorMail: "Not Available",
-
-        mentor1: "Not Available",
-        mentor1Mail: "Not Available",
-
-        mentor2: "Not Available",
-        mentor2Mail: "Not Available",
-
-        mentor3: "Not Available",
-        mentor3Mail: "Not Available"
-    },
-
-    "A2L01": {
-        name: "First Year ECE A",
-        strength: 63,
-        benches: 32,
-        advisor: "Not Available",
-        advisorMail: "Not Available",
-
-        mentor1: "Not Available",
-        mentor1Mail: "Not Available",
-
-        mentor2: "Not Available",
-        mentor2Mail: "Not Available",
-
-        mentor3: "Not Available",
-        mentor3Mail: "Not Available"
-    },
-
-    "B0L01": {
-        name: "First Year AD A",
-        strength: 63,
-        benches: 31,
-        advisor: "S.Pradeepha",
-        advisorMail: "spradeepha@ritrjpm.ac.in",
-
-        mentor1: "Not Available",
-        mentor1Mail: "Not Available",
-
-        mentor2: "Not Available",
-        mentor2Mail: "Not Available",
-
-        mentor3: "Not Available",
-        mentor3Mail: "Not Available"
-    },
-
-    "B0L02": {
-        name: "First Year AD B",
-        strength: 63,
-        benches: 31,
-        advisor: "Dr.S.V.Anandhi",
-        advisorMail: "svanandhi@ritrjpm.ac.in",
-
-        mentor1: "Not Available",
-        mentor1Mail: "Not Available",
-
-        mentor2: "Not Available",
-        mentor2Mail: "Not Available",
-
-        mentor3: "Not Available",
-        mentor3Mail: "Not Available"
-    },
-
-    "B0L03": {
-        name: "First Year CSBS",
-        strength: 63,
-        benches: 31,
-        advisor: "Not Available",
-        advisorMail: "Not Available",
-
-        mentor1: "Not Available",
-        mentor1Mail: "Not Available",
-
-        mentor2: "Not Available",
-        mentor2Mail: "Not Available",
-
-        mentor3: "Not Available",
-        mentor3Mail: "Not Available"
-    },
-
-    "B1L05": {
-        name: "First Year EEE",
-        strength: 63,
-        benches: 32,
-        advisor: "Not Available",
-        advisorMail: "Not Available",
-
-        mentor1: "Not Available",
-        mentor1Mail: "Not Available",
-
-        mentor2: "Not Available",
-        mentor2Mail: "Not Available",
-
-        mentor3: "Not Available",
-        mentor3Mail: "Not Available"
-    },
-
-    "B1L04": {
-        name: "First Year CSE C",
-        strength: 63,
-        benches: 32,
-        advisor: "K.Bala Karthik, AP/CSE",
-        advisorMail: "balakarthik@ritrjpm.ac.in",
-
-        mentor1: "Dr.K.Vijayalakshmi Professor & Head",
-        mentor1Mail: "kvijayalakshmi@ritrjpm.ac.in",
-
-        mentor2: "K.Bala Karthik, AP/CSE",
-        mentor2Mail: "balakarthik@ritrjpm.ac.in",
-
-        mentor3: "Ms.Mahalakshmi M, AP/CSE",
-        mentor3Mail: "mahalakshmi@ritrjpm.ac.in"
-    },
-
-    "B1L02": {
-        name: "First Year CIVIL",
-        strength: 30,
-        benches: 25,
-        advisor: "Not Available",
-        advisorMail: "Not Available",
-
-        mentor1: "Not Available",
-        mentor1Mail: "Not Available",
-
-        mentor2: "Not Available",
-        mentor2Mail: "Not Available",
-
-        mentor3: "Not Available",
-        mentor3Mail: "Not Available"
-    },
-
-    "B3L05": {
-        name: "Final Year AD A",
-        strength: 59,
-        benches: 30,
-        advisor: "Dr.C.Karpagavalli",
-        advisorMail: "ckarpagavalli@ritrjpm.ac.in",
-
-        mentor1: "Not Available",
-        mentor1Mail: "Not Available",
-
-        mentor2: "Not Available",
-        mentor2Mail: "Not Available",
-
-        mentor3: "Not Available",
-        mentor3Mail: "Not Available"
-    },
-
-    "B3L04": {
-        name: "Third Year CIVIL",
-        strength: 45,
-        benches: 25,
-        advisor: "Not Available",
-        advisorMail: "Not Available",
-
-        mentor1: "Not Available",
-        mentor1Mail: "Not Available",
-
-        mentor2: "Not Available",
-        mentor2Mail: "Not Available",
-
-        mentor3: "Not Available",
-        mentor3Mail: "Not Available"
-    },
-
-    "B3L03": {
-        name: "Second Year CIVIL",
-        strength: 41,
-        benches: 25,
-        advisor: "Not Available",
-        advisorMail: "Not Available",
-
-        mentor1: "Not Available",
-        mentor1Mail: "Not Available",
-
-        mentor2: "Not Available",
-        mentor2Mail: "Not Available",
-
-        mentor3: "Not Available",
-        mentor3Mail: "Not Available"
-    },
-
-    "B3L02": {
-        name: "Final Year CSBS",
-        strength: 60,
-        benches: 30,
-        advisor: "Not Available",
-        advisorMail: "Not Available",
-
-        mentor1: "Not Available",
-        mentor1Mail: "Not Available",
-
-        mentor2: "Not Available",
-        mentor2Mail: "Not Available",
-
-        mentor3: "Not Available",
-        mentor3Mail: "Not Available"
-    },
-
-    "C2L05": {
-        name: "Second Year MECH",
-        strength: 42,
-        benches: 25,
-        advisor: "Dr.J.Jerold John Britto",
-        advisorMail: "jeroldjohnbritto@ritrjpm.ac.in",
-
-        mentor1: "Dr.J.Jerold John Britto",
-        mentor1Mail: "jeroldjohnbritto@ritrjpm.ac.in",
-
-        mentor2: "Mr.R.Prabhakaran",
-        mentor2Mail: "rprabhakaran@ritrjpm.ac.in",
-
-        mentor3: "Not Available",
-        mentor3Mail: "Not Available"
-    },
-
-    "C2L04": {
-        name: "Third Year MECH",
-        strength: 63,
-        benches: 31,
-        advisor: "Mr.R.Prabhakaran",
-        advisorMail: "rprabhakaran@ritrjpm.ac.in",
-
-        mentor1: "Dr.J.Jerold John Britto",
-        mentor1Mail: "jeroldjohnbritto@ritrjpm.ac.in",
-
-        mentor2: "Dr.R.Venkatesh",
-        mentor2Mail: "rvenkatesh@ritrjpm.ac.in",
-
-        mentor3: "Mr.R.Prabhakaran",
-        mentor3Mail: "rprabhakaran@ritrjpm.ac.in"
-    },
-
-    "C2L03": {
-        name: "Final Year MECH",
-        strength: 50,
-        benches: 25,
-        advisor: "Mr.L.Karthikeyan",
-        advisorMail: "lkarthikeyan@ritrjpm.ac.in",
-
-        mentor1: "Mr.L.Karthikeyan",
-        mentor1Mail: "lkarthikeyan@ritrjpm.ac.in",
-
-        mentor2: "Dr.R.Arun Kumar",
-        mentor2Mail: "rarunkumar@ritrjpm.ac.in",
-
-        mentor3: "Mr.M.Sivagaminathan",
-        mentor3Mail: "msivagaminathan@ritrjpm.ac.in"
-    },
-
-    "C2L02": {
-        name: "Third Year IT",
-        strength: 62,
-        benches: 31,
-        advisor: "Dr.G.Mareeswari",
-        advisorMail: "mareeswari@ritrjpm.ac.in",
-
-        mentor1: "Mrs.G.Sivasathiya",
-        mentor1Mail: "sivasathiya@ritrjpm.ac.in",
-
-        mentor2: "Mrs.M.Rethinakumari",
-        mentor2Mail: "rethinakumari@ritrjpm.ac.in",
-
-        mentor3: "Not Available",
-        mentor3Mail: "Not Available"
-    },
-
-    "C2L01": {
-        name: "Second Year IT",
-        strength: 64,
-        benches: 32,
-        advisor: "Mrs.M.Thulasdevi",
-        advisorMail: "thulasdevi@ritrjpm.ac.in",
-
-        mentor1: "Mrs.B.Thevahi",
-        mentor1Mail: "thevahi@ritrjpm.ac.in",
-
-        mentor2: "Not Available",
-        mentor2Mail: "Not Available",
-
-        mentor3: "Not Available",
-        mentor3Mail: "Not Available"
-    },
-
-    "C3L01": {
-        name: "Third Year AD A",
-        strength: 59,
-        benches: 30,
-        advisor: "C.Usharani",
-        advisorMail: "cusharani@ritrjpm.ac.in",
-
-        mentor1: "Not Available",
-        mentor1Mail: "Not Available",
-
-        mentor2: "Not Available",
-        mentor2Mail: "Not Available",
-
-        mentor3: "Not Available",
-        mentor3Mail: "Not Available"
-    },
-
-    "C3L02": {
-        name: "Third Year AD B",
-        strength: 59,
-        benches: 30,
-        advisor: "Dr.M.Ramnath",
-        advisorMail: "mramnath@ritrjpm.ac.in",
-
-        mentor1: "Not Available",
-        mentor1Mail: "Not Available",
-
-        mentor2: "Not Available",
-        mentor2Mail: "Not Available",
-
-        mentor3: "Not Available",
-        mentor3Mail: "Not Available"
-    },
-
-    "C3L03": {
-        name: "Second Year AD A",
-        strength: 63,
-        benches: 33,
-        advisor: "B.Revathi",
-        advisorMail: "brevathi@ritrjpm.ac.in",
-
-        mentor1: "Not Available",
-        mentor1Mail: "Not Available",
-
-        mentor2: "Not Available",
-        mentor2Mail: "Not Available",
-
-        mentor3: "Not Available",
-        mentor3Mail: "Not Available"
-    },
-
-    "C3L04": {
-        name: "Second Year AD B",
-        strength: 63,
-        benches: 31,
-        advisor: "P.Vetrivel",
-        advisorMail: "pvetrivel@ritrjpm.ac.in",
-
-        mentor1: "Not Available",
-        mentor1Mail: "Not Available",
-
-        mentor2: "Not Available",
-        mentor2Mail: "Not Available",
-
-        mentor3: "Not Available",
-        mentor3Mail: "Not Available"
-    },
-
-    // ================= RIGHT SIDE =================
-
-    "B3R02": {
-        name: "Second Year EEE",
-        strength: 65,
-        benches: 34,
-        advisor: "Not Available",
-        advisorMail: "Not Available",
-
-        mentor1: "Not Available",
-        mentor1Mail: "Not Available",
-
-        mentor2: "Not Available",
-        mentor2Mail: "Not Available",
-
-        mentor3: "Not Available",
-        mentor3Mail: "Not Available"
-    },
-
-    "B3R03": {
-        name: "Third Year EEE",
-        strength: 64,
-        benches: 32,
-        advisor: "Not Available",
-        advisorMail: "Not Available",
-
-        mentor1: "Not Available",
-        mentor1Mail: "Not Available",
-
-        mentor2: "Not Available",
-        mentor2Mail: "Not Available",
-
-        mentor3: "Not Available",
-        mentor3Mail: "Not Available"
-    },
-
-    "B3R04": {
-        name: "Third Year CSBS",
-        strength: 61,
-        benches: 31,
-        advisor: "Not Available",
-        advisorMail: "Not Available",
-
-        mentor1: "Not Available",
-        mentor1Mail: "Not Available",
-
-        mentor2: "Not Available",
-        mentor2Mail: "Not Available",
-
-        mentor3: "Not Available",
-        mentor3Mail: "Not Available"
-    },
-
-    "B3R05": {
-        name: "Second Year CSBS",
-        strength: 55,
-        benches: 28,
-        advisor: "Not Available",
-        advisorMail: "Not Available",
-
-        mentor1: "Not Available",
-        mentor1Mail: "Not Available",
-
-        mentor2: "Not Available",
-        mentor2Mail: "Not Available",
-
-        mentor3: "Not Available",
-        mentor3Mail: "Not Available"
-    },
-
-    "C3R01": {
-        name: "Second Year ECE A",
-        strength: 64,
-        benches: 32,
-        advisor: "Not Available",
-        advisorMail: "Not Available",
-
-        mentor1: "Not Available",
-        mentor1Mail: "Not Available",
-
-        mentor2: "Not Available",
-        mentor2Mail: "Not Available",
-
-        mentor3: "Not Available",
-        mentor3Mail: "Not Available"
-    },
-
-    "C3R02": {
-        name: "Second Year ECE B",
-        strength: 64,
-        benches: 32,
-        advisor: "Not Available",
-        advisorMail: "Not Available",
-
-        mentor1: "Not Available",
-        mentor1Mail: "Not Available",
-
-        mentor2: "Not Available",
-        mentor2Mail: "Not Available",
-
-        mentor3: "Not Available",
-        mentor3Mail: "Not Available"
-    },
-
-    "C3R03": {
-        name: "Third Year ECE A",
-        strength: 63,
-        benches: 32,
-        advisor: "Not Available",
-        advisorMail: "Not Available",
-
-        mentor1: "Not Available",
-        mentor1Mail: "Not Available",
-
-        mentor2: "Not Available",
-        mentor2Mail: "Not Available",
-
-        mentor3: "Not Available",
-        mentor3Mail: "Not Available"
-    },
-
-    "C3R04": {
-        name: "Third Year ECE B",
-        strength: 62,
-        benches: 31,
-        advisor: "Not Available",
-        advisorMail: "Not Available",
-
-        mentor1: "Not Available",
-        mentor1Mail: "Not Available",
-
-        mentor2: "Not Available",
-        mentor2Mail: "Not Available",
-
-        mentor3: "Not Available",
-        mentor3Mail: "Not Available"
-    },
-
-    "C3R05": {
-        name: "Final Year ECE A",
-        strength: 59,
-        benches: 30,
-        advisor: "Not Available",
-        advisorMail: "Not Available",
-
-        mentor1: "Not Available",
-        mentor1Mail: "Not Available",
-
-        mentor2: "Not Available",
-        mentor2Mail: "Not Available",
-
-        mentor3: "Not Available",
-        mentor3Mail: "Not Available"
-    },
-
-    "C2R04": {
-        name: "Second Year CSE A",
-        strength: 63,
-        benches: 32,
-        advisor: "Ms.G.Sakthi Priya AP/CSE",
-        advisorMail: "gsakthipriya@ritrjpm.ac.in",
-
-        mentor1: "Mrs.K.Vijayalakshmi Professor & Head",
-        mentor1Mail: "kvijayalakshmi@ritrjpm.ac.in",
-
-        mentor2: "Ms.G.Sakthi Priya",
-        mentor2Mail: "gsakthipriya@ritrjpm.ac.in",
-
-        mentor3: "Mrs.M.Arunthathi AP/CSE",
-        mentor3Mail: "marunthathi@ritrjpm.ac.in"
-    },
-
-    "C2R05": {
-        name: "Second Year CSE B",
-        strength: 63,
-        benches: 32,
-        advisor: "Mrs.P.Devisri AP/CSE",
-        advisorMail: "pdevisri@ritrjpm.ac.in",
-
-        mentor1: "Mrs.K.Vijayalakshmi Professor & Head",
-        mentor1Mail: "kvijayalakshmi@ritrjpm.ac.in",
-
-        mentor2: "Mrs.P.Devisri AP/CSE",
-        mentor2Mail: "pdevisri@ritrjpm.ac.in",
-
-        mentor3: "Ms.S.Nandhini AP/CSE",
-        mentor3Mail: "snandhini@ritrjpm.ac.in"
-    },
-
-    "C2R06": {
-        name: "Second Year CSE C",
-        strength: 64,
-        benches: 32,
-        advisor: "Dr.I Gethzi Ahila Poornima",
-        advisorMail: "gethziahila@ritrjpm.ac.in",
-
-        mentor1: "Mrs.K.Vijayalakshmi Professor & Head",
-        mentor1Mail: "kvijayalakshmi@ritrjpm.ac.in",
-
-        mentor2: "Mr.R.Bala Murugan AP/CSE",
-        mentor2Mail: "rbalamurugan@ritrjpm.ac.in",
-
-        mentor3: "Dr.M.Pandi Professor",
-        mentor3Mail: "mpandi@ritrjpm.ac.in"
-    },
-
-    "A2R02": {
-        name: "Third Year CSE A",
-        strength: 64,
-        benches: 32,
-        advisor: "Dr.M.Swarna Sudha ASP/CSE",
-        advisorMail: "swarnasudha@ritrjpm.ac.in",
-
-        mentor1: "Mrs.K.Vijayalakshmi Professor & Head",
-        mentor1Mail: "kvijayalakshmi@ritrjpm.ac.in",
-
-        mentor2: "Mrs.R.Madhu AP/CSE",
-        mentor2Mail: "rmadhu@ritrjpm.ac.in",
-
-        mentor3: "Not Available",
-        mentor3Mail: "Not Available"
-    },
-
-    "A2R02A": {
-        name: "Third Year CSBS B",
-        strength: 63,
-        benches: 32,
-        advisor: "Not Available",
-        advisorMail: "Not Available",
-
-        mentor1: "Not Available",
-        mentor1Mail: "Not Available",
-
-        mentor2: "Not Available",
-        mentor2Mail: "Not Available",
-
-        mentor3: "Not Available",
-        mentor3Mail: "Not Available"
-    }
+"A1L03":{
+name:"First Year CSE B",
+strength:63,
+benches:32,
+advisor:"Mrs.S.Manjula - smanjula@ritrjpm.ac.in",
+mentor:`Dr.K.Vijayalakshmi - kvijayalakshmi@ritrjpm.ac.in
+Mrs.S.Manjula - smanjula@ritrjpm.ac.in
+Mrs.G.Kanmani - gkanmani@ritrjpm.ac.in`
+},
+
+"A1L04":{
+name:"First Year AIML",
+strength:63,
+benches:32,
+advisor:"Not Available",
+mentor:"Not Available"
+},
+
+"A2L05":{
+name:"First Year MECH",
+strength:30,
+benches:15,
+advisor:"Dr.S.Maharajan - smaharajan@ritrjpm.ac.in",
+mentor:`Dr.S.Maharajan - smaharajan@ritrjpm.ac.in
+Mr.C.Gururaj - cgururaj@ritrjpm.ac.in
+Dr.M.Ashokkumar - mashokkumar@ritrjpm.ac.in`
+},
+
+"A2L04":{
+name:"First Year CSE A",
+strength:63,
+benches:32,
+advisor:"Mrs.C.Krishnakala - ckrishnakala@ritrjpm.ac.in",
+mentor:`Dr.K.Vijayalakshmi - kvijayalakshmi@ritrjpm.ac.in
+Mrs.C.Krishnakala - ckrishnakala@ritrjpm.ac.in
+Mrs.Latha - latha@ritrjpm.ac.in
+Mrs.Deepalakshmi - deepalakshmi@ritrjpm.ac.in`
+},
+
+"A2L03":{
+name:"First Year IT",
+strength:63,
+benches:30,
+advisor:"Mrs.P.Ramya - ramya@ritrjpm.ac.in",
+mentor:`Mrs.M.Muthukumar - muthukumar@ritrjpm.ac.in
+Mrs.Ranjitha - ranjitha@ritrjpm.ac.in`
+},
+
+"A2L02":{
+name:"First Year ECE B",
+strength:63,
+benches:32,
+advisor:"Not Available",
+mentor:"Not Available"
+},
+
+"A2L01":{
+name:"First Year ECE A",
+strength:63,
+benches:32,
+advisor:"Not Available",
+mentor:"Not Available"
+},
+
+"B0L01":{
+name:"First Year AD A",
+strength:63,
+benches:31,
+advisor:"S.Pradeepha - pradeepha@ritrjpm.ac.in",
+mentor:`Mrs G.Kavitha - kavitha@ritrjpm.ac.in
+Dr.N.Nagamani - nagamani@ritrjpm.ac.in`
+},
+
+"B0L02":{
+name:"First Year AD B",
+strength:63,
+benches:31,
+advisor:"Dr.S.V.Anandhi - vanandhi@ritrjpm.ac.in",
+mentor:`Mr.P.Vetrivel - vetrivel@ritrjpm.ac.in
+Mrs.V.Logapriya - logapriya@ritrjpm.ac.in
+Mrs.M.Santhikala - santhikala@ritrjpm.ac.in`
+},
+
+"B0L03":{
+name:"First Year CSBS",
+strength:63,
+benches:31,
+advisor:"Not Available",
+mentor:"Not Available"
+},
+
+"B1L05":{
+name:"First Year EEE",
+strength:63,
+benches:32,
+advisor:"Not Available",
+mentor:"Not Available"
+},
+
+"B1L04":{
+name:"First Year CSE C",
+strength:63,
+benches:32,
+advisor:"K.Bala Karthik - balakarthik@ritrjpm.ac.in",
+mentor:`Dr.K.Vijayalakshmi - kvijayalakshmi@ritrjpm.ac.in
+K.Bala Karthik - balakarthik@ritrjpm.ac.in
+Ms.Mahalakshmi - mahalakshmi@ritrjpm.ac.in
+Dr.P.Thiruramanathan - thiruramanathan@ritrjpm.ac.in`
+},
+
+"B1L02":{
+name:"First Year CIVIL",
+strength:30,
+benches:25,
+advisor:"Not Available",
+mentor:"Not Available"
+},
+
+"B3L05":{
+name:"Final Year AD A",
+strength:59,
+benches:30,
+advisor:"Dr.C.Karpagavalli - karpagavalli@ritrjpm.ac.in",
+mentor:`Dr.M.Kaliappan - kaliappan@ritrjpm.ac.in`
+},
+
+"B3L04":{
+name:"Third Year CIVIL",
+strength:45,
+benches:25,
+advisor:"Mrs.A.Leema Margret - leemamargret@ritrjpm.ac.in",
+mentor:`Dr.S.Dharmar - dharmar@ritrjpm.ac.in
+Dr.T.Chockalingam - chockalingam@ritrjpm.ac.in
+Mrs.R.Kalaimani - kalaimani@ritrjpm.ac.in`
+},
+
+"B3L03":{
+name:"Second Year CIVIL",
+strength:41,
+benches:25,
+advisor:"Not Available",
+mentor:"Not Available"
+},
+
+"B3L02":{
+name:"Final Year CSBS",
+strength:60,
+benches:30,
+advisor:"Not Available",
+mentor:"Not Available"
+},
+
+"C2L05":{
+name:"Second Year MECH",
+strength:42,
+benches:25,
+advisor:"Dr.J.Jerold John Britto - jeroldjohn@ritrjpm.ac.in",
+mentor:`Mr.R.Prabhakaran - prabhakaran@ritrjpm.ac.in`
+},
+
+"C2L04":{
+name:"Third Year MECH",
+strength:63,
+benches:31,
+advisor:"Mr.R.Prabhakaran - prabhakaran@ritrjpm.ac.in",
+mentor:`Dr.J.Jerold John Britto - jeroldjohn@ritrjpm.ac.in
+Dr.R.Venkatesh - venkatesh@ritrjpm.ac.in`
+},
+
+"C2L03":{
+name:"Final Year MECH",
+strength:50,
+benches:25,
+advisor:"Mr.L.Karthikeyan - karthikeyan@ritrjpm.ac.in",
+mentor:`Dr.R.Arun Kumar - arunkumar@ritrjpm.ac.in
+Mr.M.Sivagaminathan - sivagaminathan@ritrjpm.ac.in`
+},
+
+"C2L02":{
+name:"Third Year IT",
+strength:62,
+benches:31,
+advisor:"Dr.G.Mareeswari - mareeswari@ritrjpm.ac.in",
+mentor:`Mrs.G.Sivasathiya - sivasathiya@ritrjpm.ac.in
+Mrs.M.Rethinakumari - rethinakumari@ritrjpm.ac.in`
+},
+
+"C2L01":{
+name:"Second Year IT",
+strength:64,
+benches:32,
+advisor:"Mrs.M.Thulasdevi - thulasdevi@ritrjpm.ac.in",
+mentor:`Mrs.B.Thevahi - thevahi@ritrjpm.ac.in`
+},
+
+"C3L01":{
+name:"Third Year AD A",
+strength:59,
+benches:30,
+advisor:"C.Usharani - usharani@ritrjpm.ac.in",
+mentor:`Mrs.C.Usharani - usharani@ritrjpm.ac.in
+Dr.R.M.Rajeshwari - rajeshwari@ritrjpm.ac.in`
+},
+
+"C3L02":{
+name:"Third Year AD B",
+strength:59,
+benches:30,
+advisor:"Dr.M.Ramnath - ramnath@ritrjpm.ac.in",
+mentor:`Mrs.B.Sankaralakshmi - sankaralakshmi@ritrjpm.ac.in
+Mrs.R.Angelhephzibah - angelhephzibah@ritrjpm.ac.in`
+},
+
+"C3L03":{
+name:"Second Year AD A",
+strength:63,
+benches:33,
+advisor:"Mrs.B.Revathi - revathi@ritrjpm.ac.in",
+mentor:`Mrs.S.Pradeepa - pradeepa@ritrjpm.ac.in
+Mrs.S.V.Anandhi - anandhi@ritrjpm.ac.in`
+},
+
+"C3L04":{
+name:"Second Year AD B",
+strength:63,
+benches:31,
+advisor:"P.Vetrivel - vetrivel@ritrjpm.ac.in",
+mentor:`Mr.P.Vetrivel - vetrivel@ritrjpm.ac.in
+Mrs.V.Logapriya - logapriya@ritrjpm.ac.in
+Mrs.M.Santhikala - santhikala@ritrjpm.ac.in`
+},
+
+"B3R02":{
+name:"Second Year EEE",
+strength:65,
+benches:34,
+advisor:"Not Available",
+mentor:"Not Available"
+},
+
+"B3R03":{
+name:"Third Year EEE",
+strength:64,
+benches:32,
+advisor:"Not Available",
+mentor:"Not Available"
+},
+
+"B3R04":{
+name:"Third Year CSBS",
+strength:61,
+benches:31,
+advisor:"Not Available",
+mentor:"Not Available"
+},
+
+"B3R05":{
+name:"Second Year CSBS",
+strength:55,
+benches:28,
+advisor:"Not Available",
+mentor:"Not Available"
+},
+
+"C3R01":{
+name:"Second Year ECE A",
+strength:64,
+benches:32,
+advisor:"Not Available",
+mentor:"Not Available"
+},
+
+"C3R02":{
+name:"Second Year ECE B",
+strength:64,
+benches:32,
+advisor:"Not Available",
+mentor:"Not Available"
+},
+
+"C3R03":{
+name:"Third Year ECE A",
+strength:63,
+benches:32,
+advisor:"Not Available",
+mentor:"Not Available"
+},
+
+"C3R04":{
+name:"Third Year ECE B",
+strength:62,
+benches:31,
+advisor:"Not Available",
+mentor:"Not Available"
+},
+
+"C3R05":{
+name:"Final Year ECE A",
+strength:59,
+benches:30,
+advisor:"Not Available",
+mentor:"Not Available"
+},
+
+"C2R04":{
+name:"Second Year CSE A",
+strength:63,
+benches:32,
+advisor:"Ms.G.Sakthi Priya - sakthipriya@ritrjpm.ac.in",
+mentor:`Mrs.K.Vijayalakshmi - vijayalakshmi@ritrjpm.ac.in
+Ms.G.Sakthi Priya - sakthipriya@ritrjpm.ac.in
+Mrs.M.Arunthathi - arunthathi@ritrjpm.ac.in
+Dr.A.Sivanesh Kumar - sivaneshkumar@ritrjpm.ac.in`
+},
+
+"C2R05":{
+name:"Second Year CSE B",
+strength:63,
+benches:32,
+advisor:"Mrs.P.Devisri - devisri@ritrjpm.ac.in",
+mentor:`Mrs.K.Vijayalakshmi - vijayalakshmi@ritrjpm.ac.in
+Mrs.P.Devisri - devisri@ritrjpm.ac.in
+Ms.S.Nandhini - nandhini@ritrjpm.ac.in
+Mrs.S.Shunmuga Priya - shunmugapriya@ritrjpm.ac.in`
+},
+
+"C2R06":{
+name:"Second Year CSE C",
+strength:64,
+benches:32,
+advisor:"Dr.I.Gethzi Ahila Poornima - gethzi@ritrjpm.ac.in",
+mentor:`Mrs.K.Vijayalakshmi - vijayalakshmi@ritrjpm.ac.in
+Dr.I.Gethzi Ahila Poornima - gethzi@ritrjpm.ac.in
+Mr.R.Bala Murugan - balamurugan@ritrjpm.ac.in
+Dr.M.Pandi - pandi@ritrjpm.ac.in`
+},
+
+"A2R02":{
+name:"Third Year CSE A",
+strength:64,
+benches:32,
+advisor:"Dr.M.Swarna Sudha - swarnasudha@ritrjpm.ac.in",
+mentor:`Mrs.K.Vijayalakshmi - vijayalakshmi@ritrjpm.ac.in
+Dr.M.Swarna Sudha - swarnasudha@ritrjpm.ac.in
+Mrs.R.Madhu - madhu@ritrjpm.ac.in`
+},
+
+"A2R02A":{
+name:"Third Year CSBS B",
+strength:63,
+benches:32,
+advisor:"Not Available",
+mentor:"Not Available"
+}
+
 };
-
 
 // 📌 ELEMENTS
 const code = document.getElementById("code");
